@@ -1,0 +1,70 @@
+# Compila o app nativo do EMDR PRO.
+# - Android: gera o APK instalável e publica em Releases (link fixo "android-latest").
+# - iOS: compila o projeto Xcode para conferir que está pronto para a App Store.
+name: Compilar apps (Android e iOS)
+on:
+  push:
+    branches: [main]
+    paths: ["index.html", "icons/**", "fonts/**", "lib/**", "app/**", ".github/workflows/compilar-apps.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: compilar-apps
+  cancel-in-progress: true
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - run: npm ci
+      - run: npm run web && npx cap sync android
+      - name: Gerar APK
+        run: cd android && chmod +x gradlew && ./gradlew --no-daemon assembleDebug
+      - name: Renomear
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk ../EMDR-PRO.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: EMDR-PRO-android
+          path: EMDR-PRO.apk
+      - name: Publicar o APK em Releases
+        working-directory: .
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete android-latest --yes --cleanup-tag || true
+          gh release create android-latest EMDR-PRO.apk --target "$GITHUB_SHA" \
+            --title "EMDR PRO para Android (versão de teste)" \
+            --notes "Toque em EMDR-PRO.apk para baixar e instalar no Android. Se o celular pedir, permita instalar apps desta fonte. Versão de teste; a versão da Google Play será assinada com a chave da loja."
+  ios:
+    runs-on: macos-15
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - run: npm ci
+      - run: npm run web && npx cap sync ios
+      - name: Compilar para o simulador do iPhone (sem assinatura)
+        run: |
+          set -o pipefail
+          xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Debug \
+            -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO build | tail -n 40

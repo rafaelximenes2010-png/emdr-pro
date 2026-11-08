@@ -1,0 +1,29 @@
+{
+  "name": "emdr-pro-app",
+  "version": "2.4.0",
+  "private": true,
+  "description": "EMDR PRO · Karina Ximenes — aplicativo nativo (iOS e Android) com Capacitor",
+  "scripts": {
+    "web": "node scripts/copy-web.js",
+    "sync": "npm run web && npx cap sync",
+    "assets": "npx capacitor-assets generate --ios --android --iconBackgroundColor '#2F3B27' --iconBackgroundColorDark '#1E2717' --splashBackgroundColor '#F4F1E8' --splashBackgroundColorDark '#1E2717'"
+  },
+  "dependencies": {
+    "@capacitor/android": "7.6.9",
+    "@capacitor/core": "7.6.9",
+    "@capacitor/filesystem": "7.1.9",
+    "@capacitor/ios": "7.6.9",
+    "@capacitor/share": "7.0.4",
+    "@capacitor/splash-screen": "7.0.5",
+    "@capacitor/status-bar": "7.0.6"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "3.0.5",
+    "@capacitor/cli": "7.6.9",
+    "@fontsource/eb-garamond": "5.1.0",
+    "@fontsource/figtree": "5.1.1",
+    "@fontsource/ibm-plex-mono": "5.1.0",
+    "jspdf": "2.5.1",
+    "xlsx": "0.18.5"
+  }
+}

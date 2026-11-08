@@ -19,9 +19,7 @@
 <meta name="apple-mobile-web-app-title" content="EMDR PRO">
 <meta name="description" content="Gestão clínica e estimulação bilateral EMDR · Karina Ximenes, Psicóloga">
 <meta name="theme-color" content="#2F3B27">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
+<link rel="stylesheet" href="fonts/fonts.css">
 <style>
 /* Layout: clinical workspace — deep-green rail + working canvas on creme; the EMDR stage is its own dark room */
 :root{
@@ -446,6 +444,7 @@ button.stat[aria-expanded="true"]{background:var(--sage-soft)}
 .hero-tag{display:none}
 .nav-tour{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--nav-gold);color:#1F2716;border:0;border-radius:10px;padding:10px 12px;font-weight:700;letter-spacing:.03em;cursor:pointer;font-size:.88rem;box-shadow:0 4px 16px rgba(214,190,130,.22)}
 .nav-tour:hover{filter:brightness(1.06)}
+.is-native .nav-install,.is-native .demo-bar .btn-web-only{display:none!important}
 .nav-install{background:transparent;color:var(--nav-ink);box-shadow:inset 0 0 0 1.5px var(--nav-gold)}
 .ios-steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
 .ios-steps svg{width:18px;height:18px;vertical-align:-3px}
@@ -673,7 +672,7 @@ const DOWN=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 function deepDef(t,d){for(const k in d){if(t[k]===undefined)t[k]=JSON.parse(JSON.stringify(d[k]));else if(d[k]&&typeof d[k]==='object'&&!Array.isArray(d[k])&&typeof t[k]==='object')deepDef(t[k],d[k])}return t}
 function profile(){return (typeof S!=='undefined'&&S&&S.profile)?S.profile:DEF_PROFILE}
 const USERS={get psi(){const p=profile();return{name:p.name,reg:p.crp||'CRP não informado'}},rec:{name:'Ana Souza',reg:'Recepção'},adm:{name:'Administração',reg:'Administrador'}};
-const APP_VERSION='2.4';
+const APP_VERSION='3.0';
 const BUILTIN=[
   {id:'b1',name:'Lento',ppm:40,amp:85,size:30,motion:'suave',mode:'passagens',limit:24,secs:30},
   {id:'b2',name:'Moderado',ppm:60,amp:85,size:28,motion:'suave',mode:'passagens',limit:30,secs:30},
@@ -1402,6 +1401,10 @@ function openNote(id,pre={}){
    ========================================================= */
 const TYPES={novo:'Novo',melhoria:'Melhoria',correcao:'Correção',seguranca:'Segurança'};
 const CHANGELOG=[
+ {v:'3.0',date:'08/11/2026',title:'Aplicativo nativo para iPhone e Android',items:[
+  ['novo','App de verdade','O EMDR PRO agora também existe como aplicativo nativo para iPhone/iPad e Android, pronto para ser publicado na App Store e na Google Play.'],
+  ['novo','Salvar e enviar arquivos','No app, PDFs, planilhas, cópias de segurança e transcrições abrem o menu do sistema: salvar em Arquivos, enviar por WhatsApp, AirDrop ou imprimir.'],
+  ['melhoria','Tudo funciona sem internet','Fontes e geradores de PDF e Excel agora vêm dentro do app e do site, sem depender de serviços externos.']]},
  {v:'2.4',date:'08/11/2026',title:'Baixar o app com um toque',items:[
   ['novo','Botão Baixar o app','Ao abrir o link, aparece o convite para baixar. No Android e no computador, um toque instala direto na tela inicial.'],
   ['novo','Guia visual no iPhone','No iPhone, uma seta indica o botão Compartilhar e o passo Adicionar à Tela de Início, que a Apple exige que seja feito pela própria pessoa.'],
@@ -1840,9 +1843,10 @@ ACT.teleEnd=async()=>{const L=S.teleLive;if(!L)return;if(REC.mr&&REC.mr.state!==
 /* =========================================================
    DOCUMENTOS (PDF) E PLANILHAS (EXCEL)
    ========================================================= */
-const LIBS={jspdf:['https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',()=>window.jspdf&&window.jspdf.jsPDF],xlsx:['https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js',()=>window.XLSX]};
+const LIBS={jspdf:[['lib/jspdf.umd.min.js','https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'],()=>window.jspdf&&window.jspdf.jsPDF],xlsx:[['lib/xlsx.full.min.js','https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'],()=>window.XLSX]};
 const libP={};
-function loadLib(k){if(LIBS[k][1]())return Promise.resolve();if(!libP[k])libP[k]=new Promise((res,rej)=>{const sc=document.createElement('script');sc.src=LIBS[k][0];sc.onload=()=>LIBS[k][1]()?res():rej(new Error('lib'));sc.onerror=()=>{delete libP[k];rej(new Error('lib'))};document.head.appendChild(sc)});return libP[k]}
+function loadLib(k){if(LIBS[k][1]())return Promise.resolve();if(!libP[k]){const one=src=>new Promise((res,rej)=>{const sc=document.createElement('script');sc.src=src;sc.onload=()=>LIBS[k][1]()?res():rej(new Error('lib'));sc.onerror=()=>{sc.remove();rej(new Error('lib'))};document.head.appendChild(sc)});
+  libP[k]=LIBS[k][0].reduce((p,src)=>p.catch(()=>one(src)),Promise.reject()).catch(e=>{delete libP[k];throw e})}return libP[k]}
 const slug=t=>String(t).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 const fmtK=k=>k?fmtD(P(k+'T00:00')):'';
 const logoSrc=()=>($('.brand-logo')||{}).src||'';
@@ -1874,8 +1878,8 @@ async function docPDF(d){try{await loadLib('jspdf')}catch(e){toast('Não foi pos
   const pages=pdf.getNumberOfPages();const today=fmtD(new Date());
   for(let i=1;i<=pages;i++){pdf.setPage(i);pdf.setDrawColor(...GD);pdf.setLineWidth(.3);pdf.line(M,280,W-M,280);pdf.setFont('helvetica','normal');pdf.setFontSize(8);pdf.setTextColor(...GR);pdf.text(`${pr.name||''} · ${pr.crp||''}`,M,285);pdf.text(`Emitido em ${today}`,W/2,285,{align:'center'});pdf.text(`Página ${i} de ${pages}`,W-M,285,{align:'right'});if(d.conf)pdf.text('Documento sigiloso. Uso restrito à finalidade a que se destina.',W/2,289.5,{align:'center'})}
   return pdf}
-ACT.docPdf=async()=>{if(!curDoc)return;const pdf=await docPDF(curDoc);if(!pdf)return;try{pdf.save(`${slug(curDoc.file||curDoc.title)}.pdf`);toast('PDF gerado')}catch(e){toast('O navegador bloqueou o download. Use o arquivo HTML salvo no computador.')}};
-ACT.docPrint=()=>{try{window.print()}catch(e){}};
+ACT.docPdf=async()=>{if(!curDoc)return;const pdf=await docPDF(curDoc);if(!pdf)return;try{const nm=`${slug(curDoc.file||curDoc.title)}.pdf`;if(isNative()){await saveFile(nm,pdf.output('blob'));return}pdf.save(nm);toast('PDF gerado')}catch(e){toast('O navegador bloqueou o download. Use o arquivo HTML salvo no computador.')}};
+ACT.docPrint=()=>{if(isNative()){toast('No menu que vai abrir, escolha Imprimir');ACT.docPdf();return}try{window.print()}catch(e){}};
 function pInfoKV(p){return[['Nome completo',p.nome],['Nome social',p.social],['Data de nascimento',p.nasc?`${fmtK(p.nasc)} (${age(p.nasc)} anos)`:''],['Telefone',p.tel],['E-mail',p.email],['Contato de emergência',p.emerg],['Responsável legal',p.resp],['Situação',SIT[p.sit]],['Início do acompanhamento',fmtD(new Date(p.created))]]}
 const demoB=x=>x&&x.demo?[{demo:1}]:[];
 const apptTableRows=l=>l.map(a=>{const s=P(a.start);const t=S.tele.find(x=>x.apptId===a.id);return[fmtD(s),fmtT(s),a.mod==='online'?'Teleconsulta':'Presencial',t?`${t.durMin} min (realizada)`:`${a.dur} min`,STATUS[a.status]]});
@@ -1933,6 +1937,7 @@ ACT.rpPreset=d=>{const t=new Date();rp.from=dkey(d.v==='mes'?new Date(t.getFullY
 async function xlsx(name,sheets){try{await loadLib('xlsx')}catch(e){toast('Não foi possível carregar o gerador de Excel. Verifique a conexão com a internet.');return}
   const X=window.XLSX;const wb=X.utils.book_new();
   for(const [sn,rows] of sheets){const data=rows.length?rows:[{'Sem dados':'Nenhum registro no período'}];const ws=X.utils.json_to_sheet(data);const keys=Object.keys(data[0]);ws['!cols']=keys.map(k=>({wch:Math.min(60,Math.max(k.length,...data.map(r=>String(r[k]??'').length))+2)}));X.utils.book_append_sheet(wb,ws,sn.slice(0,31))}
+  if(isNative()){await saveFile(name,new Blob([X.write(wb,{bookType:'xlsx',type:'array'})],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));return}
   try{X.writeFile(wb,name);toast(`Planilha gerada: ${name}`)}catch(e){toast('O navegador bloqueou o download. Use o arquivo HTML salvo no computador.')}}
 const dm=x=>x&&x.demo?'Sim':'';
 const per=()=>`${rp.from}_a_${rp.to}`;
@@ -2138,7 +2143,7 @@ function pjCtrlUi(){const pill=$('#pj-status');if(!pill)return;const con=pjConne
   pill.className='pill '+(con?'on':'off');pill.textContent=con?(st.running?(st.paused?'Pausado':'Estimulação em curso'):'Janela conectada'):'Janela fechada';
   const run=con&&st.running;$('#pj-start').disabled=!con||run;$('#pj-pause').disabled=!run;$('#pj-stop').disabled=!run;$('#pj-pause').textContent=st.paused?'Retomar':'Pausar';
   $('#pj-count').textContent=`${con?st.passes||0:0} passagens · ${fmtDur(con?st.setMs||0:0)}`}
-ACT.pjOpen=()=>{const url=location.href.split('#')[0]+'#estimulo';let w=null;try{w=window.open(url,'emdrpro-estimulo','popup=yes,width=1280,height=760')}catch(e){}
+ACT.pjOpen=()=>{if(isNative()){toast('A estimulação abre em tela cheia. Use os controles na própria tela e o botão Fechar para voltar.');go('estimulo');return}const url=location.href.split('#')[0]+'#estimulo';let w=null;try{w=window.open(url,'emdrpro-estimulo','popup=yes,width=1280,height=760')}catch(e){}
   if(!w){toast('O navegador bloqueou a nova janela. Permita pop-ups para este arquivo, ou use “Usar nesta aba”.');return}PJC.win=w;
   const a=S.teleLive&&S.appts.find(x=>x.id===S.teleLive.apptId);audit('Janela de estimulação aberta para compartilhamento',a&&a.pid);toast('Janela aberta. Compartilhe-a na sala de vídeo.')};
 ACT.pjHere=()=>go('estimulo');
@@ -2147,9 +2152,26 @@ ACT.pjPause=()=>send({type:(PJC.st&&PJC.st.paused)?'resume':'pause'});
 ACT.pjStop=()=>send({type:'stop'});
 
 /* =========================================================
+   APP NATIVO (iOS e Android, via Capacitor)
+   ========================================================= */
+function isNative(){try{return !!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform())}catch(e){return false}}
+const blobB64=b=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result).split(',')[1]||'');r.onerror=rej;r.readAsDataURL(b)});
+async function saveFile(name,blob){
+  if(!isNative()){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.dataset.native='0';document.body.appendChild(a);a.click();a.remove();return}
+  try{const P=window.Capacitor.Plugins;const data=await blobB64(blob);
+    const w=await P.Filesystem.writeFile({path:name,data,directory:'CACHE'});
+    await P.Share.share({title:name,files:[w.uri],dialogTitle:'Salvar ou enviar'});}
+  catch(e){if(!/cancel/i.test(String(e&&e.message||e)))toast('Não foi possível salvar o arquivo.')}}
+/* No app, todo link de download vira "Salvar ou enviar" (Arquivos, Drive, AirDrop, WhatsApp, Imprimir). */
+document.addEventListener('click',e=>{if(!isNative())return;const a=e.target.closest&&e.target.closest('a[download]');if(!a||a.dataset.native==='0')return;e.preventDefault();e.stopImmediatePropagation();
+  fetch(a.href).then(r=>r.blob()).then(b=>saveFile(a.getAttribute('download')||'arquivo',b)).catch(()=>toast('Não foi possível salvar o arquivo.'))},true);
+if(isNative()){document.documentElement.classList.add('is-native');
+  try{const SB=window.Capacitor.Plugins.StatusBar;SB&&SB.setStyle&&SB.setStyle({style:'DARK'})}catch(e){}}
+
+/* =========================================================
    APLICATIVO (PWA): instalação, offline e cópia de segurança
    ========================================================= */
-const isStandalone=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+const isStandalone=()=>isNative()||matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
 const isIOS=()=>/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 let installEvt=null;
 function installUi(){const b=$('#nav-install');if(!b)return;b.hidden=isStandalone()}
@@ -2178,7 +2200,7 @@ function instAuto(){if(isStandalone())return;const forced=/[?&#]instalar\b/.test
   if(!forced&&Date.now()-last<3*86400000)return;if(!(isIOS()||isAndroid()||installEvt))return;setTimeout(()=>{if(!$('#modal').hidden||$('#tour:not([hidden])'))return;instSheet()},forced?300:1500)}
 window.addEventListener('beforeinstallprompt',()=>{const o=$('#inst');if(o)instSheet()});
 window.addEventListener('load',()=>setTimeout(instAuto,400));
-if('serviceWorker' in navigator&&window.isSecureContext&&location.protocol!=='file:'){let reloaded=false;
+if(!isNative()&&'serviceWorker' in navigator&&window.isSecureContext&&location.protocol!=='file:'){let reloaded=false;
   navigator.serviceWorker.addEventListener('controllerchange',()=>{if(reloaded)return;reloaded=true;location.reload()});
   window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}
 try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
