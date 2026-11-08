@@ -1,0 +1,83 @@
+# Envia o app do iPhone/iPad/Mac para o TestFlight.
+# Precisa de 4 segredos no GitHub (Settings > Secrets and variables > Actions):
+#   APPLE_TEAM_ID, ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8  (veja docs/TESTFLIGHT.md)
+# Sem os segredos, o fluxo só avisa o que falta e termina sem erro.
+name: Enviar para o TestFlight
+on:
+  push:
+    branches: [main]
+    paths: ["index.html", "icons/**", "fonts/**", "lib/**", "app/**", ".github/workflows/testflight.yml"]
+  workflow_dispatch:
+concurrency:
+  group: testflight
+  cancel-in-progress: false
+jobs:
+  testflight:
+    runs-on: macos-15
+    env:
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+    steps:
+      - name: Conferir os segredos da Apple
+        id: chk
+        run: |
+          if [ -z "$APPLE_TEAM_ID" ] || [ -z "$ASC_KEY_ID" ] || [ -z "$ASC_ISSUER_ID" ] || [ -z "$ASC_KEY_P8" ]; then
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            echo "### TestFlight aguardando configuração" >> "$GITHUB_STEP_SUMMARY"
+            echo "Cadastre os segredos APPLE_TEAM_ID, ASC_KEY_ID, ASC_ISSUER_ID e ASC_KEY_P8 (veja docs/TESTFLIGHT.md)." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.chk.outputs.ok == 'true'
+        uses: actions/checkout@v4
+      - name: Usar o Xcode mais novo disponível (a Apple exige o SDK do iOS 26)
+        if: steps.chk.outputs.ok == 'true'
+        run: |
+          X=$(ls -d /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -1)
+          if [ -n "$X" ]; then sudo xcode-select -s "$X"; else echo "::warning::Xcode 26 não encontrado neste runner; usando o padrão."; fi
+          xcodebuild -version
+      - if: steps.chk.outputs.ok == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - name: Preparar o projeto
+        if: steps.chk.outputs.ok == 'true'
+        working-directory: app
+        run: npm ci && npm run web && npx cap sync ios
+      - name: Chave da App Store Connect
+        if: steps.chk.outputs.ok == 'true'
+        run: |
+          mkdir -p "$RUNNER_TEMP/keys"
+          printf '%s' "$ASC_KEY_P8" > "$RUNNER_TEMP/keys/AuthKey_${ASC_KEY_ID}.p8"
+          sed "s/__TEAM_ID__/${APPLE_TEAM_ID}/" app/ios/ci/ExportOptions.plist > "$RUNNER_TEMP/ExportOptions.plist"
+      - name: Compilar e assinar (archive)
+        if: steps.chk.outputs.ok == 'true'
+        working-directory: app/ios/App
+        run: |
+          set -o pipefail
+          xcodebuild -project App.xcodeproj -scheme App -configuration Release \
+            -destination 'generic/platform=iOS' -archivePath "$RUNNER_TEMP/EMDRPRO.xcarchive" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$RUNNER_TEMP/keys/AuthKey_${ASC_KEY_ID}.p8" \
+            -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+            DEVELOPMENT_TEAM="$APPLE_TEAM_ID" CODE_SIGN_STYLE=Automatic \
+            CURRENT_PROJECT_VERSION="${{ github.run_number }}" \
+            archive | tail -n 60
+      - name: Enviar ao TestFlight
+        if: steps.chk.outputs.ok == 'true'
+        run: |
+          set -o pipefail
+          xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/EMDRPRO.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" -exportPath "$RUNNER_TEMP/export" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$RUNNER_TEMP/keys/AuthKey_${ASC_KEY_ID}.p8" \
+            -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" | tail -n 40
+          echo "### Enviado ao TestFlight: compilação ${{ github.run_number }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Em 10 a 30 minutos aparece no App Store Connect > TestFlight." >> "$GITHUB_STEP_SUMMARY"
+      - name: Apagar a chave
+        if: always()
+        run: rm -rf "$RUNNER_TEMP/keys"
