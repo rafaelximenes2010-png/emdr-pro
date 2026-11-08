@@ -331,6 +331,47 @@ input[type="range"]{width:100%;accent-color:var(--accent)}
 
 
 
+
+/* v3.1 — sala de teleconsulta própria (vídeo + estimulação + transcrição) */
+.call-box{display:flex;flex-direction:column;gap:12px;border-top:1px solid var(--line);padding-top:14px}
+.call-stage{position:relative;aspect-ratio:16/9;max-width:100%;background:#101410;border-radius:14px;overflow:hidden}
+.call-stage video{background:#101410}
+.call-stage #rtc-remote{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.call-stage #rtc-local{position:absolute;right:10px;bottom:10px;width:26%;max-width:180px;aspect-ratio:4/3;object-fit:cover;border-radius:10px;border:2px solid rgba(255,255,255,.6);transform:scaleX(-1)}
+.call-wait{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:rgba(255,255,255,.8);font-weight:600;padding:20px}
+.invite{display:flex;flex-direction:column;gap:8px;background:var(--gold-soft);border:1px solid var(--gold);border-radius:12px;padding:12px 14px}
+.invite .row{display:flex;gap:8px;flex-wrap:wrap}
+.invite input{flex:1 1 220px;min-width:0;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 10px;font-family:var(--f-mono);font-size:.8rem}
+.btn.wa{background:#1F8F4E;border-color:#1F8F4E;color:#fff}
+.pill.rtc-on{background:var(--ok-soft);color:var(--ok)}
+.pill.rtc-wait{background:var(--warn-soft);color:var(--warn)}
+.pill.rtc-off{background:var(--surface-2);color:var(--muted);border:1px solid var(--line)}
+/* tela do paciente */
+.pt-mode .app,.pt-mode #inst,.pt-mode .inst-arrow{display:none!important}
+.pt-room{position:fixed;inset:0;background:#141A11;color:#F3EFE3;display:flex;flex-direction:column;font-family:var(--f-body)}
+.pt-head{display:flex;align-items:center;gap:12px;padding:calc(12px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 12px max(16px,env(safe-area-inset-left,0px))}
+.pt-head img{width:40px;height:40px;border-radius:50%;box-shadow:0 0 0 2px #D6BE82}
+.pt-head b{font-family:var(--f-display);font-size:1.2rem;font-weight:500;display:block;line-height:1.1}
+.pt-head small{color:#D6BE82;font-size:.62rem;letter-spacing:.28em;text-transform:uppercase}
+.pt-stage{position:relative;flex:1;min-height:0;background:#0C100A}
+.pt-stage #pt-remote{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#0C100A}
+.pt-stage #pt-local{position:absolute;right:12px;top:12px;width:28%;max-width:160px;aspect-ratio:3/4;object-fit:cover;border-radius:12px;border:2px solid rgba(255,255,255,.55);transform:scaleX(-1)}
+.pt-msg{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:24px}
+.pt-msg h1{font-family:var(--f-display);font-weight:500;font-size:1.9rem;color:#F3EFE3;margin:0}
+.pt-msg p{margin:0;color:#B9C0A8;max-width:34ch;line-height:1.45}
+.pt-bar{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;padding:12px max(16px,env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.pt-bar .btn{border-radius:999px;padding:12px 18px}
+.pt-bar .pill{font-size:.78rem}
+.btn.dark{background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.25)}
+.pt-mode #proj{display:none}
+.pt-mode.pj-running #proj{display:block}
+.pt-mode.pj-running #pt-remote{position:fixed;z-index:305;inset:auto auto calc(16px + env(safe-area-inset-bottom,0px)) 16px;width:28vw;max-width:200px;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:12px;border:2px solid rgba(255,255,255,.5)}
+.pt-stop{display:none;position:fixed;z-index:306;right:calc(16px + env(safe-area-inset-right,0px));top:calc(16px + env(safe-area-inset-top,0px));background:#B23A32;color:#fff;border:0;border-radius:999px;padding:16px 26px;font-size:1.05rem;font-weight:800;letter-spacing:.06em;box-shadow:0 6px 18px rgba(0,0,0,.4)}
+.pt-mode.pj-running .pt-stop{display:block}
+.pt-mode.pj-running .pt-room{z-index:302;background:transparent;pointer-events:none}
+.pt-mode.pj-running .pt-stage{background:transparent}
+.pt-mode.pj-running .pt-head,.pt-mode.pj-running .pt-bar,.pt-mode.pj-running #pt-local,.pt-mode.pj-running #pt-msg{visibility:hidden}
+.pt-mode.pj-running .pt-stop{pointer-events:auto}
 /* v2.4 — baixar o app */
 .inst{position:fixed;inset:0;z-index:200;background:rgba(14,20,10,.55);display:flex;align-items:flex-end;justify-content:center}
 .inst-card{position:relative;width:min(460px,100%);background:var(--surface);color:var(--ink);border-radius:22px 22px 0 0;padding:22px 22px calc(26px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px;box-shadow:0 -10px 40px rgba(0,0,0,.3);animation:instUp .35s ease-out}
@@ -672,7 +713,7 @@ const DOWN=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 function deepDef(t,d){for(const k in d){if(t[k]===undefined)t[k]=JSON.parse(JSON.stringify(d[k]));else if(d[k]&&typeof d[k]==='object'&&!Array.isArray(d[k])&&typeof t[k]==='object')deepDef(t[k],d[k])}return t}
 function profile(){return (typeof S!=='undefined'&&S&&S.profile)?S.profile:DEF_PROFILE}
 const USERS={get psi(){const p=profile();return{name:p.name,reg:p.crp||'CRP não informado'}},rec:{name:'Ana Souza',reg:'Recepção'},adm:{name:'Administração',reg:'Administrador'}};
-const APP_VERSION='3.0';
+const APP_VERSION='3.1';
 const BUILTIN=[
   {id:'b1',name:'Lento',ppm:40,amp:85,size:30,motion:'suave',mode:'passagens',limit:24,secs:30},
   {id:'b2',name:'Moderado',ppm:60,amp:85,size:28,motion:'suave',mode:'passagens',limit:30,secs:30},
@@ -741,6 +782,7 @@ function freeSlots(day){const a=S.prefs.agenda;const now=new Date();const out=[]
 const ROUTES={estimulo:renderProj,teleconsulta:renderTele,relatorios:renderRelatorios,painel:renderPainel,emdr:renderEmdr,agenda:renderAgenda,pacientes:renderPacientes,anotacoes:renderAnotacoes,atualizacoes:renderAtualizacoes,financeiro:renderFinanceiro,personalizar:renderPersonalizar};
 let current=null;
 function route(){
+  if(PATIENT){renderPatient();return}
   const r=(location.hash||'#painel').slice(1);let k=ROUTES[r]?r:'painel';if(!on(k))k='painel';
   if(current==='emdr'&&k!=='emdr')emdrTeardown();if(current==='estimulo'&&k!=='estimulo')projTeardown();
   current=k;
@@ -938,7 +980,7 @@ function openAppt(id,pre={}){
       <div class="field"><label for="a-st">Status</label><select id="a-st">${Object.entries(STATUS).map(([k,v])=>`<option value="${k}" ${(a?a.status:'agendado')===k?'selected':''}>${v}</option>`).join('')}</select></div></div>
     <div class="field"><label for="a-note">Observação administrativa</label><input id="a-note" value="${esc(a?.note||'')}" placeholder="Não registre conteúdo clínico aqui"></div>
     ${p?`<p class="hint">Comparecimento de ${esc(pname(p))}: ${attendance(p.id)}</p>`:''}
-    ${a&&a.mod==='online'&&on('teleconsulta')?`<div class="field"><span class="flabel">Link da teleconsulta</span><div style="display:flex;gap:6px"><input readonly value="${esc(teleLink(a))}" aria-label="Link da teleconsulta"><button type="button" class="btn sm" data-act="copyLink" data-id="${a.id}">Copiar</button></div></div>`:''}
+    ${a&&a.mod==='online'&&on('teleconsulta')?inviteHtml(a):''}
     <p class="form-err" id="a-err" hidden></p>
     <div class="form-actions">${a&&a.demo&&canAdmin()?`<button type="button" class="btn danger" data-act="demoDel" data-k="appt" data-id="${a.id}">Excluir exemplo</button>`:''}${a&&canClinical()&&on('emdr')&&a.status!=='cancelado'?`<button type="button" class="btn ghost" data-act="emdrFor" data-pid="${a.pid}">Iniciar EMDR</button>`:''}${a?`<button type="button" class="btn ghost" data-act="openPatient" data-pid="${a.pid}">Abrir cadastro</button>`:''}<span class="sp"></span><button type="button" class="btn ghost" data-close>Fechar</button><button class="btn primary" type="submit">Salvar</button></div>
   </form>`);
@@ -1401,6 +1443,11 @@ function openNote(id,pre={}){
    ========================================================= */
 const TYPES={novo:'Novo',melhoria:'Melhoria',correcao:'Correção',seguranca:'Segurança'};
 const CHANGELOG=[
+ {v:'3.1',date:'08/11/2026',title:'Sala de teleconsulta própria',items:[
+  ['novo','Link do paciente','Cada teleconsulta gera um link para enviar por WhatsApp ou e-mail. O paciente toca e entra na sala, no celular ou no computador, sem instalar nada.'],
+  ['novo','Vídeo dentro do EMDR PRO','Psicóloga e paciente se veem dentro do próprio sistema, com vídeo direto entre os aparelhos.'],
+  ['novo','Estimulação na tela do paciente','O ponto é desenhado no aparelho do paciente, sem travar, com som bilateral nos fones e botão Parar sempre visível.'],
+  ['novo','Autorização e transcrição com as duas vozes','O paciente autoriza pela própria tela. A gravação junta as duas vozes, e a transcrição separa Psicóloga e Paciente.']]},
  {v:'3.0',date:'08/11/2026',title:'Aplicativo nativo para iPhone e Android',items:[
   ['novo','App de verdade','O EMDR PRO agora também existe como aplicativo nativo para iPhone/iPad e Android, pronto para ser publicado na App Store e na Google Play.'],
   ['novo','Salvar e enviar arquivos','No app, PDFs, planilhas, cópias de segurança e transcrições abrem o menu do sistema: salvar em Arquivos, enviar por WhatsApp, AirDrop ou imprimir.'],
@@ -1685,7 +1732,7 @@ function renderPersonalizar(){
   </div></div>`;
   $$('#view [data-pref]').forEach(i=>i.onchange=()=>{setPref(i.dataset.pref,i.checked);save();applyNav();const sc=$('#main').scrollTop;renderPersonalizar();$('#main').scrollTop=sc;toast(i.checked?'Agora visível':'Ocultado')});
   $$('#view [data-prof]').forEach(i=>i.oninput=()=>{S.profile[i.dataset.prof]=i.value;applyNav();$('.pz-preview').innerHTML=heroHtml();clearTimeout(i._t);i._t=setTimeout(save,400)});
-  const tb=$('#pz-tele');if(tb)tb.onchange=()=>{const v=tb.value.trim();if(!/^https:\/\/\S+$/.test(v)){toast('Use um endereço que comece com https://');tb.value=S.prefs.tele.base;return}S.prefs.tele.base=v;save();toast('Serviço de vídeo atualizado')};
+  const tb=$('#pz-tele');if(tb)tb.onchange=()=>{const v=tb.value.trim();if(!/^https:\/\/\S+$/.test(v)){toast('Use um endereço que comece com https://');tb.value=S.prefs.tele.base;return}S.prefs.tele.url=v;save();toast('Endereço do link atualizado')};
 }
 ACT.pzReset=(d,b)=>{if(!b.dataset.arm){b.dataset.arm=1;b.textContent='Confirmar: mostrar tudo';setTimeout(()=>{if(b.isConnected){delete b.dataset.arm;b.textContent='Mostrar tudo de novo'}},3500);return}
   ['modules','painel','nav'].forEach(k=>S.prefs[k]=JSON.parse(JSON.stringify(DEF_PREFS[k])));save();route();toast('Tudo visível novamente')};
@@ -1791,22 +1838,35 @@ function pzExtra(){const yn=v=>v?'<span class="y" aria-label="Permitido">✓</sp
    <dl class="kv"><div><dt>Psicóloga responsável</dt><dd>${esc(profile().name)} · ${esc(profile().crp)}</dd></div><div><dt>Recepção</dt><dd>${esc(USERS.rec.name)}</dd></div><div><dt>Administrador</dt><dd>${esc(USERS.adm.name)}</dd></div></dl>
    <p class="hint" style="margin:0">Nesta versão local, o perfil é escolhido no menu lateral para demonstração. Na versão com servidor, cada pessoa entra com login próprio e verificação em dois fatores, e o perfil vem da conta.</p></section>
   ${backupHtml()}
-  ${on('teleconsulta')?`<section class="panel"><h2>Teleconsulta</h2><div class="field">${info('pz-tele','Serviço de vídeo','Endereço base das salas. Cada consulta recebe um link próprio neste serviço. O padrão é o Jitsi Meet, gratuito. Para uso profissional, prefira um serviço contratado, com termos adequados à LGPD.')}<input id="pz-tele" value="${esc(S.prefs.tele.base)}"></div></section>`:''}`}
+  ${on('teleconsulta')?`<section class="panel"><h2>Teleconsulta</h2><div class="field">${info('pz-tele','Endereço do link do paciente','Endereço público onde o EMDR PRO está publicado. O link de cada teleconsulta é este endereço com o código da sala.')}<input id="pz-tele" value="${esc(appBase())}"></div></section>`:''}`}
 
 /* =========================================================
    TELECONSULTA
    ========================================================= */
 let teleTimer=0;
 function roomId(){const c='abcdefghjkmnpqrstuvwxyz23456789';const a=new Uint8Array(14);try{crypto.getRandomValues(a)}catch(e){for(let i=0;i<14;i++)a[i]=Math.random()*256}return Array.from(a,b=>c[b%c.length]).join('')}
-function teleLink(a){if(!a.room){a.room=roomId();save()}return `${(S.prefs.tele.base||'https://meet.jit.si').replace(/\/+$/,'')}/KX-${a.room}`}
+function teleLinkOld(a){if(!a.room){a.room=roomId();save()}return `${(S.prefs.tele.base||'https://meet.jit.si').replace(/\/+$/,'')}/KX-${a.room}`}
 const hostOf=u=>{try{return new URL(u).host}catch(e){return u}};
+
+const PUBLIC_URL='https://rafaelximenes2010-png.github.io/emdr-pro/';
+function appBase(){const u=(S.prefs.tele&&S.prefs.tele.url)||'';if(/^https:\/\/\S+$/.test(u))return u.replace(/[?#].*$/,'').replace(/\/?$/,'/');if(location.protocol==='https:'&&/github\.io$/.test(location.hostname))return location.origin+location.pathname.replace(/[^/]*$/,'');return PUBLIC_URL}
+function teleLink(a){if(!a.room){a.room=roomId();save()}return `${appBase()}?sala=${a.room}`}
+const onlyDigits=t=>String(t||'').replace(/\D/g,'');
+function waPhone(t){let d=onlyDigits(t);if(!d)return'';if(d.length<=11)d='55'+d.replace(/^0+/,'');return d}
+function inviteText(a){const p=getP(a.pid);const s=P(a.start);const nm=(pname(p)||'').split(' ')[0];const pr=profile();
+  return `Olá, ${nm}! Sua teleconsulta com ${pr.name} está marcada para ${fmtD(s)} às ${fmtT(s)}.\n\nPara entrar, toque no link:\n${teleLink(a)}\n\nFunciona no celular ou no computador, sem instalar nada. Permita câmera e microfone quando o navegador pedir. Durante a sessão, a estimulação bilateral aparece na sua própria tela.`}
+function waLink(a){const p=getP(a.pid);const ph=waPhone(p&&p.tel);return `https://wa.me/${ph}?text=${encodeURIComponent(inviteText(a))}`}
+function mailLink(a){const p=getP(a.pid);const s=P(a.start);return `mailto:${encodeURIComponent((p&&p.email)||'')}?subject=${encodeURIComponent(`Teleconsulta ${fmtD(s)} às ${fmtT(s)} · ${profile().name}`)}&body=${encodeURIComponent(inviteText(a))}`}
+function inviteHtml(a){return `<div class="invite"><b>Convite do paciente</b><div class="row"><input readonly value="${esc(teleLink(a))}" aria-label="Link do paciente"><button type="button" class="btn sm" data-act="copyLink" data-id="${a.id}">Copiar</button></div><div class="row"><a class="btn sm wa" href="${esc(waLink(a))}" target="_blank" rel="noopener" data-act="inviteSent" data-nav="1" data-via="WhatsApp" data-id="${a.id}">Enviar por WhatsApp</a><a class="btn sm" href="${esc(mailLink(a))}" data-act="inviteSent" data-nav="1" data-via="e-mail" data-id="${a.id}">Enviar por e-mail</a></div><span class="hint" style="margin:0">O paciente toca no link e entra direto na sala, sem instalar nada.</span></div>`}
+ACT.inviteSent=d=>{const a=S.appts.find(x=>x.id===d.id);if(a){a.invited=Date.now();audit(`Convite da teleconsulta enviado por ${d.via}`,a.pid);save()}};
+ACT.inviteOpen=d=>{const a=S.appts.find(x=>x.id===d.id);if(!a)return;modal('Enviar convite',inviteHtml(a)+'<div class="form-actions"><span class="sp"></span><button class="btn ghost" data-close>Fechar</button></div>')};
 function copyText(t,msg){const fb=()=>{modal('Copiar',`<div class="field"><label for="cp-t">Selecione e copie</label><input id="cp-t" readonly value="${esc(t)}"></div><div class="form-actions"><span class="sp"></span><button class="btn primary" data-close>Fechar</button></div>`);setTimeout(()=>{const i=$('#cp-t');i&&i.select()},60)};
   try{navigator.clipboard.writeText(t).then(()=>toast(msg||'Copiado'),fb)}catch(e){fb()}}
 ACT.copyLink=d=>{const a=S.appts.find(x=>x.id===d.id);if(a)copyText(teleLink(a),'Link da teleconsulta copiado')};
 function teleRow(a){const p=getP(a.pid);const s=P(a.start);const isLive=S.teleLive&&S.teleLive.apptId===a.id;
   const menu=[{label:'Reagendar ou editar',hint:'Data, hora, duração e status',act:'appt',data:{id:a.id}},{label:'Cancelar teleconsulta',hint:'Libera o horário na agenda',act:'teleCancel',data:{id:a.id}}];
   if(a.demo&&canAdmin())menu.push('-',{label:'Excluir exemplo',hint:'Remove este agendamento fictício',act:'demoDel',data:{k:'appt',id:a.id},danger:true});
-  return `<div class="aitem tele-row"><span class="t">${pad(s.getDate())}/${pad(s.getMonth()+1)}<br>${fmtT(s)}</span><span><span class="who">${esc(pname(p))}</span>${a.demo?' '+DEMOS:''}<br><span class="meta">${a.dur} min · ${STATUS[a.status]}</span></span><span class="tele-acts">${canClinical()&&!S.teleLive?`<a class="btn sm primary" href="${esc(teleLink(a))}" target="_blank" rel="noopener" data-act="teleStart" data-nav="1" data-id="${a.id}">Iniciar atendimento</a>`:''}${isLive?'<span class="pill st-confirmado">Em andamento</span>':''}<button class="btn sm" data-act="copyLink" data-id="${a.id}">Copiar link</button>${dd('⋯',menu,'icon-btn',true)}</span></div>`}
+  return `<div class="aitem tele-row"><span class="t">${pad(s.getDate())}/${pad(s.getMonth()+1)}<br>${fmtT(s)}</span><span><span class="who">${esc(pname(p))}</span>${a.demo?' '+DEMOS:''}<br><span class="meta">${a.dur} min · ${STATUS[a.status]}</span></span><span class="tele-acts">${canClinical()&&!S.teleLive?`<button class="btn sm primary" data-act="teleStart" data-id="${a.id}">Iniciar atendimento</button>`:''}${isLive?'<span class="pill st-confirmado">Em andamento</span>':''}<button class="btn sm" data-act="inviteOpen" data-id="${a.id}">Enviar convite</button>${dd('⋯',menu,'icon-btn',true)}</span></div>`}
 function renderTele(){
   const now=new Date();let live=S.teleLive&&S.appts.find(a=>a.id===S.teleLive.apptId);if(S.teleLive&&!live){S.teleLive=null;save()}
   const up=S.appts.filter(a=>a.mod==='online'&&['agendado','confirmado'].includes(a.status)&&addMin(P(a.start),a.dur+180)>now).sort(byStart);
@@ -1814,29 +1874,30 @@ function renderTele(){
   let livePanel='';
   if(live){const p=getP(live.pid);livePanel=`<section class="panel tele-live"><div class="panel-head"><span class="pill st-confirmado">Em atendimento</span><h2>${esc(pname(p))}</h2>${live.demo?DEMOP:''}<span class="sp"></span><span class="mono tele-clock" id="tl-clock">00:00</span></div>
     <div class="tele-bar"><span id="tl-bar"></span></div><p class="hint" id="tl-hint" style="margin:0">Duração prevista: ${live.dur} min</p>
-    <div class="transport"><a class="btn primary" href="${esc(teleLink(live))}" target="_blank" rel="noopener">Abrir sala de vídeo</a><button class="btn" data-act="copyLink" data-id="${live.id}">Copiar link do paciente</button><span class="sp"></span><button class="btn danger solid" data-act="teleEnd">Encerrar atendimento</button></div>
+    ${callPanelHtml(live)}
+    <div class="transport"><span class="sp"></span><button class="btn danger solid" data-act="teleEnd">Encerrar atendimento</button></div>
     ${canClinical()?`<div class="field">${info('tl-notes','Anotações da sessão','Salvas automaticamente enquanto você escreve. Ao encerrar, podem ir para o prontuário como evolução em rascunho, para você revisar e finalizar.')}<textarea id="tl-notes" rows="7" placeholder="Anotações durante o atendimento">${esc(S.teleLive.notes||'')}</textarea></div><label class="check"><input type="checkbox" id="tl-link" ${S.teleLive.toRecord!==false?'checked':''}> Ao encerrar, enviar as anotações ao prontuário (evolução em rascunho)</label>${stimPanelHtml()}${recPanelHtml()}`:''}</section>`}
   $('#view').innerHTML=`<div class="view-in">
   <div class="page-head"><div><div class="eyebrow">Atendimento on-line</div><h1>Teleconsulta</h1><div class="sub">${up.length} agendadas · ${hist.length} realizadas</div></div><span class="sp"></span>${on('agenda')?'<button class="btn primary" data-act="teleNew">Agendar teleconsulta</button>':''}</div>
-  ${howto('Como funciona a teleconsulta',`<ul><li>Toda consulta com modalidade <b>Teleconsulta</b> recebe um link próprio, gerado aleatoriamente. Use <b>Copiar link</b> para enviar ao paciente.</li><li><b>Iniciar atendimento</b> abre a sala de vídeo numa nova aba e liga o cronômetro aqui, com a duração prevista.</li><li>Escreva as anotações durante a sessão. Ao <b>encerrar</b>, a consulta é marcada como realizada, entra no histórico e, se você quiser, as anotações viram uma evolução em rascunho no prontuário.</li><li><b>Estimulação bilateral</b>: abra a janela de estimulação, compartilhe essa janela na sala de vídeo e comande os sets por aqui. O paciente vê só o ponto. Ao encerrar, os sets viram um registro EMDR em rascunho.</li><li><b>Gravação e transcrição</b> só ficam disponíveis depois de marcar a autorização do paciente. Os arquivos são salvos no seu computador, nunca no sistema.</li></ul>`)}
+  ${howto('Como funciona a teleconsulta',`<ul><li>Toda teleconsulta tem um <b>link próprio</b> para o paciente. Use <b>Enviar convite</b> para mandar por WhatsApp ou e-mail. O paciente toca no link e entra direto na sala, no celular ou no computador, sem instalar nada.</li><li><b>Iniciar atendimento</b> abre a sala aqui mesmo: vídeo, cronômetro, estimulação bilateral e transcrição no mesmo lugar.</li><li>Escreva as anotações durante a sessão. Ao <b>encerrar</b>, a consulta é marcada como realizada, entra no histórico e, se você quiser, as anotações viram uma evolução em rascunho no prontuário.</li><li><b>Estimulação bilateral</b>: com o paciente na sala, toque em <b>Iniciar set</b>. O ponto aparece na tela dele, desenhado no próprio aparelho, sem travar. Ele tem um botão <b>Parar</b> sempre visível. Ao encerrar, os sets viram um registro EMDR em rascunho.</li><li><b>Gravação e transcrição</b> só ficam disponíveis depois de marcar a autorização do paciente. Os arquivos são salvos no seu computador, nunca no sistema.</li></ul>`)}
   ${livePanel}
   <section class="panel"><h2>Próximas teleconsultas</h2>${up.length?`<div class="alist">${up.map(teleRow).join('')}</div>`:'<p class="empty">Nenhuma teleconsulta agendada. Ao criar uma consulta, escolha a modalidade Teleconsulta.</p>'}</section>
   <section class="panel"><h2>Histórico de teleconsultas</h2>${hist.length?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Início</th><th>Paciente</th><th class="num">Duração</th><th>Anotações</th><th></th></tr></thead><tbody>${hist.map(h=>`<tr><td class="mono">${fmtDT(h.start)}</td><td>${esc(pname(getP(h.pid)))} ${h.demo?DEMOS:''}</td><td class="num mono">${h.durMin} min</td><td>${h.notes?(canClinical()?'Registradas':'Restritas à psicóloga'):'—'}${h.transcript&&canClinical()?' · transcrição':''}${h.recorded?' · gravada':''}</td><td class="acts">${REC.files[h.id]&&canClinical()?`<a class="btn sm" href="${REC.files[h.id].url}" download="${esc(REC.files[h.id].name)}">Gravação</a>`:''}${h.transcript&&canClinical()?`<button class="btn sm" data-act="hPdf" data-id="${h.id}">Transcrição PDF</button><button class="btn sm" data-act="hTxt" data-id="${h.id}">.txt</button>`:''}${canClinical()?`<button class="btn sm" data-act="openPatient" data-pid="${h.pid}">Prontuário</button>`:''}${h.demo&&canAdmin()?`<button class="btn sm ghost danger" data-act="demoDel" data-k="tele" data-id="${h.id}">Excluir exemplo</button>`:''}</td></tr>`).join('')}</tbody></table></div>`:'<p class="empty">Nenhuma teleconsulta realizada ainda.</p>'}</section>
-  <section class="panel"><h2>Privacidade</h2><p class="hint" style="margin:0">Cada consulta tem um link único e difícil de adivinhar. O vídeo acontece no serviço configurado em Personalizar (hoje: ${esc(hostOf(S.prefs.tele.base))}) e não é gravado pelo sistema. Para uso profissional, prefira um serviço contratado, com termos adequados à LGPD e ao sigilo profissional.</p></section>
+  <section class="panel"><h2>Privacidade</h2><p class="hint" style="margin:0">Cada teleconsulta tem um link único e difícil de adivinhar, que não traz nome nem dados do paciente. O vídeo e o áudio vão direto entre os dois aparelhos, criptografados; um serviço público (PeerJS) só ajuda os aparelhos a se encontrarem. Nada é gravado sem a autorização do paciente, e as gravações ficam apenas no seu aparelho. Para atender pacientes reais em escala, o ideal é um servidor de vídeo contratado, com termos adequados à LGPD.</p></section>
   </div>`;
-  if(live){bindRecPanel();bindStimPanel()}
+  if(live){bindRecPanel();bindStimPanel();rtcUi();if(canClinical()&&!RTC.role&&live.room)rtcHost(live.room)}
   if(live){const n=$('#tl-notes');if(n)n.oninput=()=>{S.teleLive.notes=n.value;clearTimeout(n._t);n._t=setTimeout(save,400)};const c=$('#tl-link');if(c)c.onchange=()=>{S.teleLive.toRecord=c.checked;save()};
     const tick=()=>{const el=$('#tl-clock');if(!el||!S.teleLive){clearInterval(teleTimer);return}const ms=Date.now()-S.teleLive.start;el.textContent=fmtDur(ms);const over=ms>live.dur*60000;const bar=$('#tl-bar');bar.style.width=Math.min(100,ms/(live.dur*600))+'%';bar.classList.toggle('over',over);if(over)$('#tl-hint').textContent=`Duração prevista de ${live.dur} min ultrapassada`;const rc=$('#rc-clock');if(rc&&REC.mr)rc.textContent=fmtDur(Date.now()-REC.start);pjCtrlUi()};
     tick();teleTimer=setInterval(tick,1000)}
 }
 ACT.teleNew=()=>openAppt(null,{mod:'online'});
 ACT.teleStart=d=>{if(!canClinical())return;if(S.teleLive){toast('Já existe um atendimento em andamento');return}const a=S.appts.find(x=>x.id===d.id);if(!a)return;
-  S.teleLive={apptId:a.id,start:Date.now(),notes:'',toRecord:true};if(a.status==='agendado')a.status='confirmado';audit('Teleconsulta iniciada',a.pid);save();if(current==='teleconsulta')renderTele();else go('teleconsulta')};
+  S.teleLive={apptId:a.id,start:Date.now(),notes:'',toRecord:true};if(a.status==='agendado')a.status='confirmado';teleLink(a);audit('Teleconsulta iniciada',a.pid);save();if(current==='teleconsulta')renderTele();else go('teleconsulta')};
 ACT.teleCancel=d=>{const a=S.appts.find(x=>x.id===d.id);if(!a)return;a.status='cancelado';audit('Teleconsulta cancelada',a.pid);save();renderTele();toast('Teleconsulta cancelada')};
-ACT.teleEnd=async()=>{const L=S.teleLive;if(!L)return;if(REC.mr&&REC.mr.state!=='inactive')await recStop();if(TR.on)trStop();const a=S.appts.find(x=>x.id===L.apptId);if(!a){S.teleLive=null;save();renderTele();return}
+ACT.teleEnd=async()=>{const L=S.teleLive;if(!L)return;if(REC.mr&&REC.mr.state!=='inactive')await recStop();if(TR.on)trStop();try{send({type:'bye'})}catch(e){}setTimeout(rtcStop,400);const a=S.appts.find(x=>x.id===L.apptId);if(!a){S.teleLive=null;save();renderTele();return}
   const end=Date.now();const durMin=Math.max(1,Math.round((end-L.start)/60000));const notes=(L.notes||'').trim();
   const tRec={id:uid(),apptId:a.id,pid:a.pid,start:L.start,end,durMin,notes,transcript:(L.transcript||'').trim(),consent:!!L.consent,recorded:!!L.recorded,sets:L.sets||[],demo:!!a.demo};S.tele.push(tRec);send({type:'bye'});
-  if(tRec.sets.length&&canClinical())S.emdr.push({id:uid(),pid:a.pid,date:dkey(new Date(L.start)),fase:'',alvo:'',cn:'',cp:'',voc:'',sudi:'',sudf:'',emo:'',sens:'',obs:'Sets de estimulação bilateral realizados em teleconsulta, com a tela compartilhada.',int:'',plano:'',sets:tRec.sets,status:'rascunho',author:me().name,crp:profile().crp,created:Date.now(),addenda:[],history:[{ts:Date.now(),who:me().name,action:'Rascunho criado a partir da teleconsulta'}],demo:!!a.demo});if(REC.last){REC.files[tRec.id]=REC.last;REC.last=null}a.status='realizado';
+  if(tRec.sets.length&&canClinical())S.emdr.push({id:uid(),pid:a.pid,date:dkey(new Date(L.start)),fase:'',alvo:'',cn:'',cp:'',voc:'',sudi:'',sudf:'',emo:'',sens:'',obs:'Sets de estimulação bilateral realizados em teleconsulta.',int:'',plano:'',sets:tRec.sets,status:'rascunho',author:me().name,crp:profile().crp,created:Date.now(),addenda:[],history:[{ts:Date.now(),who:me().name,action:'Rascunho criado a partir da teleconsulta'}],demo:!!a.demo});if(REC.last){REC.files[tRec.id]=REC.last;REC.last=null}a.status='realizado';
   let sent=false;if(notes&&L.toRecord!==false&&canClinical()){S.evol.push({id:uid(),pid:a.pid,date:dkey(new Date(L.start)),text:`Teleconsulta (${durMin} min)\n\n${notes}`,status:'rascunho',author:me().name,crp:profile().crp,created:Date.now(),addenda:[],history:[{ts:Date.now(),who:me().name,action:'Rascunho criado a partir da teleconsulta'}],demo:!!a.demo});sent=true}
   S.teleLive=null;audit(`Teleconsulta encerrada (${durMin} min)`,a.pid);syncCharges();save();clearInterval(teleTimer);renderTele();toast(sent?'Atendimento encerrado. Anotações enviadas ao prontuário como rascunho.':'Atendimento encerrado');if(tRec.transcript||REC.files[tRec.id])endFilesModal(tRec)};
 
@@ -2020,17 +2081,19 @@ const TR={rec:null,on:false,t:0};
 const mb=b=>`${(b/1048576).toFixed(1).replace('.',',')} MB`;
 function recPanelHtml(){const L=S.teleLive;const ok=!!L.consent;const recOn=!!(REC.mr&&REC.mr.state==='recording');const trOn=TR.on;
   return `<div class="recbox"><div class="panel-head"><h3>Gravação e transcrição</h3><span class="sp"></span>${recOn?`<span class="rec-dot">● Gravando <span class="mono" id="rc-clock">00:00</span></span>`:''}${trOn?'<span class="pill st-confirmado">Transcrevendo</span>':''}</div>
+  <div class="transport"><button class="btn sm" data-act="consentReq" ${RTC.conn&&RTC.conn.open?'':'disabled'}>Pedir autorização ao paciente pela sala</button>${L.consentBy?`<span class="pill ${ok?'finalizado':'rascunho'}">${ok?'Autorizado':'Não autorizado'} ${esc(L.consentBy)}</span>`:''}</div>
   <label class="check"><input type="checkbox" id="tl-consent" ${ok?'checked':''} ${recOn||trOn?'disabled':''}> O paciente autorizou a gravação e a transcrição desta sessão</label>
   <div class="row2"><div class="field">${info('tl-rmode','O que gravar','Somente áudio gera arquivos bem menores. Áudio e vídeo grava também a imagem da aba da sala de vídeo.')}<select id="tl-rmode" ${recOn?'disabled':''}><option value="audio">Somente áudio</option><option value="video" ${REC.mode==='video'?'selected':''}>Áudio e vídeo da sala</option></select></div></div>
   <div class="transport">${recOn?'<button class="btn danger solid" data-act="recStop">■ Parar gravação</button>':`<button class="btn" data-act="recStart" ${ok?'':'disabled'}>● Gravar sessão</button>`}${trOn?'<button class="btn" data-act="trStop">Parar transcrição</button>':`<button class="btn" data-act="trStart" ${ok?'':'disabled'}>Iniciar transcrição</button>`}${REC.last?`<a class="btn primary" href="${REC.last.url}" download="${esc(REC.last.name)}">Baixar gravação (${mb(REC.last.size)})</a>`:''}</div>
   <div class="field">${info('tl-trans','Transcrição','Texto reconhecido pelo microfone, com o tempo da sessão. Corrija o que precisar antes de exportar. A transcrição automática capta melhor quem fala perto do microfone; com fones de ouvido, evita-se eco.')}<textarea id="tl-trans" rows="6" placeholder="${ok?'Clique em Iniciar transcrição':'Marque a autorização do paciente para habilitar'}">${esc(L.transcript||'')}</textarea><span class="hint" id="tl-interim"></span></div>
   <div class="form-actions"><button class="btn sm" data-act="trTxt">Exportar transcrição (.txt)</button><button class="btn sm" data-act="trPdf">Transcrição em PDF</button></div>
-  <p class="hint" style="margin:0">Ao gravar, o navegador pede para escolher o que compartilhar: selecione a aba da sala de vídeo e marque <b>Compartilhar áudio da aba</b>, para gravar também a voz do paciente. A gravação fica só no seu computador. A transcrição automática usa o serviço de voz do navegador (Chrome ou Edge), que processa o áudio fora do sistema. Grave apenas com autorização registrada e guarde os arquivos em local protegido. No link do Claude, gravação e downloads ficam bloqueados; use o arquivo HTML.</p></div>`}
+  <p class="hint" style="margin:0">Com o paciente na sala, a gravação junta a sua voz e a dele (e o vídeo dele, se escolher Áudio e vídeo), sem precisar compartilhar tela. Na transcrição, as falas aparecem como Psicóloga e Paciente; a do paciente é feita no aparelho dele, depois da autorização. A gravação fica só no seu computador. A transcrição automática usa o serviço de voz do navegador (Chrome ou Edge), que processa o áudio fora do sistema. Grave apenas com autorização registrada e guarde os arquivos em local protegido. No link do Claude, gravação e downloads ficam bloqueados; use o arquivo HTML.</p></div>`}
 function bindRecPanel(){const c=$('#tl-consent');if(c)c.onchange=()=>{S.teleLive.consent=c.checked;const a=S.appts.find(x=>x.id===S.teleLive.apptId);audit(c.checked?'Autorização do paciente para gravação e transcrição registrada':'Autorização de gravação e transcrição desmarcada',a&&a.pid);save();renderTele()};
   const m=$('#tl-rmode');if(m)m.onchange=()=>{REC.mode=m.value};
   const t=$('#tl-trans');if(t)t.oninput=()=>{S.teleLive.transcript=t.value;clearTimeout(TR.t);TR.t=setTimeout(save,500)}}
 ACT.recStart=async()=>{const L=S.teleLive;if(!L||!L.consent){toast('Registre a autorização do paciente antes de gravar');return}
-  if(!navigator.mediaDevices||!navigator.mediaDevices.getDisplayMedia||!window.MediaRecorder){toast('Este navegador não permite gravar aqui. Use Chrome ou Edge no computador, abrindo o arquivo HTML.');return}
+  if(RTC.remote&&window.MediaRecorder){return recStartRtc()}
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getDisplayMedia||!window.MediaRecorder){toast('Este navegador não permite gravar aqui. Use Chrome ou Edge no computador.');return}
   let disp=null,mic=null;
   try{disp=await navigator.mediaDevices.getDisplayMedia({video:true,audio:true})}catch(e){toast('Gravação não iniciada. Escolha a aba da sala de vídeo e marque “Compartilhar áudio da aba”.');return}
   try{mic=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}})}catch(e){}
@@ -2054,13 +2117,13 @@ ACT.recStop=async()=>{await recStop();renderTele();toast('Gravação concluída.
 ACT.trStart=()=>{const L=S.teleLive;if(!L||!L.consent){toast('Registre a autorização do paciente antes de transcrever');return}
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){toast('A transcrição automática funciona no Chrome e no Edge.');return}
   const r=new SR();r.lang='pt-BR';r.continuous=true;r.interimResults=true;
-  r.onresult=e=>{let interim='';for(let i=e.resultIndex;i<e.results.length;i++){const res=e.results[i];if(res.isFinal)trAppend(res[0].transcript.trim());else interim+=res[0].transcript}const el=$('#tl-interim');if(el)el.textContent=interim};
+  r.onresult=e=>{let interim='';for(let i=e.resultIndex;i<e.results.length;i++){const res=e.results[i];if(res.isFinal)trAppend(res[0].transcript.trim(),'Psicóloga');else interim+=res[0].transcript}const el=$('#tl-interim');if(el)el.textContent=interim};
   r.onerror=e=>{if(['not-allowed','service-not-allowed','audio-capture'].includes(e.error)){TR.on=false;toast('Não foi possível usar o microfone para a transcrição.');if(current==='teleconsulta')renderTele()}};
   r.onend=()=>{if(TR.on){try{r.start()}catch(e){}}};
-  TR.rec=r;TR.on=true;try{r.start()}catch(e){}const a=S.appts.find(x=>x.id===L.apptId);audit('Transcrição de teleconsulta iniciada (autorização registrada)',a&&a.pid);renderTele()};
-function trAppend(t){if(!t||!S.teleLive)return;const line=`[${fmtDur(Date.now()-S.teleLive.start)}] ${t}`;const ta=$('#tl-trans');const cur=ta?ta.value:(S.teleLive.transcript||'');
+  TR.rec=r;TR.on=true;try{r.start()}catch(e){}if(RTC.conn&&RTC.conn.open)send({type:'tr-start'});const a=S.appts.find(x=>x.id===L.apptId);audit('Transcrição de teleconsulta iniciada (autorização registrada)',a&&a.pid);renderTele()};
+function trAppend(t,who){if(!t||!S.teleLive)return;const line=`[${fmtDur(Date.now()-S.teleLive.start)}] ${who?who+': ':''}${t}`;const ta=$('#tl-trans');const cur=ta?ta.value:(S.teleLive.transcript||'');
   S.teleLive.transcript=(cur.trim()?cur.replace(/\s+$/,'')+'\n':'')+line;if(ta){ta.value=S.teleLive.transcript;ta.scrollTop=ta.scrollHeight}clearTimeout(TR.t);TR.t=setTimeout(save,500)}
-function trStop(){TR.on=false;try{TR.rec&&TR.rec.stop()}catch(e){}TR.rec=null}
+function trStop(){try{if(RTC.conn&&RTC.conn.open)send({type:'tr-stop'})}catch(e){}TR.on=false;try{TR.rec&&TR.rec.stop()}catch(e){}TR.rec=null}
 ACT.trStop=()=>{trStop();renderTele()};
 function downloadText(name,text){try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+text],{type:'text/plain;charset=utf-8'}));a.download=name;document.body.appendChild(a);a.click();a.remove();toast(`Arquivo gerado: ${name}`)}catch(e){toast('O navegador bloqueou o download. Use o arquivo HTML salvo no computador.')}}
 function transcriptTxt(o){const p=getP(o.pid);const pr=profile();return `TRANSCRIÇÃO DE TELECONSULTA${o.demo?' (DADOS DE DEMONSTRAÇÃO)':''}\nPaciente: ${pname(p)}\nInício: ${fmtDT(o.start)}\nDuração: ${o.durMin?o.durMin+' min':fmtDur(Date.now()-o.start)}\nProfissional: ${pr.name} · ${pr.crp}\nAutorização do paciente para gravação e transcrição: ${o.consent?'registrada':'não registrada'}\n\n--- Transcrição ---\n${o.transcript||'(vazia)'}\n\n--- Anotações da profissional ---\n${o.notes||'(sem anotações)'}\n\nDocumento sigiloso. Uso restrito à finalidade clínica.\n`}
@@ -2079,13 +2142,16 @@ function endFilesModal(t){const f=REC.files[t.id];
    ========================================================= */
 const PJ_KEY='emdrpro.msg';const pjSeen=new Set();let pjChan=null;
 try{pjChan=new BroadcastChannel('emdrpro-estimulo')}catch(e){pjChan=null}
-function send(m){m.id=m.id||uid();m.ts=Date.now();try{pjChan&&pjChan.postMessage(m)}catch(e){}try{localStorage.setItem(PJ_KEY,JSON.stringify(m))}catch(e){}}
+function send(m){m.id=m.id||uid();m.ts=Date.now();try{if(RTC.conn&&RTC.conn.open)RTC.conn.send(m)}catch(e){}if(PATIENT)return;try{pjChan&&pjChan.postMessage(m)}catch(e){}try{localStorage.setItem(PJ_KEY,JSON.stringify(m))}catch(e){}}
 function onPjMsg(m){if(!m||!m.id||pjSeen.has(m.id))return;pjSeen.add(m.id);if(pjSeen.size>500)pjSeen.clear();
   if(current==='estimulo'){
     if(m.type==='start')pjStart(m.cfg);else if(m.type==='pause'){if(PJ.running){PJ.paused=true;pjUi();pjStatus()}}else if(m.type==='resume'){if(PJ.running){PJ.paused=false;pjUi();pjStatus()}}
     else if(m.type==='stop'){if(PJ.running)pjFinish('interrompido')}else if(m.type==='cfg'){PJ.cfg={...PJ.cfg,...m.cfg}}else if(m.type==='ping')pjStatus();
-    else if(m.type==='bye'){if(PJ.running)pjFinish('interrompido');PJ.bye=true;pjUi()}
+    else if(m.type==='bye'){if(PJ.running)pjFinish('interrompido');PJ.bye=true;pjUi();if(PATIENT)ptBye()}
+    if(PATIENT)ptMsg(m);
   }else{
+    if(m.type==='consent'&&S.teleLive){S.teleLive.consent=!!m.value;S.teleLive.consentBy='paciente, pelo link';const a=S.appts.find(x=>x.id===S.teleLive.apptId);audit(m.value?'Paciente autorizou gravação e transcrição pelo link da sala':'Paciente não autorizou gravação e transcrição',a&&a.pid);save();toast(m.value?'O paciente autorizou a gravação e a transcrição':'O paciente não autorizou a gravação e a transcrição');if(current==='teleconsulta')renderTele()}
+    else if(m.type==='tr'&&S.teleLive&&m.text){trAppend(String(m.text).slice(0,2000),'Paciente')}
     if(m.type==='status'){PJC.st=m;PJC.ts=Date.now();pjCtrlUi()}
     else if(m.type==='hello'){PJC.ts=Date.now();send({type:'cfg',cfg:S.cfg});pjCtrlUi()}
     else if(m.type==='set'&&S.teleLive){S.teleLive.sets=S.teleLive.sets||[];S.teleLive.sets.push(m.set);save();pjSetsUi();toast(`Set ${m.set.reason}: ${m.set.passes} passagens`)}
@@ -2105,14 +2171,14 @@ function renderProj(){projTeardown();const el=document.createElement('div');el.i
 function projTeardown(){if(!PJ.el)return;if(PJ.running)pjFinish('interrompido');cancelAnimationFrame(PJ.raf);clearInterval(PJ.stT);PJ.el.remove();PJ.el=null;PJ.cv=null;document.title='EMDR PRO';
   if(PJ.keyH)document.removeEventListener('keydown',PJ.keyH);if(PJ.rsH)window.removeEventListener('resize',PJ.rsH);if(document.fullscreenElement)document.exitFullscreen().catch(()=>{})}
 function pjFrame(ts){const dt=PJ.last?Math.min(ts-PJ.last,100):0;PJ.last=ts;const c=PJ.cfg;
-  if(PJ.running&&!PJ.paused){const prev=PJ.phase;PJ.phase+=dt/(60000/c.ppm);PJ.setMs+=dt;const n=Math.floor(PJ.phase)-Math.floor(prev);PJ.passes+=n;
+  if(PJ.running&&!PJ.paused){const prev=PJ.phase;PJ.phase+=dt/(60000/c.ppm);PJ.setMs+=dt;const n=Math.floor(PJ.phase)-Math.floor(prev);for(let i=0;i<n;i++){PJ.passes++;if(PATIENT)ptBeep(PJ.passes%2?1:-1)}
     if(c.mode==='tempo'&&PJ.setMs>=c.secs*1000)PJ.ending=true;if((c.mode==='passagens'&&PJ.passes>=c.limit)||(PJ.ending&&n>0)){PJ.phase=PJ.passes;pjFinish('concluído')}}
   const cv=PJ.cv;if(!cv)return;if(!PJ.g){PJ.raf=requestAnimationFrame(pjFrame);return}const g=PJ.g,W=cv.width,H=cv.height,d=PJ.dpr;g.fillStyle=c.bg;g.fillRect(0,0,W,H);
   if(PJ.running||PJ.passes){const p=PJ.phase;const pos=c.motion==='linear'?(f=>f<1?-1+2*f:3-2*f)(((p%2)+2)%2):-Math.cos(Math.PI*p);const r=c.size/2*d;const span=Math.max(0,(W/2-r-14*d))*(c.amp/100);
     g.save();g.shadowColor=c.dot;g.shadowBlur=r*1.2;g.fillStyle=c.dot;g.beginPath();g.arc(W/2+pos*span,H/2,r,0,Math.PI*2);g.fill();g.restore()}
   if(PJ.el)PJ.raf=requestAnimationFrame(pjFrame)}
-function pjStart(cfg){if(cfg)PJ.cfg={...PJ.cfg,...cfg};PJ.running=true;PJ.paused=false;PJ.phase=0;PJ.passes=0;PJ.setMs=0;PJ.ending=false;PJ.bye=false;pjUi();pjStatus()}
-function pjFinish(reason){const set={ts:Date.now(),durMs:Math.round(PJ.setMs),passes:PJ.passes,ppm:PJ.cfg.ppm,motion:PJ.cfg.motion,reason,remote:true};PJ.running=false;PJ.paused=false;if(set.passes||set.durMs>500)send({type:'set',set});pjUi();pjStatus()}
+function pjStart(cfg){if(cfg)PJ.cfg={...PJ.cfg,...cfg};if(PATIENT)document.body.classList.add('pj-running');PJ.running=true;PJ.paused=false;PJ.phase=0;PJ.passes=0;PJ.setMs=0;PJ.ending=false;PJ.bye=false;pjUi();pjStatus()}
+function pjFinish(reason){if(PATIENT)document.body.classList.remove('pj-running');const set={ts:Date.now(),durMs:Math.round(PJ.setMs),passes:PJ.passes,ppm:PJ.cfg.ppm,motion:PJ.cfg.motion,reason,remote:true};PJ.running=false;PJ.paused=false;if(set.passes||set.durMs>500)send({type:'set',set});pjUi();pjStatus()}
 function pjStatus(){if(current!=='estimulo')return;send({type:'status',running:PJ.running,paused:PJ.paused,passes:PJ.passes,setMs:Math.round(PJ.setMs)})}
 function pjUi(){const w=$('#pj-wait');if(w){const bg=(PJ.cfg&&PJ.cfg.bg||'#000').replace('#','');const lum=bg.length>=6?(parseInt(bg.slice(0,2),16)*299+parseInt(bg.slice(2,4),16)*587+parseInt(bg.slice(4,6),16)*114)/1000:0;
     w.style.color=lum>140?'rgba(0,0,0,.45)':'rgba(255,255,255,.55)';w.hidden=PJ.running;w.textContent=PJ.bye?'Sessão encerrada':PJ.passes?'Pausa entre sets':'Aguarde o início da estimulação'}
@@ -2124,23 +2190,22 @@ ACT.pjClose=()=>{if(window.opener){try{window.close()}catch(e){}}go('teleconsult
 
 /* --- comando na teleconsulta --- */
 const PJC={st:null,ts:0,win:null};
-const pjConnected=()=>Date.now()-PJC.ts<2000;
+const pjConnected=()=>Date.now()-PJC.ts<2000||!!(RTC.conn&&RTC.conn.open);
 function stimPanelHtml(){const c=S.cfg;const sets=(S.teleLive&&S.teleLive.sets)||[];
   return `<div class="recbox" id="stim-box"><div class="panel-head"><h3>Estimulação bilateral para o paciente</h3><span class="sp"></span><span class="pill off" id="pj-status">Janela fechada</span></div>
-  <ol class="steps"><li>Clique em <b>Abrir janela de estimulação</b>.</li><li>Na sala de vídeo, use <b>Compartilhar tela</b> e escolha a janela <b>Estimulação · EMDR PRO</b>.</li><li>Comande os sets por aqui. O paciente vê só o ponto, sem nenhum dado do sistema.</li></ol>
-  <div class="transport"><button class="btn" data-act="pjOpen">Abrir janela de estimulação</button><button class="btn ghost" data-act="pjHere">Usar nesta aba</button></div>
+  <p class="hint" style="margin:0">Com o paciente na sala, toque em <b>Iniciar set</b>: o ponto aparece em tela cheia no aparelho dele, com um botão <b>Parar</b> sempre visível. Ele continua vendo você num quadro pequeno. Se ele usar fones, o som bilateral também toca do lado dele.</p>
   <div class="row2">${rangeH('pj-ppm','Velocidade',20,150,1,c.ppm,'passagens/min','No compartilhamento de tela, a chamada transmite menos quadros por segundo. Velocidades mais lentas chegam mais suaves para o paciente.')}
    <div class="field">${info('pj-limit','Passagens por set','O set termina sozinho ao atingir este número. Interromper funciona a qualquer momento.')}<input id="pj-limit" type="number" min="2" max="400" step="2" value="${c.limit}"></div></div>
   <div class="transport"><button class="btn primary" data-act="pjStart" id="pj-start" disabled>Iniciar set</button><button class="btn" data-act="pjPause" id="pj-pause" disabled>Pausar</button><button class="btn danger" data-act="pjStop" id="pj-stop" disabled>Interromper</button><span class="sp"></span><span class="mono" id="pj-count">0 passagens · 00:00</span></div>
   <div id="pj-sets">${pjSetsHtml(sets)}</div>
-  <p class="hint" style="margin:0">Cor, tamanho, fundo e movimento seguem as configurações da tela Estimulação EMDR. O áudio bilateral não chega ao paciente com separação esquerda e direita pela chamada. Se a nova janela não abrir, permita pop-ups no navegador ou use “Usar nesta aba” e compartilhe a aba inteira.</p></div>`}
+  <p class="hint" style="margin:0">Cor, tamanho, fundo, movimento e som seguem as configurações da tela Estimulação EMDR.</p></div>`}
 const pjSetsHtml=sets=>sets.length?`<div class="setlog">${sets.map((x,i)=>`<div><span class="mono muted">${i+1}</span><span>${x.passes} passagens · ${fmtDur(x.durMs)} · ${x.ppm}/min</span><span class="pill ${x.reason==='concluído'?'finalizado':'rascunho'}">${x.reason}</span></div>`).join('')}</div>`:'<p class="hint" style="margin:0">Os sets realizados aparecem aqui e vão para o prontuário ao encerrar o atendimento.</p>';
 function pjSetsUi(){const el=$('#pj-sets');if(el)el.innerHTML=pjSetsHtml((S.teleLive&&S.teleLive.sets)||[])}
 function bindStimPanel(){const r=$('#pj-ppm');if(r)r.oninput=()=>{S.cfg.ppm=+r.value;$('#pj-ppm-v').textContent=`${r.value} passagens/min`;send({type:'cfg',cfg:{ppm:S.cfg.ppm}});clearTimeout(r._t);r._t=setTimeout(save,400)};
   const l=$('#pj-limit');if(l)l.onchange=()=>{S.cfg.limit=Math.max(2,+l.value||30);S.cfg.mode='passagens';send({type:'cfg',cfg:{limit:S.cfg.limit,mode:'passagens'}});save()};
   pjCtrlUi();send({type:'ping'})}
 function pjCtrlUi(){const pill=$('#pj-status');if(!pill)return;const con=pjConnected();const st=PJC.st||{};
-  pill.className='pill '+(con?'on':'off');pill.textContent=con?(st.running?(st.paused?'Pausado':'Estimulação em curso'):'Janela conectada'):'Janela fechada';
+  pill.className='pill '+(con?'on':'off');const viaRoom=!!(RTC.conn&&RTC.conn.open);pill.textContent=con?(st.running?(st.paused?'Pausado':'Estimulação em curso'):(viaRoom?'Paciente conectado':'Janela conectada')):(viaRoom?'Paciente conectado':'Paciente fora da sala');
   const run=con&&st.running;$('#pj-start').disabled=!con||run;$('#pj-pause').disabled=!run;$('#pj-stop').disabled=!run;$('#pj-pause').textContent=st.paused?'Retomar':'Pausar';
   $('#pj-count').textContent=`${con?st.passes||0:0} passagens · ${fmtDur(con?st.setMs||0:0)}`}
 ACT.pjOpen=()=>{if(isNative()){toast('A estimulação abre em tela cheia. Use os controles na própria tela e o botão Fechar para voltar.');go('estimulo');return}const url=location.href.split('#')[0]+'#estimulo';let w=null;try{w=window.open(url,'emdrpro-estimulo','popup=yes,width=1280,height=760')}catch(e){}
@@ -2150,6 +2215,100 @@ ACT.pjHere=()=>go('estimulo');
 ACT.pjStart=()=>{if(!pjConnected()){toast('Abra a janela de estimulação primeiro');return}send({type:'start',cfg:S.cfg})};
 ACT.pjPause=()=>send({type:(PJC.st&&PJC.st.paused)?'resume':'pause'});
 ACT.pjStop=()=>send({type:'stop'});
+
+/* =========================================================
+   SALA DE TELECONSULTA PRÓPRIA (vídeo P2P + dados)
+   ========================================================= */
+const SALA=(()=>{try{return(new URLSearchParams(location.search).get('sala')||'').replace(/[^a-z0-9]/gi,'').slice(0,32)}catch(e){return''}})();
+const PATIENT=!!SALA;
+LIBS.peer=[['lib/peerjs.min.js','https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js'],()=>window.Peer];
+const RTC={peer:null,conn:null,call:null,local:null,remote:null,role:null,room:null,state:'off',tries:0,dialT:0,mic:true,cam:true};
+const hostId=room=>`kxemdr-${room}-psi`;
+function silentStream(){try{const ac=new(window.AudioContext||window.webkitAudioContext)();const d=ac.createMediaStreamDestination();return d.stream}catch(e){return new MediaStream()}}
+async function rtcMedia(){if(RTC.local)return RTC.local;const md=navigator.mediaDevices;if(!md||!md.getUserMedia)return null;
+  try{RTC.local=await md.getUserMedia({video:{facingMode:'user',width:{ideal:640},height:{ideal:480}},audio:{echoCancellation:true,noiseSuppression:true}})}
+  catch(e){try{RTC.local=await md.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}})}catch(e2){RTC.local=null}}return RTC.local}
+function rtcState(st,info){RTC.state=st;RTC.info=info||'';rtcUi()}
+function rtcStop(){clearTimeout(RTC.dialT);const role=RTC.role;RTC.role=null;try{RTC.call&&RTC.call.close()}catch(e){}try{RTC.conn&&RTC.conn.close()}catch(e){}try{RTC.peer&&RTC.peer.destroy()}catch(e){}
+  if(RTC.local)RTC.local.getTracks().forEach(t=>t.stop());Object.assign(RTC,{peer:null,conn:null,call:null,local:null,remote:null,state:'off',tries:0});if(role)rtcUi()}
+async function rtcHost(room,force){if(!room)return;if(!force&&(RTC.pendingHost===room||(RTC.role==='psi'&&RTC.room===room&&RTC.peer&&!RTC.peer.destroyed)))return;RTC.pendingHost=room;try{await loadLib('peer')}catch(e){RTC.pendingHost=null;rtcState('err','Não foi possível carregar a sala de vídeo. Verifique a internet.');return}
+  rtcStop();RTC.role='psi';RTC.room=room;rtcState('start');await rtcMedia();if(RTC.role!=='psi'){RTC.pendingHost=null;return}
+  const pr=new Peer(hostId(room),{debug:0});RTC.peer=pr;RTC.pendingHost=null;
+  pr.on('open',()=>{RTC.tries=0;rtcState(RTC.conn&&RTC.conn.open?'on':'wait')});
+  pr.on('call',c=>{try{RTC.call&&RTC.call.close()}catch(e){}RTC.call=c;c.answer(RTC.local||silentStream());c.on('stream',st=>{RTC.remote=st;rtcUi()});c.on('close',()=>{if(RTC.call===c){RTC.remote=null;rtcUi()}})});
+  pr.on('connection',c=>{try{RTC.conn&&RTC.conn!==c&&RTC.conn.close()}catch(e){}RTC.conn=c;
+    c.on('open',()=>{rtcState('on');send({type:'cfg',cfg:S.cfg});const a=S.teleLive&&S.appts.find(x=>x.id===S.teleLive.apptId);audit('Paciente entrou na sala de teleconsulta',a&&a.pid);toast('O paciente entrou na sala')});
+    c.on('data',m=>onPjMsg(m));c.on('close',()=>{if(RTC.conn===c){RTC.conn=null;PJC.ts=0;rtcState('wait')}})});
+  pr.on('disconnected',()=>{if(RTC.role==='psi'){try{pr.reconnect()}catch(e){}}});
+  pr.on('error',e=>{if(e&&e.type==='unavailable-id'&&RTC.tries++<10){rtcState('start','Reabrindo a sala…');setTimeout(()=>{if(RTC.role==='psi'&&RTC.room===room)rtcHost(room,true)},3000)}else if(e&&e.type!=='peer-unavailable')rtcState('err','A sala caiu ('+(e.type||'erro')+'). Toque em Reabrir a sala.')})}
+async function rtcJoin(room){try{await loadLib('peer')}catch(e){ptState('err','Não foi possível abrir a sala. Verifique a internet e tente de novo.');return}
+  RTC.role='pac';RTC.room=room;await rtcMedia();ptState('wait');
+  const pr=new Peer(undefined,{debug:0});RTC.peer=pr;pr.on('open',()=>rtcDial());
+  pr.on('disconnected',()=>{if(RTC.role==='pac'){try{pr.reconnect()}catch(e){}}});
+  pr.on('error',e=>{if(e&&e.type==='peer-unavailable'){ptState('wait');clearTimeout(RTC.dialT);RTC.dialT=setTimeout(rtcDial,4000)}else if(e&&e.type!=='unavailable-id')ptState('err','A conexão caiu. Toque em Entrar novamente.')})}
+function rtcDial(){if(RTC.role!=='pac'||!RTC.peer||RTC.peer.destroyed)return;if(RTC.conn&&RTC.conn.open)return;const id=hostId(RTC.room);
+  const c=RTC.peer.connect(id,{reliable:true});c.on('open',()=>{RTC.conn=c;ptState('on');send({type:'hello'});
+    const call=RTC.peer.call(id,RTC.local||silentStream());RTC.call=call;call.on('stream',st=>{RTC.remote=st;ptVideos()});call.on('close',()=>{RTC.remote=null;ptVideos()})});
+  c.on('data',m=>onPjMsg(m));c.on('close',()=>{if(RTC.conn===c){RTC.conn=null;RTC.remote=null;if(RTC.role==='pac'){ptState('wait');clearTimeout(RTC.dialT);RTC.dialT=setTimeout(rtcDial,3000)}}})}
+function rtcToggle(kind){if(!RTC.local)return;const tr=kind==='mic'?RTC.local.getAudioTracks():RTC.local.getVideoTracks();RTC[kind]=!RTC[kind];tr.forEach(t=>t.enabled=RTC[kind]);PATIENT?ptBar():rtcUi()}
+ACT.rtcMic=()=>rtcToggle('mic');ACT.rtcCam=()=>rtcToggle('cam');
+ACT.rtcReopen=()=>{if(S.teleLive){const a=S.appts.find(x=>x.id===S.teleLive.apptId);if(a){teleLink(a);RTC.pendingHost=null;rtcHost(a.room,true)}}};
+ACT.consentReq=()=>{if(!(RTC.conn&&RTC.conn.open)){toast('O paciente ainda não está na sala');return}send({type:'consent-req'});toast('Pedido de autorização enviado ao paciente')};
+function callPanelHtml(a){const st=RTC.state,con=!!(RTC.conn&&RTC.conn.open);
+  const pill=con?'<span class="pill rtc-on">Paciente na sala</span>':st==='wait'?'<span class="pill rtc-wait">Aguardando o paciente</span>':st==='err'?'<span class="pill st-cancelado">Sala fora do ar</span>':'<span class="pill rtc-off">Abrindo a sala…</span>';
+  return `<div class="call-box"><div class="panel-head"><h3>Sala de vídeo</h3><span class="sp"></span><span id="rtc-pill">${pill}</span></div>
+  <div class="call-stage"><video id="rtc-remote" autoplay playsinline></video><video id="rtc-local" autoplay playsinline muted></video><div class="call-wait" id="rtc-wait">${con?'':'Envie o convite. Quando o paciente tocar no link, ele aparece aqui.'}</div></div>
+  <div class="transport"><button class="btn sm" data-act="rtcMic" id="rtc-mic">${RTC.mic?'Desligar microfone':'Ligar microfone'}</button><button class="btn sm" data-act="rtcCam" id="rtc-cam">${RTC.cam?'Desligar câmera':'Ligar câmera'}</button><button class="btn sm ghost" data-act="rtcReopen">Reabrir a sala</button></div>
+  ${RTC.state==='err'?`<p class="form-err">${esc(RTC.info)}</p>`:''}${inviteHtml(a)}</div>`}
+function rtcUi(){if(PATIENT){ptVideos();return}const r=$('#rtc-remote'),l=$('#rtc-local');if(r&&r.srcObject!==RTC.remote)r.srcObject=RTC.remote||null;if(l&&l.srcObject!==RTC.local)l.srcObject=RTC.local||null;
+  const w=$('#rtc-wait');const con=!!(RTC.conn&&RTC.conn.open);if(w)w.textContent=con&&RTC.remote?'':con?'Conectando o vídeo…':RTC.state==='start'?'Abrindo a sala…':'Envie o convite. Quando o paciente tocar no link, ele aparece aqui.';
+  const p=$('#rtc-pill');if(p)p.innerHTML=con?'<span class="pill rtc-on">Paciente na sala</span>':RTC.state==='wait'?'<span class="pill rtc-wait">Aguardando o paciente</span>':RTC.state==='err'?'<span class="pill st-cancelado">Sala fora do ar</span>':'<span class="pill rtc-off">Abrindo a sala…</span>';
+  const cr=$('[data-act=consentReq]');if(cr)cr.disabled=!con;const m=$('#rtc-mic'),c=$('#rtc-cam');if(m)m.textContent=RTC.mic?'Desligar microfone':'Ligar microfone';if(c)c.textContent=RTC.cam?'Desligar câmera':'Ligar câmera';pjCtrlUi&&$('#pj-status')&&pjCtrlUi()}
+async function recStartRtc(){const L=S.teleLive;const ac=new(window.AudioContext||window.webkitAudioContext)();const dest=ac.createMediaStreamDestination();
+  if(RTC.local&&RTC.local.getAudioTracks().length)ac.createMediaStreamSource(new MediaStream(RTC.local.getAudioTracks())).connect(dest);
+  if(RTC.remote&&RTC.remote.getAudioTracks().length)ac.createMediaStreamSource(new MediaStream(RTC.remote.getAudioTracks())).connect(dest);
+  const video=REC.mode==='video'&&RTC.remote&&RTC.remote.getVideoTracks().length;const tracks=[...dest.stream.getAudioTracks(),...(video?RTC.remote.getVideoTracks():[])];
+  const types=video?['video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm','video/mp4']:['audio/webm;codecs=opus','audio/webm','audio/mp4'];
+  const mime=types.find(t=>{try{return MediaRecorder.isTypeSupported(t)}catch(e){return false}})||'';let mr;
+  try{mr=new MediaRecorder(new MediaStream(tracks),mime?{mimeType:mime}:undefined)}catch(e){ac.close();toast('Não foi possível iniciar a gravação neste aparelho.');return}
+  const a=S.appts.find(x=>x.id===L.apptId);const p=getP(a&&a.pid);const ext=mime.includes('mp4')?(video?'mp4':'m4a'):'webm';const n=new Date();
+  REC.name=`teleconsulta_${slug(pname(p))}_${dkey(n)}_${pad(n.getHours())}h${pad(n.getMinutes())}.${ext}`;REC.chunks=[];REC.streams=[];REC.ctx=ac;REC.mr=mr;REC.start=Date.now();REC.last=null;
+  REC.stopP=new Promise(res=>{mr.onstop=()=>{const blob=new Blob(REC.chunks,{type:mr.mimeType||mime||(video?'video/webm':'audio/webm')});REC.last={url:URL.createObjectURL(blob),size:blob.size,name:REC.name};res()}});
+  mr.ondataavailable=e=>{if(e.data&&e.data.size)REC.chunks.push(e.data)};mr.start(1000);L.recorded=true;audit('Gravação de teleconsulta iniciada (autorização registrada)',a&&a.pid);save();renderTele();toast('Gravando a sessão (sua voz e a do paciente)')}
+
+/* --- tela do paciente (link da teleconsulta) --- */
+let ptJoined=false,ptAC=null,ptTR=null;
+function ptBeep(side){const c=PJ.cfg;if(!c||!c.audio||!ptAC||c.vol<=0)return;try{const t=ptAC.currentTime,o=ptAC.createOscillator(),g=ptAC.createGain();o.frequency.value=c.tone||440;const v=Math.max(.0002,c.vol/100*.5);
+  g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+.17);o.connect(g);if(ptAC.createStereoPanner){const pn=ptAC.createStereoPanner();pn.pan.value=side;g.connect(pn);pn.connect(ptAC.destination)}else g.connect(ptAC.destination);o.start(t);o.stop(t+.2)}catch(e){}}
+function renderPatient(){document.body.classList.add('pt-mode');document.title='Teleconsulta · Karina Ximenes';const logo=($('.brand-logo')||{}).src||'';
+  let el=$('#pt-room');if(!el){el=document.createElement('div');el.id='pt-room';el.className='pt-room';document.body.appendChild(el)}
+  el.innerHTML=`<div class="pt-head">${logo?`<img src="${logo}" alt="">`:''}<div><b>${esc(profile().name)}</b><small>Teleconsulta</small></div></div>
+  <div class="pt-stage"><video id="pt-remote" autoplay playsinline></video><video id="pt-local" autoplay playsinline muted hidden></video><div class="pt-msg" id="pt-msg"></div></div>
+  <div class="pt-bar" id="pt-bar"></div><button class="pt-stop" data-act="ptStop">PARAR</button>`;
+  current='estimulo';renderProj();PJ.cfg={...DEF_CFG};ptState(ptJoined?RTC.state:'idle')}
+function ptState(st,info){RTC.state=st;const m=$('#pt-msg');if(!m)return;
+  const html={idle:`<h1>Sua teleconsulta</h1><p>Toque em <b>Entrar na consulta</b>. O navegador vai pedir para usar a câmera e o microfone: toque em <b>Permitir</b>.</p><button class="btn primary huge" style="max-width:320px" data-act="ptJoin">Entrar na consulta</button><p style="font-size:.85rem">Use fones de ouvido, se tiver. Fique num lugar tranquilo e reservado.</p>`,
+    wait:`<h1>Você está na sala</h1><p>Aguardando a psicóloga iniciar o atendimento. Mantenha esta tela aberta.</p>`,
+    on:'',err:`<h1>Não conectou</h1><p>${esc(info||'Verifique a internet.')}</p><button class="btn primary huge" style="max-width:320px" data-act="ptJoin">Tentar de novo</button>`,
+    bye:`<h1>Atendimento encerrado</h1><p>Obrigada pela sessão. Você já pode fechar esta página.</p>`}[st];
+  m.innerHTML=html||'';m.hidden=st==='on'&&!!RTC.remote;ptVideos();ptBar()}
+function ptVideos(){const r=$('#pt-remote'),l=$('#pt-local');if(r&&r.srcObject!==RTC.remote)r.srcObject=RTC.remote||null;if(l){if(l.srcObject!==RTC.local)l.srcObject=RTC.local||null;l.hidden=!RTC.local||!RTC.local.getVideoTracks().length}
+  const m=$('#pt-msg');if(m&&RTC.state==='on'){m.hidden=!!RTC.remote;if(!RTC.remote)m.innerHTML='<h1>Conectando o vídeo…</h1>'}}
+function ptBar(){const b=$('#pt-bar');if(!b)return;if(!ptJoined||RTC.state==='bye'){b.innerHTML='';return}
+  b.innerHTML=`<button class="btn dark" data-act="rtcMic">${RTC.mic?'Desligar microfone':'Ligar microfone'}</button><button class="btn dark" data-act="rtcCam">${RTC.cam?'Desligar câmera':'Ligar câmera'}</button><button class="btn danger solid" data-act="ptLeave">Sair</button>`}
+ACT.ptJoin=async()=>{ptJoined=true;try{ptAC=ptAC||new(window.AudioContext||window.webkitAudioContext)();ptAC.resume&&ptAC.resume()}catch(e){}
+  try{if(navigator.wakeLock)await navigator.wakeLock.request('screen')}catch(e){}rtcStop();RTC.role=null;ptState('wait');rtcJoin(SALA)};
+ACT.ptLeave=()=>{if(PJ.running)pjFinish('interrompido pelo paciente');ptTrStop();rtcStop();ptJoined=false;ptState('bye')};
+ACT.ptStop=()=>{if(PJ.running){pjFinish('interrompido pelo paciente');toast('Estimulação interrompida')}};
+function ptBye(){ptTrStop();setTimeout(()=>{rtcStop();ptJoined=false;ptState('bye')},300)}
+function ptTrStop(){if(ptTR){ptTR.on=false;try{ptTR.r.stop()}catch(e){}ptTR=null}}
+function ptMsg(m){
+  if(m.type==='consent-req'){modal('Autorização',`<p style="margin-top:0">A psicóloga pede autorização para <b>gravar e transcrever</b> esta sessão, para o seu prontuário. A gravação fica guardada apenas com ela, em sigilo.</p><p class="hint">Você pode recusar sem nenhum prejuízo ao atendimento.</p><div class="form-actions"><button class="btn ghost" data-act="ptConsent" data-v="0">Não autorizo</button><span class="sp"></span><button class="btn primary" data-act="ptConsent" data-v="1">Autorizo</button></div>`)}
+  else if(m.type==='tr-start'){if(!RTC.consent)return;const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR||ptTR)return;const r=new SR();r.lang='pt-BR';r.continuous=true;r.interimResults=false;ptTR={r,on:true};
+    r.onresult=e=>{for(let i=e.resultIndex;i<e.results.length;i++){const res=e.results[i];if(res.isFinal&&res[0].transcript.trim())send({type:'tr',text:res[0].transcript.trim()})}};
+    r.onend=()=>{if(ptTR&&ptTR.on){try{r.start()}catch(e){}}};try{r.start()}catch(e){}}
+  else if(m.type==='tr-stop')ptTrStop()}
+ACT.ptConsent=d=>{RTC.consent=d.v==='1';send({type:'consent',value:RTC.consent});closeModal();toast(RTC.consent?'Obrigado. Autorização enviada.':'Tudo bem. A sessão segue sem gravação.')};
 
 /* =========================================================
    APP NATIVO (iOS e Android, via Capacitor)
@@ -2196,7 +2355,7 @@ function instSheet(){if(isStandalone())return;instClose();const logo=($('.brand-
 ACT.install=()=>instSheet();
 ACT.instLater=()=>instClose(true);
 ACT.instNow=async()=>{if(!installEvt){instSheet();return}installEvt.prompt();try{const r=await installEvt.userChoice;if(r&&r.outcome==='accepted')toast('Instalando o EMDR PRO na tela inicial')}catch(e){}installEvt=null;instClose(true);installUi()};
-function instAuto(){if(isStandalone())return;const forced=/[?&#]instalar\b/.test(location.href);let last=0;try{last=+localStorage.getItem('emdrpro.inst')||0}catch(e){}
+function instAuto(){if(isStandalone()||PATIENT)return;const forced=/[?&#]instalar\b/.test(location.href);let last=0;try{last=+localStorage.getItem('emdrpro.inst')||0}catch(e){}
   if(!forced&&Date.now()-last<3*86400000)return;if(!(isIOS()||isAndroid()||installEvt))return;setTimeout(()=>{if(!$('#modal').hidden||$('#tour:not([hidden])'))return;instSheet()},forced?300:1500)}
 window.addEventListener('beforeinstallprompt',()=>{const o=$('#inst');if(o)instSheet()});
 window.addEventListener('load',()=>setTimeout(instAuto,400));

@@ -4,8 +4,10 @@
 <dict>
     <key>CAPACITOR_DEBUG</key>
 	<string>$(CAPACITOR_DEBUG)</string>
+	<key>NSCameraUsageDescription</key>
+	<string>A câmera é usada na teleconsulta, para você e o paciente se verem.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>O microfone é usado apenas para gravar ou transcrever a teleconsulta, quando o paciente autorizar.</string>
+	<string>O microfone é usado na teleconsulta e, com autorização do paciente, para gravar ou transcrever a sessão.</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>CFBundleDevelopmentRegion</key>
