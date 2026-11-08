@@ -1,10 +1,11 @@
 /* Service worker do EMDR PRO: guarda o app para funcionar offline.
    Ao publicar uma nova versão, altere CACHE (ex.: emdrpro-v2) para forçar a atualização. */
-const CACHE = "emdrpro-v1";
+const CACHE = "emdrpro-v2";
 const RUNTIME = "emdrpro-externos-v1"; // fontes e bibliotecas de PDF/Excel
 const FILES = ["./", "./index.html", "./manifest.webmanifest",
   "./icons/icon.svg", "./icons/favicon.svg", "./icons/favicon-64.png", "./icons/icon-180.png",
-  "./icons/icon-192.png", "./icons/icon-512.png", "./icons/icon-maskable-512.png"];
+  "./icons/icon-192.png", "./icons/icon-512.png", "./icons/icon-maskable-512.png",
+  "./icons/apple-touch-icon-180-v2.png", "./icons/apple-touch-icon-167-v2.png", "./icons/apple-touch-icon-152-v2.png", "./icons/apple-touch-icon-120-v2.png", "./icons/logo-app-v2.png"];
 const EXTERNOS = ["fonts.googleapis.com", "fonts.gstatic.com", "cdnjs.cloudflare.com"];
 
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES))); self.skipWaiting(); });
@@ -30,5 +31,5 @@ self.addEventListener("fetch", e => {
       .catch(() => caches.match("./index.html")));
     return;
   }
-  e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+  e.respondWith(caches.match(e.request, { ignoreSearch: true }).then(r => r || fetch(e.request)));
 });

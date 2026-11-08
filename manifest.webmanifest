@@ -10,16 +10,72 @@
   "orientation": "any",
   "background_color": "#F4F1E8",
   "theme_color": "#2F3B27",
-  "categories": ["medical", "health", "productivity"],
+  "categories": [
+    "medical",
+    "health",
+    "productivity"
+  ],
   "icons": [
-    {"src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml"},
-    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
-    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png"},
-    {"src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+    {
+      "src": "icons/icon-192.png?v=2",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png?v=2",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/apple-touch-icon-180-v2.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-512.png?v=2",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/icon.svg?v=2",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
   ],
   "shortcuts": [
-    {"name": "Estimulação EMDR", "url": "./index.html#emdr", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]},
-    {"name": "Agenda", "url": "./index.html#agenda", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]},
-    {"name": "Teleconsulta", "url": "./index.html#teleconsulta", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]}
+    {
+      "name": "Estimulação EMDR",
+      "url": "./index.html#emdr",
+      "icons": [
+        {
+          "src": "icons/icon-192.png?v=2",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Agenda",
+      "url": "./index.html#agenda",
+      "icons": [
+        {
+          "src": "icons/icon-192.png?v=2",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Teleconsulta",
+      "url": "./index.html#teleconsulta",
+      "icons": [
+        {
+          "src": "icons/icon-192.png?v=2",
+          "sizes": "192x192"
+        }
+      ]
+    }
   ]
 }
