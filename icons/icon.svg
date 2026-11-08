@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3B4A30"/><stop offset="1" stop-color="#26311F"/></linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E6D29C"/><stop offset="1" stop-color="#B8964E"/></linearGradient>
+    <radialGradient id="glow" cx=".5" cy=".46" r=".5"><stop offset="0" stop-color="#F4EEDC"/><stop offset="1" stop-color="#E4DCC4"/></radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <circle cx="256" cy="256" r="178" fill="url(#glow)"/>
+  <circle cx="256" cy="256" r="192" fill="none" stroke="url(#gold)" stroke-width="7"/>
+  <!-- ramo -->
+  <path d="M176 378 C 196 318, 214 262, 252 214" fill="none" stroke="#6E8158" stroke-width="7" stroke-linecap="round"/>
+  <path d="M186 344 C 150 336, 132 306, 136 276 C 166 282, 188 308, 186 344 Z" fill="#7E9466"/>
+  <path d="M200 304 C 166 288, 158 254, 168 228 C 196 240, 210 270, 200 304 Z" fill="#93A779"/>
+  <path d="M218 268 C 196 240, 200 208, 218 188 C 238 206, 238 240, 218 268 Z" fill="#A6B98C"/>
+  <path d="M196 330 C 226 334, 252 318, 262 292 C 232 288, 206 302, 196 330 Z" fill="#8FA375"/>
+  <!-- coração -->
+  <path d="M300 336 C 248 300, 234 270, 234 248 C 234 226, 251 210, 271 210 C 284 210, 294 217, 300 228 C 306 217, 316 210, 329 210 C 349 210, 366 226, 366 248 C 366 270, 352 300, 300 336 Z" fill="url(#gold)"/>
+  <path d="M300 312 C 262 286, 254 266, 254 252 C 254 238, 264 229, 275 229" fill="none" stroke="#F6EEDA" stroke-width="5" stroke-linecap="round" opacity=".55"/>
+</svg>
