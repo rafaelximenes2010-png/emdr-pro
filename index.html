@@ -333,6 +333,116 @@ input[type="range"]{width:100%;accent-color:var(--accent)}
 
 
 
+
+/* v4.0 — reunião no padrão Teams */
+.modal{z-index:400!important}.toast{z-index:410!important}
+:root{--mt-bg:#171A15;--mt-top:#1F231C;--mt-tile:#272C23;--mt-line:#343A2F;--mt-ink:#ECEADF;--mt-mut:#A7AE98;--mt-acc:#AFC290;--mt-gold:#D6BE82;--mt-red:#C4314B}
+.meet{position:fixed;inset:0;z-index:150;background:var(--mt-bg);color:var(--mt-ink);display:flex;flex-direction:column;font-family:var(--f-body)}
+.mt-top{display:flex;align-items:center;gap:12px;background:var(--mt-top);border-bottom:1px solid var(--mt-line);padding:8px max(12px,env(safe-area-inset-right,0px)) 8px max(12px,env(safe-area-inset-left,0px));padding-top:calc(8px + env(safe-area-inset-top,0px));min-height:62px}
+.mt-who{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.mt-who img{width:34px;height:34px;border-radius:50%;flex:none}
+.mt-who b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mt-who small{color:var(--mt-mut);font-size:.78rem;display:flex;gap:8px;align-items:center;white-space:nowrap}
+.mt-tools{display:flex;align-items:stretch;gap:2px}
+.mt-sep{width:1px;background:var(--mt-line);margin:6px 6px}
+.mt-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:64px;padding:6px 8px;border:0;background:transparent;color:var(--mt-ink);border-radius:8px;cursor:pointer;font-size:.72rem;font-weight:500;position:relative}
+.mt-btn svg{width:22px;height:22px}
+.mt-btn:hover{background:rgba(255,255,255,.07)}
+.mt-btn[aria-pressed="true"]{color:var(--mt-acc)}
+.mt-btn.off svg{color:#E8A0A0}
+.mt-btn.share{color:var(--mt-gold)}
+.mt-btn.share[aria-pressed="true"]{background:rgba(214,190,130,.16)}
+.mt-btn .rec-badge{position:absolute;top:4px;right:12px;width:8px;height:8px;border-radius:50%;background:var(--mt-red)}
+.mt-leave{display:flex;align-items:center;gap:8px;background:var(--mt-red);color:#fff;border:0;border-radius:8px;padding:0 16px;font-weight:700;cursor:pointer;margin-left:6px;min-height:44px}
+.mt-leave svg{width:20px;height:20px}
+.mt-body{flex:1;min-height:0;display:flex}
+.mt-stage{flex:1;min-width:0;position:relative;padding:12px;display:flex;flex-direction:column;gap:12px}
+.mt-grid{flex:1;min-height:0;position:relative;display:grid;gap:12px}
+.mt-tile{position:relative;background:var(--mt-tile);border-radius:12px;overflow:hidden;min-height:0;border:1px solid var(--mt-line)}
+.mt-tile video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:var(--mt-tile)}
+.mt-tile .lbl{position:absolute;left:10px;bottom:10px;background:rgba(0,0,0,.55);color:#fff;font-size:.78rem;padding:3px 9px;border-radius:6px;display:flex;gap:6px;align-items:center}
+.mt-self{position:absolute;right:16px;bottom:16px;width:min(24%,220px);aspect-ratio:4/3;border-radius:10px;overflow:hidden;border:1px solid var(--mt-line);background:#000;z-index:2;box-shadow:0 6px 18px rgba(0,0,0,.4)}
+.mt-self video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+.mt-self.screen video{transform:none;object-fit:contain}
+.mt-wait{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:24px;color:var(--mt-mut)}
+.mt-wait b{font-family:var(--f-display);font-size:1.6rem;font-weight:500;color:var(--mt-ink)}
+.mt-wait .btn{border-radius:999px}
+.meet.presenting .mt-grid{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}
+.mt-present{display:flex;flex-direction:column;border:2px solid var(--mt-red);border-radius:12px;overflow:hidden;background:#000;min-height:0}
+.mt-pbar{display:flex;align-items:center;gap:10px;background:var(--mt-red);color:#fff;padding:6px 10px;font-size:.82rem;font-weight:600;flex-wrap:wrap}
+.mt-pbar .sp{flex:1}
+.mt-pbar button{background:#fff;color:var(--mt-red);border:0;border-radius:6px;padding:5px 10px;font-weight:700;cursor:pointer}
+.mt-mir{position:relative;flex:1;min-height:0;display:grid;place-items:center;background:#000}
+.mt-mir canvas{display:block;max-width:100%;max-height:100%}
+.mt-mir .hint2{position:absolute;left:10px;top:8px;font-size:.72rem;color:rgba(255,255,255,.6);background:rgba(0,0,0,.4);padding:2px 8px;border-radius:5px}
+.mt-qbar{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap}
+.mt-qbar .btn{border-radius:999px}
+.mt-qbar .read{font-family:var(--f-mono);font-size:.85rem;color:var(--mt-mut);padding:0 8px}
+.mt-pane{width:390px;flex:none;border-left:1px solid var(--mt-line);background:var(--surface);color:var(--ink);display:flex;flex-direction:column;min-height:0}
+.mt-pane[hidden]{display:none}
+.mt-pane-h{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.mt-pane-h b{flex:1;font-weight:700}
+.mt-pane-b{flex:1;min-height:0;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px}
+.mt-pane-b .emdr-panel{border:0;padding:0}
+.mt-pane-b .recbox{border-top:0;padding-top:0}
+.tray{position:fixed;z-index:200;width:min(440px,calc(100vw - 24px));background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,.45);padding:14px;display:flex;flex-direction:column;gap:10px}
+.tray h3{font-size:1.15rem}
+.tray-card{display:flex;gap:12px;align-items:flex-start;text-align:left;border:1px solid var(--line);background:var(--surface-2);border-radius:12px;padding:12px;cursor:pointer;width:100%;color:var(--ink)}
+.tray-card:hover:not(:disabled){border-color:var(--accent)}
+.tray-card:disabled{opacity:.5;cursor:not-allowed}
+.tray-card.rec{border:2px solid var(--accent);background:var(--sage-soft)}
+.tray-card .ic{flex:none;width:56px;height:40px;border-radius:8px;background:#000;display:grid;place-items:center;color:var(--mt-gold)}
+.tray-card .ic svg{width:26px;height:26px}
+.tray-card b{display:block;font-weight:700}
+.tray-card small{display:block;color:var(--muted);font-size:.8rem;line-height:1.35;margin-top:2px}
+.tray-card .tag{margin-left:6px;vertical-align:1px}
+.meet.min{inset:auto calc(16px + env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) auto;width:300px;height:auto;border-radius:14px;overflow:hidden;box-shadow:0 14px 40px rgba(0,0,0,.45);border:1px solid var(--mt-line)}
+.mini{display:flex;flex-direction:column}
+.mini .mt-tile{height:170px;border-radius:0;border:0}
+.mini-bar{display:flex;gap:6px;padding:8px;align-items:center;background:var(--mt-top)}
+.mini-bar .btn{border-radius:999px}
+.win-steps{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.win-steps li{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--surface-2)}
+.win-steps li.done{border-color:var(--ok);background:var(--ok-soft)}
+.win-steps i{flex:none;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;font-style:normal;font-weight:700;font-size:.85rem}
+.win-steps li.done i{background:var(--ok)}
+.win-steps span{flex:1}
+.btn svg{width:20px;height:20px;flex:none}
+.pt-room #pt-local[hidden]{display:none}
+.dev-meter{height:8px;border-radius:5px;background:var(--line);overflow:hidden}
+.dev-meter span{display:block;height:100%;width:0;background:var(--ok);transition:width .08s}
+@media (max-width:900px){
+  .mt-top{flex-wrap:wrap;min-height:0}
+  .mt-tools{order:3;width:100%;justify-content:space-around;overflow-x:auto}
+  .mt-btn{min-width:54px;font-size:.66rem}
+  .mt-sep{display:none}
+  .meet.presenting .mt-grid{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) minmax(0,.8fr)}
+  .mt-pane{position:fixed;left:0;right:0;bottom:0;width:auto;height:min(68vh,620px);border-left:0;border-top:1px solid var(--line);border-radius:16px 16px 0 0;z-index:160;box-shadow:0 -12px 40px rgba(0,0,0,.4);padding-bottom:env(safe-area-inset-bottom,0px)}
+  .mt-self{width:30%;right:10px;bottom:10px}
+}
+@media (max-width:560px){.mt-btn span.t{display:none}.mt-btn{min-width:44px;padding:8px 6px}.mt-leave span{display:none}.mt-leave{padding:0 12px}}
+/* paciente no padrão Teams */
+.pt-room{background:var(--mt-bg)!important}
+.pt-head{background:var(--mt-top);border-bottom:1px solid var(--mt-line)}
+.pt-bar{background:var(--mt-top);border-top:1px solid var(--mt-line)}
+.pt-ib{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:66px;padding:8px 10px;border-radius:10px;border:0;background:rgba(255,255,255,.08);color:#fff;font-size:.72rem;cursor:pointer}
+.pt-ib svg{width:22px;height:22px}
+.pt-ib.off{background:rgba(196,49,75,.25)}
+.pt-ib.leave{background:var(--mt-red)}
+.pre{display:flex;flex-direction:column;gap:14px;align-items:center;width:min(440px,100%)}
+.pre-vid{position:relative;width:100%;aspect-ratio:4/3;background:#000;border-radius:14px;overflow:hidden;border:1px solid var(--mt-line)}
+.pre-vid video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+.pre-vid .off-msg{position:absolute;inset:0;display:grid;place-items:center;color:var(--mt-mut);font-size:.9rem}
+.pre-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;width:100%}
+.pre .dev-meter{width:100%;background:rgba(255,255,255,.12)}
+.pt-mode #proj{display:none!important}
+.pt-mode.pj-present #proj{display:block!important}
+.pt-mode.pj-present .pt-room{z-index:302;background:transparent!important;pointer-events:none}
+.pt-mode.pj-present .pt-stage{background:transparent}
+.pt-mode.pj-present .pt-head,.pt-mode.pj-present .pt-bar,.pt-mode.pj-present #pt-local,.pt-mode.pj-present #pt-msg{visibility:hidden}
+.pt-mode.pj-present #pt-remote{position:fixed;z-index:305;inset:auto auto calc(16px + env(safe-area-inset-bottom,0px)) 16px;width:28vw;max-width:220px;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:12px;border:2px solid rgba(255,255,255,.5);pointer-events:auto}
+.pt-mode.pj-present.hide-psi #pt-remote{display:none}
+.pt-mode.pj-present .pt-stop,.pt-mode.pj-present .pt-pause{pointer-events:auto}
 /* v3.2 — Compartilhar tela | EMDR na sala */
 .room-grid{display:grid;gap:16px;align-items:start}
 @media (min-width:1100px){.room-grid.with-emdr{grid-template-columns:minmax(0,1.2fr) minmax(330px,1fr)}}
@@ -359,7 +469,6 @@ input[type="range"]{width:100%;accent-color:var(--accent)}
 .seg.full{display:flex}.seg.full button{flex:1}
 .pt-pause{display:none;position:fixed;z-index:306;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:rgba(20,24,18,.72);color:#fff;border:1px solid rgba(255,255,255,.45);border-radius:999px;padding:12px 22px;font-weight:700;pointer-events:auto}
 .pt-mode.pj-running .pt-pause{display:block}
-.pt-mode.pj-running.hide-psi #pt-remote{display:none}
 @media (max-width:560px){.emdr-read{grid-template-columns:repeat(2,minmax(0,1fr))}.emdr-read div:nth-child(2){border-right:0}.emdr-read div:nth-child(-n+2){border-bottom:1px solid var(--line)}}
 /* v3.1 — sala de teleconsulta própria (vídeo + estimulação + transcrição) */
 .call-box{display:flex;flex-direction:column;gap:12px;border-top:1px solid var(--line);padding-top:14px}
@@ -392,15 +501,8 @@ input[type="range"]{width:100%;accent-color:var(--accent)}
 .pt-bar .btn{border-radius:999px;padding:12px 18px}
 .pt-bar .pill{font-size:.78rem}
 .btn.dark{background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.25)}
-.pt-mode #proj{display:none}
-.pt-mode.pj-running #proj{display:block}
-.pt-mode.pj-running #pt-remote{position:fixed;z-index:305;inset:auto auto calc(16px + env(safe-area-inset-bottom,0px)) 16px;width:28vw;max-width:200px;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:12px;border:2px solid rgba(255,255,255,.5)}
 .pt-stop{display:none;position:fixed;z-index:306;right:calc(16px + env(safe-area-inset-right,0px));top:calc(16px + env(safe-area-inset-top,0px));background:#B23A32;color:#fff;border:0;border-radius:999px;padding:16px 26px;font-size:1.05rem;font-weight:800;letter-spacing:.06em;box-shadow:0 6px 18px rgba(0,0,0,.4)}
 .pt-mode.pj-running .pt-stop{display:block}
-.pt-mode.pj-running .pt-room{z-index:302;background:transparent;pointer-events:none}
-.pt-mode.pj-running .pt-stage{background:transparent}
-.pt-mode.pj-running .pt-head,.pt-mode.pj-running .pt-bar,.pt-mode.pj-running #pt-local,.pt-mode.pj-running #pt-msg{visibility:hidden}
-.pt-mode.pj-running .pt-stop{pointer-events:auto}
 /* v2.4 — baixar o app */
 .inst{position:fixed;inset:0;z-index:200;background:rgba(14,20,10,.55);display:flex;align-items:flex-end;justify-content:center}
 .inst-card{position:relative;width:min(460px,100%);background:var(--surface);color:var(--ink);border-radius:22px 22px 0 0;padding:22px 22px calc(26px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px;box-shadow:0 -10px 40px rgba(0,0,0,.3);animation:instUp .35s ease-out}
@@ -742,7 +844,7 @@ const DOWN=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 function deepDef(t,d){for(const k in d){if(t[k]===undefined)t[k]=JSON.parse(JSON.stringify(d[k]));else if(d[k]&&typeof d[k]==='object'&&!Array.isArray(d[k])&&typeof t[k]==='object')deepDef(t[k],d[k])}return t}
 function profile(){return (typeof S!=='undefined'&&S&&S.profile)?S.profile:DEF_PROFILE}
 const USERS={get psi(){const p=profile();return{name:p.name,reg:p.crp||'CRP não informado'}},rec:{name:'Ana Souza',reg:'Recepção'},adm:{name:'Administração',reg:'Administrador'}};
-const APP_VERSION='3.2';
+const APP_VERSION='4.0';
 const BUILTIN=[
   {id:'b1',name:'Lento',ppm:40,amp:85,size:30,motion:'suave',mode:'passagens',limit:24,secs:30},
   {id:'b2',name:'Moderado',ppm:60,amp:85,size:28,motion:'suave',mode:'passagens',limit:30,secs:30},
@@ -817,6 +919,7 @@ const ROUTES={estimulo:renderProj,teleconsulta:renderTele,relatorios:renderRelat
 let current=null;
 function route(){
   if(PATIENT){renderPatient();return}
+  if(S.teleLive&&!MEET.open&&canClinical()){setTimeout(()=>{if(S.teleLive&&!MEET.open){MEET.open=true;MEET.min=false;meetRender()}},50)}
   const r=(location.hash||'#painel').slice(1);let k=ROUTES[r]?r:'painel';if(!on(k))k='painel';
   if(current==='emdr'&&k!=='emdr')emdrTeardown();if(current==='estimulo'&&k!=='estimulo')projTeardown();
   current=k;
@@ -1478,6 +1581,13 @@ function openNote(id,pre={}){
    ========================================================= */
 const TYPES={novo:'Novo',melhoria:'Melhoria',correcao:'Correção',seguranca:'Segurança'};
 const CHANGELOG=[
+ {v:'4.0',date:'14/11/2026',title:'Teleconsulta no padrão Teams',items:[
+  ['novo','Tela de reunião','O atendimento abre em tela própria, escura, como no Teams: vídeo do paciente grande, sua imagem no canto e a barra de controles no topo: Convidar, Notas, Gravar, EMDR, Câmera, Microfone, Compartilhar, Dispositivos, Minimizar e Sair.'],
+  ['novo','Compartilhar como no Teams','O botão Compartilhar abre a bandeja com a estimulação bilateral em destaque, a janela da estimulação (tela adicional) e Tela ou janela.'],
+  ['novo','Você está apresentando','Ao apresentar, a faixa vermelha avisa o que o paciente está vendo, com uma cópia ao vivo da estimulação ao lado do vídeo dele e os botões Iniciar, Pausar e Interromper sempre à mão.'],
+  ['novo','Tela adicional','A janela da estimulação abre separada (ótima para segundo monitor) e é compartilhada em dois toques; você comanda tudo pela reunião.'],
+  ['novo','Minimizar','A reunião vira uma janelinha no canto, e você pode abrir o prontuário sem desligar a chamada.'],
+  ['novo','Paciente: pré-entrada e dispositivos','Antes de entrar, o paciente confere câmera e microfone; os dois lados podem trocar câmera e microfone durante a sessão.']]},
  {v:'3.2',date:'08/11/2026',title:'Compartilhar tela | EMDR na sala',items:[
   ['novo','Botão Compartilhar tela | EMDR','Sempre visível na barra da videochamada. Abre o painel Estimulação Bilateral — EMDR ao lado do vídeo do paciente, sem sair da sala.'],
   ['novo','Painel completo','Velocidade, amplitude e tamanho em tempo real; formato (ponto luminoso, esfera suave, círculo); cor; fundo escuro, neutro ou claro; duração da série; som alternado; iniciar, pausar, reiniciar e interromper.'],
@@ -1910,15 +2020,12 @@ function teleRow(a){const p=getP(a.pid);const s=P(a.start);const isLive=S.teleLi
   if(a.demo&&canAdmin())menu.push('-',{label:'Excluir exemplo',hint:'Remove este agendamento fictício',act:'demoDel',data:{k:'appt',id:a.id},danger:true});
   return `<div class="aitem tele-row"><span class="t">${pad(s.getDate())}/${pad(s.getMonth()+1)}<br>${fmtT(s)}</span><span><span class="who">${esc(pname(p))}</span>${a.demo?' '+DEMOS:''}<br><span class="meta">${a.dur} min · ${STATUS[a.status]}</span></span><span class="tele-acts">${canClinical()&&!S.teleLive?`<button class="btn sm primary" data-act="teleStart" data-id="${a.id}">Iniciar atendimento</button>`:''}${isLive?'<span class="pill st-confirmado">Em andamento</span>':''}<button class="btn sm" data-act="inviteOpen" data-id="${a.id}">Enviar convite</button>${dd('⋯',menu,'icon-btn',true)}</span></div>`}
 function renderTele(){
+  if(current!=='teleconsulta'){if(S.teleLive&&MEET.open)meetRender();return}
   const now=new Date();let live=S.teleLive&&S.appts.find(a=>a.id===S.teleLive.apptId);if(S.teleLive&&!live){S.teleLive=null;save()}
   const up=S.appts.filter(a=>a.mod==='online'&&['agendado','confirmado'].includes(a.status)&&addMin(P(a.start),a.dur+180)>now).sort(byStart);
   const hist=S.tele.slice().sort((a,b)=>b.start-a.start);
   let livePanel='';
-  if(live){const p=getP(live.pid);livePanel=`<section class="panel tele-live"><div class="panel-head"><span class="pill st-confirmado">Em atendimento</span><h2>${esc(pname(p))}</h2>${live.demo?DEMOP:''}<span class="sp"></span><span class="mono tele-clock" id="tl-clock">00:00</span></div>
-    <div class="tele-bar"><span id="tl-bar"></span></div><p class="hint" id="tl-hint" style="margin:0">Duração prevista: ${live.dur} min</p>
-    ${callPanelHtml(live)}
-    <div class="transport"><span class="sp"></span><button class="btn danger solid" data-act="teleEnd">Encerrar atendimento</button></div>
-    ${canClinical()?`<div class="field">${info('tl-notes','Anotações da sessão','Salvas automaticamente enquanto você escreve. Ao encerrar, podem ir para o prontuário como evolução em rascunho, para você revisar e finalizar.')}<textarea id="tl-notes" rows="7" placeholder="Anotações durante o atendimento">${esc(S.teleLive.notes||'')}</textarea></div><label class="check"><input type="checkbox" id="tl-link" ${S.teleLive.toRecord!==false?'checked':''}> Ao encerrar, enviar as anotações ao prontuário (evolução em rascunho)</label>${recPanelHtml()}`:''}</section>`}
+  if(live){const p=getP(live.pid);livePanel=`<section class="panel tele-live"><div class="panel-head"><span class="pill st-confirmado"><span class="live-dot"></span>Em atendimento</span><h2>${esc(pname(p))}</h2><span class="sp"></span><button class="btn primary" data-act="meetOpen">Voltar à reunião</button></div></section>`}
   $('#view').innerHTML=`<div class="view-in">
   <div class="page-head"><div><div class="eyebrow">Atendimento on-line</div><h1>Teleconsulta</h1><div class="sub">${up.length} agendadas · ${hist.length} realizadas</div></div><span class="sp"></span>${on('agenda')?'<button class="btn primary" data-act="teleNew">Agendar teleconsulta</button>':''}</div>
   ${howto('Como funciona a teleconsulta',`<ul><li>Toda teleconsulta tem um <b>link próprio</b> para o paciente. Use <b>Enviar convite</b> para mandar por WhatsApp ou e-mail. O paciente toca no link e entra direto na sala, no celular ou no computador, sem instalar nada.</li><li><b>Iniciar atendimento</b> abre a sala aqui mesmo: vídeo, cronômetro, estimulação bilateral e transcrição no mesmo lugar.</li><li>Escreva as anotações durante a sessão. Ao <b>encerrar</b>, a consulta é marcada como realizada, entra no histórico e, se você quiser, as anotações viram uma evolução em rascunho no prontuário.</li><li><b>Estimulação bilateral</b>: com o paciente na sala, toque em <b>Compartilhar tela | EMDR</b> e depois em <b>Iniciar estimulação</b>. O ponto aparece na tela dele, desenhado no próprio aparelho, sem travar. Ele tem um botão <b>Parar</b> sempre visível. Ao encerrar, os sets viram um registro EMDR em rascunho.</li><li><b>Gravação e transcrição</b> só ficam disponíveis depois de marcar a autorização do paciente. Os arquivos são salvos no seu computador, nunca no sistema.</li></ul>`)}
@@ -1927,14 +2034,14 @@ function renderTele(){
   <section class="panel"><h2>Histórico de teleconsultas</h2>${hist.length?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Início</th><th>Paciente</th><th class="num">Duração</th><th>Anotações</th><th></th></tr></thead><tbody>${hist.map(h=>`<tr><td class="mono">${fmtDT(h.start)}</td><td>${esc(pname(getP(h.pid)))} ${h.demo?DEMOS:''}</td><td class="num mono">${h.durMin} min</td><td>${h.notes?(canClinical()?'Registradas':'Restritas à psicóloga'):'—'}${h.transcript&&canClinical()?' · transcrição':''}${h.recorded?' · gravada':''}</td><td class="acts">${REC.files[h.id]&&canClinical()?`<a class="btn sm" href="${REC.files[h.id].url}" download="${esc(REC.files[h.id].name)}">Gravação</a>`:''}${h.transcript&&canClinical()?`<button class="btn sm" data-act="hPdf" data-id="${h.id}">Transcrição PDF</button><button class="btn sm" data-act="hTxt" data-id="${h.id}">.txt</button>`:''}${canClinical()?`<button class="btn sm" data-act="openPatient" data-pid="${h.pid}">Prontuário</button>`:''}${h.demo&&canAdmin()?`<button class="btn sm ghost danger" data-act="demoDel" data-k="tele" data-id="${h.id}">Excluir exemplo</button>`:''}</td></tr>`).join('')}</tbody></table></div>`:'<p class="empty">Nenhuma teleconsulta realizada ainda.</p>'}</section>
   <section class="panel"><h2>Privacidade</h2><p class="hint" style="margin:0">Cada teleconsulta tem um link único e difícil de adivinhar, que não traz nome nem dados do paciente. O vídeo e o áudio vão direto entre os dois aparelhos, criptografados; um serviço público (PeerJS) só ajuda os aparelhos a se encontrarem. Nada é gravado sem a autorização do paciente, e as gravações ficam apenas no seu aparelho. Para atender pacientes reais em escala, o ideal é um servidor de vídeo contratado, com termos adequados à LGPD.</p></section>
   </div>`;
-  if(live){bindRecPanel();bindStimPanel();rtcUi();if(canClinical()&&!RTC.role&&live.room)rtcHost(live.room)}
+  if(live&&!MEET.open){MEET.open=true;MEET.min=false;meetRender()}else if(live)meetRender()
   if(live){const n=$('#tl-notes');if(n)n.oninput=()=>{S.teleLive.notes=n.value;clearTimeout(n._t);n._t=setTimeout(save,400)};const c=$('#tl-link');if(c)c.onchange=()=>{S.teleLive.toRecord=c.checked;save()};
-    const tick=()=>{const el=$('#tl-clock');if(!el||!S.teleLive){clearInterval(teleTimer);return}const ms=Date.now()-S.teleLive.start;el.textContent=fmtDur(ms);const over=ms>live.dur*60000;const bar=$('#tl-bar');bar.style.width=Math.min(100,ms/(live.dur*600))+'%';bar.classList.toggle('over',over);if(over)$('#tl-hint').textContent=`Duração prevista de ${live.dur} min ultrapassada`;const rc=$('#rc-clock');if(rc&&REC.mr)rc.textContent=fmtDur(Date.now()-REC.start);pjCtrlUi()};
+    const tick=()=>{const el=$('#tl-clock');if(!el||!S.teleLive){clearInterval(teleTimer);return}const ms=Date.now()-S.teleLive.start;el.textContent=fmtDur(ms);const over=ms>live.dur*60000;const bar=$('#tl-bar');if(!bar)return;bar.style.width=Math.min(100,ms/(live.dur*600))+'%';bar.classList.toggle('over',over);if(over)$('#tl-hint').textContent=`Duração prevista de ${live.dur} min ultrapassada`;const rc=$('#rc-clock');if(rc&&REC.mr)rc.textContent=fmtDur(Date.now()-REC.start);pjCtrlUi()};
     tick();teleTimer=setInterval(tick,1000)}
 }
 ACT.teleNew=()=>openAppt(null,{mod:'online'});
 ACT.teleStart=d=>{if(!canClinical())return;if(S.teleLive){toast('Já existe um atendimento em andamento');return}const a=S.appts.find(x=>x.id===d.id);if(!a)return;
-  S.teleLive={apptId:a.id,start:Date.now(),notes:'',toRecord:true};if(a.status==='agendado')a.status='confirmado';teleLink(a);audit('Teleconsulta iniciada',a.pid);save();if(current==='teleconsulta')renderTele();else go('teleconsulta')};
+  S.teleLive={apptId:a.id,start:Date.now(),notes:'',toRecord:true};if(a.status==='agendado')a.status='confirmado';teleLink(a);audit('Teleconsulta iniciada',a.pid);save();Object.assign(MEET,{open:true,min:false,pane:null,present:null});if(current==='teleconsulta')renderTele();else go('teleconsulta');meetRender()};
 ACT.teleCancel=d=>{const a=S.appts.find(x=>x.id===d.id);if(!a)return;a.status='cancelado';audit('Teleconsulta cancelada',a.pid);save();renderTele();toast('Teleconsulta cancelada')};
 ACT.teleEnd=async()=>{const L=S.teleLive;if(!L)return;if(REC.mr&&REC.mr.state!=='inactive')await recStop();if(TR.on)trStop();try{send({type:'bye'})}catch(e){}setTimeout(rtcStop,400);const a=S.appts.find(x=>x.id===L.apptId);if(!a){S.teleLive=null;save();renderTele();return}
   const end=Date.now();const durMin=Math.max(1,Math.round((end-L.start)/60000));const notes=(L.notes||'').trim();
@@ -2184,10 +2291,13 @@ function endFilesModal(t){const f=REC.files[t.id];
    ========================================================= */
 const PJ_KEY='emdrpro.msg';const pjSeen=new Set();let pjChan=null;
 try{pjChan=new BroadcastChannel('emdrpro-estimulo')}catch(e){pjChan=null}
-function send(m){m.id=m.id||uid();m.ts=Date.now();try{if(RTC.conn&&RTC.conn.open)RTC.conn.send(m)}catch(e){}if(PATIENT)return;try{pjChan&&pjChan.postMessage(m)}catch(e){}try{localStorage.setItem(PJ_KEY,JSON.stringify(m))}catch(e){}}
+const STIM_T=new Set(['start','pause','resume','stop','cfg','ping','present']);
+function send(m){m.id=m.id||uid();m.ts=Date.now();const stim=STIM_T.has(m.type);if(!PATIENT&&stim)mirApply(m);
+  try{if(RTC.conn&&RTC.conn.open&&!(stim&&!PATIENT&&MEET.present==='janela'))RTC.conn.send(m)}catch(e){}if(PATIENT)return;try{pjChan&&pjChan.postMessage(m)}catch(e){}try{localStorage.setItem(PJ_KEY,JSON.stringify(m))}catch(e){}}
 function onPjMsg(m){if(!m||!m.id||pjSeen.has(m.id))return;pjSeen.add(m.id);if(pjSeen.size>500)pjSeen.clear();
   if(current==='estimulo'){
-    if(m.type==='start'){PJ.test=!!m.test;pjStart(m.cfg)}else if(m.type==='pause'){if(PJ.running){PJ.paused=true;pjUi();pjStatus()}}else if(m.type==='resume'){if(PJ.running){PJ.paused=false;pjUi();pjStatus()}}
+    if(m.type==='start'){PJ.test=!!m.test;pjStart(m.cfg)}
+    else if(m.type==='present'){if(PATIENT){document.body.classList.toggle('pj-present',!!m.on);if(m.cfg)PJ.cfg={...PJ.cfg,...m.cfg};document.body.classList.toggle('hide-psi',PJ.cfg.showPsi===false);if(!m.on&&PJ.running)pjFinish('apresentação encerrada');pjUi()}}else if(m.type==='pause'){if(PJ.running){PJ.paused=true;pjUi();pjStatus()}}else if(m.type==='resume'){if(PJ.running){PJ.paused=false;pjUi();pjStatus()}}
     else if(m.type==='stop'){if(PJ.running)pjFinish(m.reason||'interrompido')}else if(m.type==='cfg'){PJ.cfg={...PJ.cfg,...m.cfg};if(PATIENT)document.body.classList.toggle('hide-psi',PJ.cfg.showPsi===false)}else if(m.type==='ping')pjStatus();
     else if(m.type==='bye'){if(PJ.running)pjFinish('interrompido');PJ.bye=true;pjUi();if(PATIENT)ptBye()}
     if(PATIENT)ptMsg(m);
@@ -2197,13 +2307,14 @@ function onPjMsg(m){if(!m||!m.id||pjSeen.has(m.id))return;pjSeen.add(m.id);if(pj
     else if(m.type==='pong2'&&m.t){RTC.rtt=Math.max(1,Date.now()-m.t);pjCtrlUi()}
     else if(m.type==='pausereq'){toast('O paciente pediu uma pausa. A estimulação foi pausada.');const a=S.teleLive&&S.appts.find(x=>x.id===S.teleLive.apptId);audit('Paciente pediu pausa na estimulação',a&&a.pid)}
     else if(m.type==='feedback'&&S.teleLive){const L=S.teleLive;const last=(L.sets||[]).filter(x=>x.test).pop();if(last){last.feedback=m.v;save();pjSetsUi()}toast(`Teste de tolerância: ${m.v}`)}
-    if(m.type==='status'){PJC.st=m;PJC.ts=Date.now();pjCtrlUi()}
+    if(m.type==='status'){PJC.st=m;PJC.ts=Date.now();mirSync(m);pjCtrlUi();qbarUi()}
+    else if((m.type==='hello'||m.type==='dims')&&m.w){RTC.pdims={w:m.w,h:m.h}}
     else if(m.type==='ping2'){}
     else if(m.type==='hello'){PJC.ts=Date.now();send({type:'cfg',cfg:S.cfg});pjCtrlUi()}
     else if(m.type==='set'&&S.teleLive){S.teleLive.sets=S.teleLive.sets||[];S.teleLive.sets.push(m.set);save();pjSetsUi();toast(`Set ${m.set.reason}: ${m.set.passes} passagens`)}
   }}
-if(pjChan)pjChan.onmessage=e=>onPjMsg(e.data);
-window.addEventListener('storage',e=>{if(e.key===PJ_KEY&&e.newValue){try{onPjMsg(JSON.parse(e.newValue))}catch(x){}}});
+if(pjChan)pjChan.onmessage=e=>{if(!PATIENT)onPjMsg(e.data)};
+window.addEventListener('storage',e=>{if(!PATIENT&&e.key===PJ_KEY&&e.newValue){try{onPjMsg(JSON.parse(e.newValue))}catch(x){}}});
 
 /* --- janela do paciente --- */
 const PJ={running:false,paused:false,phase:0,passes:0,setMs:0,last:0,raf:0,cv:null,g:null,dpr:1,ending:false,cfg:null,stT:0,el:null,hudT:0,bye:false,keyH:null,rsH:null};
@@ -2223,7 +2334,7 @@ function pjFrame(ts){const dt=PJ.last?Math.min(ts-PJ.last,100):0;PJ.last=ts;cons
   if(PJ.running||PJ.passes){const p=PJ.phase;const pos=c.motion==='linear'?(f=>f<1?-1+2*f:3-2*f)(((p%2)+2)%2):-Math.cos(Math.PI*p);const r=c.size/2*d;const span=Math.max(0,(W/2-r-14*d))*(c.amp/100);
     drawDot(g,c,W/2+pos*span,H/2,r)}
   if(PJ.el)PJ.raf=requestAnimationFrame(pjFrame)}
-function pjStart(cfg){if(cfg)PJ.cfg={...PJ.cfg,...cfg};PJ.patientPause=false;if(PATIENT){document.body.classList.add('pj-running');document.body.classList.toggle('hide-psi',PJ.cfg.showPsi===false)}PJ.running=true;PJ.paused=false;PJ.phase=0;PJ.passes=0;PJ.setMs=0;PJ.ending=false;PJ.bye=false;pjUi();pjStatus()}
+function pjStart(cfg){if(cfg)PJ.cfg={...PJ.cfg,...cfg};PJ.patientPause=false;if(PATIENT){document.body.classList.add('pj-running','pj-present');document.body.classList.toggle('hide-psi',PJ.cfg.showPsi===false)}PJ.running=true;PJ.paused=false;PJ.phase=0;PJ.passes=0;PJ.setMs=0;PJ.ending=false;PJ.bye=false;pjUi();pjStatus()}
 function pjFinish(reason){if(PATIENT)document.body.classList.remove('pj-running');const set={ts:Date.now(),durMs:Math.round(PJ.setMs),passes:PJ.passes,ppm:PJ.cfg.ppm,motion:PJ.cfg.motion,reason,remote:true,test:!!PJ.test};const wasTest=PJ.test&&reason==='concluído';PJ.test=false;if(PATIENT&&wasTest)setTimeout(ptFeedback,200);PJ.running=false;PJ.paused=false;if(set.passes||set.durMs>500)send({type:'set',set});pjUi();pjStatus()}
 function pjStatus(){if(current!=='estimulo')return;send({type:'status',running:PJ.running,paused:PJ.paused,patientPause:!!PJ.patientPause,passes:PJ.passes,setMs:Math.round(PJ.setMs)})}
 function pjUi(){const w=$('#pj-wait');if(w){const bg=(PJ.cfg&&PJ.cfg.bg||'#000').replace('#','');const lum=bg.length>=6?(parseInt(bg.slice(0,2),16)*299+parseInt(bg.slice(2,4),16)*587+parseInt(bg.slice(4,6),16)*114)/1000:0;
@@ -2238,11 +2349,12 @@ ACT.pjClose=()=>{if(window.opener){try{window.close()}catch(e){}}go('teleconsult
 const PJC={st:null,ts:0,win:null};
 const pjConnected=()=>Date.now()-PJC.ts<2000||!!(RTC.conn&&RTC.conn.open);
 function stimPanelHtml(){const c=S.cfg;const sets=(S.teleLive&&S.teleLive.sets)||[];const shareOn=!!RTC.sharing;const mode=(S.teleLive&&S.teleLive.emdrMode)||'paciente';
-  const sw=(list,key)=>list.map(([n,v])=>`<button type="button" class="sw" data-act="emdrSet" data-k="${key}" data-v="${v}" style="background:${v}" aria-label="${n}" aria-pressed="${String(c[key]).toUpperCase()===v.toUpperCase()}"></button>`).join('');
-  return `<aside class="emdr-panel" id="stim-box" aria-label="Estimulação Bilateral — EMDR"><div class="panel-head"><h3>Estimulação Bilateral — EMDR</h3><span class="sp"></span><span class="pill off" id="pj-status">Paciente fora da sala</span><button class="icon-btn" data-act="emdrToggle" aria-label="Fechar painel">×</button></div>
+  const mode0=0;const sw=(list,key)=>list.map(([n,v])=>`<button type="button" class="sw" data-act="emdrSet" data-k="${key}" data-v="${v}" style="background:${v}" aria-label="${n}" aria-pressed="${String(c[key]).toUpperCase()===v.toUpperCase()}"></button>`).join('');
+  return `<aside class="emdr-panel" id="stim-box" aria-label="Estimulação Bilateral — EMDR"><div class="panel-head"><span class="sp"></span><span class="pill off" id="pj-status">Paciente fora da sala</span></div>
   <p class="disc">Ferramenta de apoio destinada a profissionais capacitados em EMDR. Não substitui o julgamento clínico.</p>
-  <div class="seg full" role="group" aria-label="Como o paciente vê"><button data-act="emdrMode" data-v="paciente" aria-pressed="${mode==='paciente'}">Na tela do paciente</button><button data-act="emdrMode" data-v="tela" aria-pressed="${mode==='tela'}">Compartilhar minha tela</button></div>
-  ${mode==='tela'?`<p class="hint" style="margin:0">Alternativa: o paciente vê a sua tela pela chamada. A animação pode chegar com pequenos atrasos. Prefira <b>Na tela do paciente</b>.</p><button class="btn ${shareOn?'stop-now':'primary'}" data-act="shareToggle">${shareOn?'Parar compartilhamento':'Compartilhar minha tela agora'}</button>${shareOn?'<p class="hint" style="margin:0"><span class="live-dot"></span>Sua tela está sendo transmitida ao paciente. Abra a tela Estimulação EMDR e use Tela cheia.</p>':''}`:`
+  ${!MEET.present?`<div class="win-steps" style="gap:10px"><button class="btn primary" data-act="presentPaciente">${IC.emdr} Apresentar na tela do paciente</button><p class="hint" style="margin:0">Ou use <b>Compartilhar</b>, na barra de cima, para escolher a janela da estimulação ou outra tela.</p></div>`:''}
+  ${MEET.present==='janela'?`<ol class="win-steps"><li class="${MEET.winOpen?'done':''}"><i>${MEET.winOpen?'✓':'1'}</i><span>Abrir a tela adicional da estimulação</span><button class="btn sm" data-act="winOpen">${MEET.winOpen?'Abrir de novo':'Abrir'}</button></li><li class="${shareOn?'done':''}"><i>${shareOn?'✓':'2'}</i><span>Compartilhar essa janela com o paciente</span>${shareOn?'<span class="pill finalizado">Compartilhando</span>':`<button class="btn sm primary" data-act="winShare" ${MEET.winOpen?'':'disabled'}>Compartilhar</button>`}</li></ol><p class="hint" style="margin:0">No seletor do navegador, escolha a janela <b>Estimulação · EMDR PRO</b>. Você comanda tudo por aqui, sem tocar na janela compartilhada.</p>`:''}
+  ${MEET.present==='tela'?'':`
   <div class="emdr-read"><div><span class="l">Passagens</span><span class="v" id="pj-pass">0</span></div><div><span class="l">Ciclos</span><span class="v" id="pj-cyc">0</span></div><div><span class="l">Tempo do set</span><span class="v" id="pj-time">00:00</span></div><div><span class="l">Conexão</span><span class="v" id="pj-rtt">—</span></div></div>
   <div class="emdr-go"><button class="btn primary wide" data-act="pjStart" id="pj-start" disabled>Iniciar estimulação</button><button class="btn" data-act="pjPause" id="pj-pause" disabled>Pausar</button><button class="btn" data-act="pjRestart" id="pj-restart" disabled>Reiniciar</button><button class="btn stop-now wide" data-act="pjStop" id="pj-stop" disabled>Interromper agora</button></div>
   <div class="emdr-sec"><b>Movimento</b>
@@ -2323,22 +2435,22 @@ async function rtcJoin(room){try{await loadLib('peer')}catch(e){ptState('err','N
   pr.on('disconnected',()=>{if(RTC.role==='pac'){try{pr.reconnect()}catch(e){}}});
   pr.on('error',e=>{if(e&&e.type==='peer-unavailable'){ptState('wait');clearTimeout(RTC.dialT);RTC.dialT=setTimeout(rtcDial,4000)}else if(e&&e.type!=='unavailable-id')ptState('err','A conexão caiu. Toque em Entrar novamente.')})}
 function rtcDial(){if(RTC.role!=='pac'||!RTC.peer||RTC.peer.destroyed)return;if(RTC.conn&&RTC.conn.open)return;const id=hostId(RTC.room);
-  const c=RTC.peer.connect(id,{reliable:true});c.on('open',()=>{RTC.conn=c;ptState('on');send({type:'hello'});
+  const c=RTC.peer.connect(id,{reliable:true});c.on('open',()=>{RTC.conn=c;ptState('on');send({type:'hello',w:innerWidth,h:innerHeight});
     const call=RTC.peer.call(id,RTC.local||silentStream());RTC.call=call;call.on('stream',st=>{RTC.remote=st;ptVideos()});call.on('close',()=>{RTC.remote=null;ptVideos()})});
   c.on('data',m=>onPjMsg(m));c.on('close',()=>{if(RTC.conn===c){RTC.conn=null;RTC.remote=null;if(PJ.running)pjFinish('conexão perdida');if(RTC.role==='pac'){ptState('wait');clearTimeout(RTC.dialT);RTC.dialT=setTimeout(rtcDial,3000)}}})}
-function rtcToggle(kind){if(!RTC.local)return;const tr=kind==='mic'?RTC.local.getAudioTracks():RTC.local.getVideoTracks();RTC[kind]=!RTC[kind];tr.forEach(t=>t.enabled=RTC[kind]);PATIENT?ptBar():rtcUi()}
+function rtcToggle(kind){if(!RTC.local)return;const tr=kind==='mic'?RTC.local.getAudioTracks():RTC.local.getVideoTracks();RTC[kind]=!RTC[kind];tr.forEach(t=>t.enabled=RTC[kind]);if(PATIENT){RTC.state==='pre'?ptPre():ptBar()}else meetRender()}
 ACT.rtcMic=()=>rtcToggle('mic');ACT.rtcCam=()=>rtcToggle('cam');
 ACT.rtcReopen=()=>{if(S.teleLive){const a=S.appts.find(x=>x.id===S.teleLive.apptId);if(a){teleLink(a);RTC.pendingHost=null;rtcHost(a.room,true)}}};
 ACT.consentReq=()=>{if(!(RTC.conn&&RTC.conn.open)){toast('O paciente ainda não está na sala');return}send({type:'consent-req'});toast('Pedido de autorização enviado ao paciente')};
 
-async function shareStart(){const call=RTC.call;const pc=call&&call.peerConnection;if(!pc){toast('O paciente precisa estar na sala para você compartilhar a tela.');return}
+async function shareStart(opts){const call=RTC.call;const pc=call&&call.peerConnection;if(!pc){toast('O paciente precisa estar na sala para você compartilhar a tela.');return}
   if(!navigator.mediaDevices||!navigator.mediaDevices.getDisplayMedia){toast('Este aparelho não permite compartilhar a tela. Use o computador, ou a opção Na tela do paciente.');return}
   const sender=pc.getSenders().find(x=>x.track&&x.track.kind==='video');if(!sender){toast('Ligue a câmera antes de compartilhar a tela.');return}
-  let st;try{st=await navigator.mediaDevices.getDisplayMedia({video:{frameRate:30},audio:false})}catch(e){toast('Compartilhamento não iniciado.');return}
+  let st;try{st=await navigator.mediaDevices.getDisplayMedia({video:{frameRate:30,...(opts&&opts.displaySurface?{displaySurface:opts.displaySurface}:{})},audio:false,selfBrowserSurface:'exclude',surfaceSwitching:'include'})}catch(e){toast('Compartilhamento não iniciado.');return}
   const tr=st.getVideoTracks()[0];try{await sender.replaceTrack(tr)}catch(e){st.getTracks().forEach(t=>t.stop());toast('Não foi possível compartilhar a tela.');return}
   RTC.sharing={st,sender};tr.onended=()=>shareStop();const l=$('#rtc-local');if(l)l.srcObject=st;send({type:'share',on:true});
   const a=S.teleLive&&S.appts.find(x=>x.id===S.teleLive.apptId);audit('Compartilhamento de tela iniciado na teleconsulta',a&&a.pid);renderTele()}
-function shareStop(){const sh=RTC.sharing;if(!sh)return;RTC.sharing=null;try{sh.st.getTracks().forEach(t=>t.stop())}catch(e){}
+function shareStop(){const sh=RTC.sharing;if(!sh)return;RTC.sharing=null;if(MEET.present==='tela'){MEET.present=null}try{sh.st.getTracks().forEach(t=>t.stop())}catch(e){}
   const cam=RTC.local&&RTC.local.getVideoTracks()[0];try{if(cam)sh.sender.replaceTrack(cam)}catch(e){}send({type:'share',on:false});if(current==='teleconsulta')renderTele()}
 ACT.shareToggle=()=>{RTC.sharing?shareStop():shareStart()};
 function callPanelHtml(a){const st=RTC.state,con=!!(RTC.conn&&RTC.conn.open);
@@ -2349,7 +2461,7 @@ function callPanelHtml(a){const st=RTC.state,con=!!(RTC.conn&&RTC.conn.open);
   <div class="call-stage"><video id="rtc-remote" autoplay playsinline></video><video id="rtc-local" autoplay playsinline muted></video><div class="call-wait" id="rtc-wait">${con?'':'Envie o convite. Quando o paciente tocar no link, ele aparece aqui.'}</div></div>
   <div class="call-bar"><button class="btn" data-act="rtcMic" id="rtc-mic">${RTC.mic?'Desligar microfone':'Ligar microfone'}</button><button class="btn" data-act="rtcCam" id="rtc-cam">${RTC.cam?'Desligar câmera':'Ligar câmera'}</button>${canClinical()?`<button class="btn emdr-btn" data-act="emdrToggle" aria-pressed="${open}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="2.5" y="3.5" width="19" height="13" rx="2.5"/><path d="M8 20.5h8M12 16.5v4"/><path d="M6 10h12" stroke-dasharray="1.5 2.5"/><circle cx="15.5" cy="10" r="2.3" fill="currentColor" stroke="none"/></svg>Compartilhar tela | EMDR</button>`:''}<button class="btn ghost" data-act="rtcReopen">Reabrir a sala</button></div>
   ${RTC.state==='err'?`<p class="form-err">${esc(RTC.info)}</p>`:''}${inviteHtml(a)}</div>${open?stimPanelHtml():''}</div></div>`}
-function rtcUi(){if(PATIENT){ptVideos();return}const r=$('#rtc-remote'),l=$('#rtc-local');if(r&&r.srcObject!==RTC.remote)r.srcObject=RTC.remote||null;if(l&&l.srcObject!==RTC.local)l.srcObject=RTC.local||null;
+function rtcUi(){if(PATIENT){ptVideos();return}meetMedia();const r=$('#rtc-remote'),l=$('#rtc-local');if(r&&r.srcObject!==RTC.remote)r.srcObject=RTC.remote||null;if(l&&l.srcObject!==RTC.local)l.srcObject=RTC.local||null;
   const w=$('#rtc-wait');const con=!!(RTC.conn&&RTC.conn.open);if(w)w.textContent=con&&RTC.remote?'':con?'Conectando o vídeo…':RTC.state==='start'?'Abrindo a sala…':'Envie o convite. Quando o paciente tocar no link, ele aparece aqui.';
   const p=$('#rtc-pill');if(p)p.innerHTML=con?'<span class="pill rtc-on">Paciente na sala</span>':RTC.state==='wait'?'<span class="pill rtc-wait">Aguardando o paciente</span>':RTC.state==='err'?'<span class="pill st-cancelado">Sala fora do ar</span>':'<span class="pill rtc-off">Abrindo a sala…</span>';
   const cr=$('[data-act=consentReq]');if(cr)cr.disabled=!con;const m=$('#rtc-mic'),c=$('#rtc-cam');if(m)m.textContent=RTC.mic?'Desligar microfone':'Ligar microfone';if(c)c.textContent=RTC.cam?'Desligar câmera':'Ligar câmera';pjCtrlUi&&$('#pj-status')&&pjCtrlUi()}
@@ -2365,6 +2477,139 @@ async function recStartRtc(){const L=S.teleLive;const ac=new(window.AudioContext
   REC.stopP=new Promise(res=>{mr.onstop=()=>{const blob=new Blob(REC.chunks,{type:mr.mimeType||mime||(video?'video/webm':'audio/webm')});REC.last={url:URL.createObjectURL(blob),size:blob.size,name:REC.name};res()}});
   mr.ondataavailable=e=>{if(e.data&&e.data.size)REC.chunks.push(e.data)};mr.start(1000);L.recorded=true;audit('Gravação de teleconsulta iniciada (autorização registrada)',a&&a.pid);save();renderTele();toast('Gravando a sessão (sua voz e a do paciente)')}
 
+/* =========================================================
+   REUNIÃO NO PADRÃO TEAMS (psicóloga)
+   ========================================================= */
+const MEET={open:false,min:false,pane:null,present:null,timer:0,tray:false,winOpen:false};
+const IC={
+ cam:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2.5" y="6" width="13" height="12" rx="2.5"/><path d="M15.5 10.5 21 7.5v9l-5.5-3"/></svg>',
+ camoff:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2.5" y="6" width="13" height="12" rx="2.5"/><path d="M15.5 10.5 21 7.5v9l-5.5-3M3 3l18 18"/></svg>',
+ mic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg>',
+ micoff:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M3 3l18 18"/></svg>',
+ share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="2.5" y="4" width="19" height="13" rx="2.5"/><path d="M8 20.5h8"/><path d="M5.5 10.5h13" stroke-dasharray="1.4 2.4"/><circle cx="15" cy="10.5" r="2.2" fill="currentColor" stroke="none"/></svg>',
+ emdr:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M2 12h20" stroke-dasharray="1.4 2.6"/><circle cx="15" cy="12" r="3.2" fill="currentColor" stroke="none"/><path d="M5 9l-3 3 3 3M19 9l3 3-3 3"/></svg>',
+ win:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2.5" y="4" width="13" height="10" rx="2"/><rect x="8.5" y="10" width="13" height="10" rx="2" fill="#000"/><circle cx="15" cy="15" r="1.8" fill="currentColor" stroke="none"/></svg>',
+ screen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2.5" y="4" width="19" height="13" rx="2.5"/><path d="M8 20.5h8M12 17v3.5M12 13.5V8M9.5 10.5 12 8l2.5 2.5"/></svg>',
+ notes:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h7M9 16h5"/></svg>',
+ rec:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.6" fill="currentColor" stroke="none"/></svg>',
+ people:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="8.5" r="3.3"/><path d="M3 19.5c.8-3.3 3.2-5 6-5s5.2 1.7 6 5"/><path d="M17.5 8v6M14.5 11h6"/></svg>',
+ more:'<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5.5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="18.5" cy="12" r="1.7"/></svg>',
+ min:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="16" rx="2.5"/><rect x="12" y="12" width="7" height="6" rx="1.2" fill="currentColor" stroke="none"/></svg>',
+ leave:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M2.6 13.6c5.3-4.8 13.5-4.8 18.8 0l-2.1 2.9-4-1.2v-2.8c-2.1-.7-4.4-.7-6.5 0v2.8l-4 1.2z"/></svg>',
+ gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/></svg>',
+ full:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>'};
+function meetLive(){return S.teleLive&&S.appts.find(a=>a.id===S.teleLive.apptId)}
+function meetEl(){let el=$('#meet');if(!el){el=document.createElement('div');el.id='meet';el.setAttribute('role','dialog');el.setAttribute('aria-label','Teleconsulta');document.body.appendChild(el)}return el}
+function meetClose(){MEET.open=false;MEET.present=null;MEET.tray=false;clearInterval(MEET.timer);MEET.timer=0;const el=$('#meet');if(el)el.remove();trayClose();mirStop()}
+ACT.meetOpen=()=>{MEET.open=true;MEET.min=false;meetRender()};
+ACT.meetMin=()=>{MEET.min=true;trayClose();meetRender()};
+ACT.meetMax=()=>{MEET.min=false;meetRender()};
+ACT.meetPane=d=>{MEET.pane=MEET.pane===d.p?null:d.p;trayClose();meetRender()};
+function meetStatusTxt(){const con=!!(RTC.conn&&RTC.conn.open);return con?(RTC.remote?'Paciente conectado':'Conectando o vídeo…'):RTC.state==='err'?'Sala fora do ar':RTC.state==='start'?'Abrindo a sala…':'Aguardando o paciente'}
+function meetRender(){const a=meetLive();if(!a||!MEET.open){meetClose();return}
+  if(canClinical()&&!RTC.role&&a.room)rtcHost(a.room);
+  const el=meetEl();const p=getP(a.pid);const logo=($('.brand-logo')||{}).src||'';const recOn=!!(REC.mr&&REC.mr.state==='recording');const con=!!(RTC.conn&&RTC.conn.open);
+  el.className='meet'+(MEET.min?' min':'')+(MEET.present?' presenting':'');
+  if(MEET.min){el.innerHTML=`<div class="mini"><div class="mt-tile"><video id="rtc-remote" autoplay playsinline></video>${RTC.remote?'':`<div class="mt-wait" style="font-size:.85rem">${esc(meetStatusTxt())}</div>`}<span class="lbl">${esc(pname(p))}${MEET.present?' · apresentando':''}</span></div>
+    <div class="mini-bar"><span class="mono" id="tl-clock" style="color:var(--mt-mut);font-size:.85rem">00:00</span><span class="sp"></span><button class="btn sm dark" data-act="rtcMic" aria-label="Microfone">${RTC.mic?IC.mic:IC.micoff}</button><button class="btn sm primary" data-act="meetMax">Voltar</button></div></div>`;meetMedia();meetTick();return}
+  const tb=(act,icon,label,extra='')=>`<button class="mt-btn ${extra}" data-act="${act}" ${extra.includes('pressed')?'aria-pressed="true"':''}>${icon}<span class="t">${label}</span></button>`;
+  const paneBtn=(id,icon,label)=>`<button class="mt-btn" data-act="meetPane" data-p="${id}" aria-pressed="${MEET.pane===id}">${icon}<span class="t">${label}</span>${id==='gravar'&&recOn?'<i class="rec-badge"></i>':''}</button>`;
+  const presentTxt=MEET.present==='paciente'?'Estimulação na tela do paciente':MEET.present==='janela'?'Janela da estimulação':MEET.present==='tela'?'Sua tela':'';
+  const stage=MEET.present?`<div class="mt-grid">
+      <div class="mt-present"><div class="mt-pbar"><span class="live-dot" style="background:#fff;box-shadow:none"></span>Você está apresentando: ${presentTxt}<span class="sp"></span><button data-act="presentStop">Parar apresentação</button></div>
+        ${MEET.present==='tela'?`<div class="mt-mir"><span class="hint2">Sua tela compartilhada</span><video id="rtc-share" autoplay playsinline muted style="max-width:100%;max-height:100%"></video></div>`:`<div class="mt-mir" id="mir-wrap"><span class="hint2">O paciente está vendo isto</span><canvas id="mir"></canvas></div>`}
+        ${MEET.present!=='tela'?`<div class="mt-qbar" style="padding:8px;background:var(--mt-top)"><button class="btn sm primary" data-act="pjStart" id="q-start">Iniciar</button><button class="btn sm" data-act="pjPause" id="q-pause">Pausar</button><button class="btn sm stop-now" data-act="pjStop" id="q-stop">Interromper</button><span class="read" id="q-read">0 passagens · 00:00</span><button class="btn sm dark" data-act="meetPane" data-p="emdr">Ajustes</button></div>`:''}</div>
+      <div class="mt-tile"><video id="rtc-remote" autoplay playsinline></video>${RTC.remote?'':`<div class="mt-wait"><b>${esc(pname(p))}</b>${esc(meetStatusTxt())}</div>`}<span class="lbl">${esc(pname(p))}</span>
+        <div class="mt-self ${RTC.sharing?'screen':''}"><video id="rtc-local" autoplay playsinline muted></video></div></div></div>`
+    :`<div class="mt-grid"><div class="mt-tile"><video id="rtc-remote" autoplay playsinline></video>${RTC.remote?'':`<div class="mt-wait"><b>${esc(pname(p))}</b><span>${esc(meetStatusTxt())}</span>${con?'':`<span style="max-width:40ch">Envie o convite. Quando o paciente tocar no link, ele aparece aqui.</span><div class="mt-qbar"><a class="btn wa" href="${esc(waLink(a))}" target="_blank" rel="noopener" data-act="inviteSent" data-nav="1" data-via="WhatsApp" data-id="${a.id}">Enviar por WhatsApp</a><button class="btn dark" data-act="copyLink" data-id="${a.id}">Copiar link</button></div>`}</div>`}<span class="lbl">${esc(pname(p))}</span>
+        <div class="mt-self"><video id="rtc-local" autoplay playsinline muted></video></div></div></div>`;
+  const paneTitle={emdr:'Estimulação Bilateral — EMDR',notas:'Notas da sessão',gravar:'Gravação e transcrição',convite:'Convidar o paciente'}[MEET.pane];
+  const paneBody=MEET.pane==='emdr'?stimPanelHtml():MEET.pane==='notas'?`<div class="field">${info('tl-notes','Anotações da sessão','Salvas automaticamente. Ao encerrar, podem ir para o prontuário como evolução em rascunho.')}<textarea id="tl-notes" rows="14" placeholder="Anotações durante o atendimento">${esc(S.teleLive.notes||'')}</textarea></div><label class="check"><input type="checkbox" id="tl-link" ${S.teleLive.toRecord!==false?'checked':''}> Ao encerrar, enviar ao prontuário (evolução em rascunho)</label>`
+    :MEET.pane==='gravar'?recPanelHtml():MEET.pane==='convite'?inviteHtml(a):'';
+  el.innerHTML=`<header class="mt-top"><div class="mt-who">${logo?`<img src="${logo}" alt="">`:''}<div style="min-width:0"><b>${esc(pname(p))}</b><small><span class="mono" id="tl-clock">00:00</span><span id="mt-st">${esc(meetStatusTxt())}</span>${recOn?'<span style="color:#F3A0A0">● Gravando</span>':''}</small></div></div>
+   <nav class="mt-tools" aria-label="Controles da reunião">${paneBtn('convite',IC.people,'Convidar')}${paneBtn('notas',IC.notes,'Notas')}${paneBtn('gravar',IC.rec,'Gravar')}${paneBtn('emdr',IC.emdr,'EMDR')}<span class="mt-sep"></span>
+   ${tb('rtcCam',RTC.cam?IC.cam:IC.camoff,'Câmera',RTC.cam?'':'off')}${tb('rtcMic',RTC.mic?IC.mic:IC.micoff,'Microfone',RTC.mic?'':'off')}
+   <button class="mt-btn share" data-act="trayToggle" id="mt-share" aria-pressed="${!!MEET.present}">${IC.share}<span class="t">${MEET.present?'Apresentando':'Compartilhar'}</span></button>
+   ${tb('devices',IC.gear,'Dispositivos')}${tb('meetMin',IC.min,'Minimizar')}</nav>
+   <button class="mt-leave" data-act="meetLeave">${IC.leave}<span>Sair</span></button></header>
+  <div class="mt-body"><main class="mt-stage">${RTC.state==='err'?`<p class="form-err" style="margin:0">${esc(RTC.info)} <button class="btn sm" data-act="rtcReopen">Reabrir a sala</button></p>`:''}${stage}</main>
+   <aside class="mt-pane" ${MEET.pane?'':'hidden'}><div class="mt-pane-h"><b>${paneTitle||''}</b><button class="icon-btn" data-act="meetPane" data-p="${MEET.pane||''}" aria-label="Fechar painel">×</button></div><div class="mt-pane-b">${paneBody}</div></aside></div>`;
+  if(MEET.pane==='emdr')bindStimPanel();if(MEET.pane==='gravar')bindRecPanel();
+  if(MEET.pane==='notas'){const n=$('#tl-notes');if(n)n.oninput=()=>{S.teleLive.notes=n.value;clearTimeout(n._t);n._t=setTimeout(save,400)};const c=$('#tl-link');if(c)c.onchange=()=>{S.teleLive.toRecord=c.checked;save()}}
+  meetMedia();meetTick();if(!MEET.timer)MEET.timer=setInterval(meetTick,1000);if(MEET.present&&MEET.present!=='tela')mirLoop()}
+function meetMedia(){const r=$('#rtc-remote'),l=$('#rtc-local'),sh=$('#rtc-share');if(r&&r.srcObject!==RTC.remote)r.srcObject=RTC.remote||null;
+  const loc=RTC.sharing?RTC.sharing.st:RTC.local;if(l&&l.srcObject!==loc)l.srcObject=loc||null;if(sh&&RTC.sharing&&sh.srcObject!==RTC.sharing.st)sh.srcObject=RTC.sharing.st;
+  const st=$('#mt-st');if(st)st.textContent=meetStatusTxt();const w=$('#meet .mt-tile .mt-wait');if(w&&RTC.remote&&!MEET.min)meetRender()}
+function meetTick(){if(!S.teleLive||!MEET.open){clearInterval(MEET.timer);MEET.timer=0;return}const ms=Date.now()-S.teleLive.start;const c=$('#tl-clock');if(c)c.textContent=fmtDur(ms);
+  const rc=$('#rc-clock');if(rc&&REC.mr)rc.textContent=fmtDur(Date.now()-REC.start);pjCtrlUi();qbarUi()}
+function qbarUi(){const st=PJC.st||{};const con=pjConnected();const run=con&&st.running;const b=(id,dis)=>{const e=$('#'+id);if(e)e.disabled=dis};b('q-start',!con||run);b('q-pause',!run);b('q-stop',!run);
+  const pz=$('#q-pause');if(pz)pz.textContent=st.paused?'Retomar':'Pausar';const r=$('#q-read');if(r){const ps=con?st.passes||0:0;r.textContent=`${ps} ${ps===1?'passagem':'passagens'} · ${fmtDur(con?st.setMs||0:0)}${st.patientPause?' · pausa pedida':''}`}}
+ACT.meetLeave=()=>modal('Sair da reunião',`<p style="margin-top:0">Encerrar o atendimento de agora? A consulta é marcada como realizada e as anotações e séries vão para o prontuário.</p><div class="form-actions"><button class="btn ghost" data-act="meetMin" data-close>Só minimizar</button><span class="sp"></span><button class="btn ghost" data-close>Cancelar</button><button class="btn danger solid" data-act="meetEnd">Encerrar atendimento</button></div>`);
+ACT.meetEnd=async()=>{closeModal();if(MEET.present)await presentStop(true);await ACT.teleEnd();meetClose();if(current!=='teleconsulta')go('teleconsulta');else renderTele()};
+
+/* --- bandeja Compartilhar (como no Teams) --- */
+function trayClose(){MEET.tray=false;const t=$('#tray');if(t)t.remove();const b=$('#mt-share');if(b)b.setAttribute('aria-pressed',String(!!MEET.present))}
+ACT.trayToggle=()=>{if(MEET.tray){trayClose();return}if(MEET.present){ACT.meetPane({p:'emdr'});return}
+  const canScreen=!!(navigator.mediaDevices&&navigator.mediaDevices.getDisplayMedia)&&!isNative();const con=!!(RTC.conn&&RTC.conn.open);
+  const t=document.createElement('div');t.id='tray';t.className='tray';t.setAttribute('role','dialog');t.setAttribute('aria-label','Compartilhar conteúdo');
+  t.innerHTML=`<div class="panel-head"><h3>Compartilhar conteúdo</h3><span class="sp"></span><button class="icon-btn" data-act="trayToggle" aria-label="Fechar">×</button></div>
+   <button class="tray-card rec" data-act="presentPaciente"><span class="ic">${IC.emdr}</span><span><b>Estimulação bilateral (EMDR)<span class="tag novo">Recomendado</span></b><small>A estimulação aparece em tela cheia no aparelho do paciente, desenhada lá mesmo, sem atrasos. Você acompanha uma cópia ao vivo e o vídeo do paciente.</small></span></button>
+   <button class="tray-card" data-act="presentJanela" ${canScreen?'':'disabled'}><span class="ic">${IC.win}</span><span><b>Janela da estimulação</b><small>Abre uma tela adicional só com a estimulação e compartilha essa janela, como no Teams. Bom para um segundo monitor.${canScreen?'':' Disponível no computador.'}</small></span></button>
+   <button class="tray-card" data-act="presentTela" ${canScreen?'':'disabled'}><span class="ic">${IC.screen}</span><span><b>Tela ou janela</b><small>Compartilhe qualquer tela, janela ou aba.${canScreen?'':' Disponível no computador.'}</small></span></button>
+   ${con?'':'<p class="hint" style="margin:0">O paciente ainda não entrou. Você já pode preparar a apresentação.</p>'}`;
+  document.body.appendChild(t);MEET.tray=true;const b=$('#mt-share');const r=b?b.getBoundingClientRect():{left:innerWidth/2,bottom:70,right:innerWidth/2};
+  const w=t.offsetWidth;t.style.left=Math.max(12,Math.min(r.left+r.width/2-w/2,innerWidth-w-12))+'px';t.style.top=Math.min(r.bottom+8,innerHeight-t.offsetHeight-12)+'px';
+  const f=t.querySelector('.tray-card');f&&f.focus({preventScroll:true})};
+document.addEventListener('click',e=>{if(MEET.tray&&!e.target.closest('#tray,#mt-share'))trayClose()});
+ACT.presentPaciente=()=>{trayClose();MEET.present='paciente';MEET.pane='emdr';send({type:'present',on:true,cfg:S.cfg});audit('Apresentação da estimulação na tela do paciente iniciada',meetLive()&&meetLive().pid);meetRender();toast('O paciente está vendo a tela da estimulação. Toque em Iniciar quando quiser.')};
+ACT.presentJanela=()=>{trayClose();MEET.present='janela';MEET.pane='emdr';MEET.winOpen=false;meetRender()};
+ACT.presentTela=async()=>{trayClose();await shareStart({});if(RTC.sharing){MEET.present='tela';meetRender()}};
+ACT.winOpen=()=>{const url=location.href.split('#')[0].split('?')[0]+'#estimulo';let w=null;try{w=window.open(url,'emdrpro-estimulo','popup=yes,width=1100,height=660')}catch(e){}
+  if(!w){toast('O navegador bloqueou a janela. Permita pop-ups para este site e tente de novo.');return}PJC.win=w;MEET.winOpen=true;setTimeout(()=>{send({type:'cfg',cfg:S.cfg});meetRender()},700)};
+ACT.winShare=async()=>{await shareStart({displaySurface:'window'});meetRender()};
+async function presentStop(silent){const was=MEET.present;MEET.present=null;
+  if(was==='paciente'){if(PJC.st&&PJC.st.running)send({type:'stop',reason:'apresentação encerrada'});send({type:'present',on:false})}
+  if(was==='janela'){if(PJC.st&&PJC.st.running)send({type:'stop',reason:'apresentação encerrada'});try{PJC.win&&PJC.win.close()}catch(e){}}
+  if(RTC.sharing)shareStop();mirStop();if(!silent){audit('Apresentação encerrada',meetLive()&&meetLive().pid);meetRender()}}
+ACT.presentStop=()=>presentStop(false);
+
+/* --- espelho ao vivo da estimulação (o que o paciente vê) --- */
+const MIR={cfg:null,running:false,paused:false,phase:0,passes:0,setMs:0,last:0,raf:0};
+function mirApply(m){MIR.cfg=MIR.cfg||{...S.cfg};if(m.cfg)MIR.cfg={...MIR.cfg,...m.cfg};
+  if(m.type==='start'){Object.assign(MIR,{running:true,paused:false,phase:0,passes:0,setMs:0})}else if(m.type==='pause')MIR.paused=true;else if(m.type==='resume')MIR.paused=false;else if(m.type==='stop')MIR.running=false;else if(m.type==='present'&&!m.on)MIR.running=false}
+function mirSync(st){if(!st.running){if(MIR.running)MIR.running=false;MIR.passes=st.passes||MIR.passes;return}MIR.paused=!!st.paused;if(Math.abs((st.passes||0)-MIR.passes)>1){MIR.phase=st.passes;MIR.passes=st.passes}}
+function mirStop(){cancelAnimationFrame(MIR.raf);MIR.raf=0;MIR.running=false}
+function mirLoop(){cancelAnimationFrame(MIR.raf);MIR.last=0;const fr=ts=>{const cv=$('#mir');if(!cv||!MEET.present){MIR.raf=0;return}
+  const c=MIR.cfg||S.cfg;const dt=MIR.last?Math.min(ts-MIR.last,100):0;MIR.last=ts;
+  if(MIR.running&&!MIR.paused){const prev=MIR.phase;MIR.phase+=dt/(60000/c.ppm);MIR.setMs+=dt;MIR.passes+=Math.floor(MIR.phase)-Math.floor(prev)}
+  const wrap=$('#mir-wrap');const pd=RTC.pdims||{w:16,h:9};const ar=pd.w/pd.h;const bw=wrap.clientWidth,bh=wrap.clientHeight;let w=bw,h=bw/ar;if(h>bh){h=bh;w=bh*ar}
+  const dpr=Math.min(devicePixelRatio||1,2);if(cv.width!==Math.round(w*dpr)){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.width=w+'px';cv.style.height=h+'px'}
+  const g=cv.getContext('2d'),W=cv.width,H=cv.height;g.fillStyle=c.bg;g.fillRect(0,0,W,H);const k=W/((RTC.pdims&&RTC.pdims.w)||1280);
+  if(MIR.running||MIR.passes){const ph=MIR.phase;const pos=c.motion==='linear'?(f=>f<1?-1+2*f:3-2*f)(((ph%2)+2)%2):-Math.cos(Math.PI*ph);const r=Math.max(2,c.size/2*k*dpr*(RTC.pdims?1:1.6));const span=Math.max(0,(W/2-r-14*k*dpr))*(c.amp/100);drawDot(g,c,W/2+pos*span,H/2,r)}
+  else{g.fillStyle=lumOf(c.bg)>140?'rgba(0,0,0,.4)':'rgba(255,255,255,.45)';g.font=`${14*dpr}px Figtree, sans-serif`;g.textAlign='center';g.fillText(MEET.present==='janela'&&!MEET.winOpen?'Abra a janela da estimulação no painel ao lado':'Aguardando você iniciar a estimulação',W/2,H/2)}
+  MIR.raf=requestAnimationFrame(fr)};MIR.raf=requestAnimationFrame(fr)}
+function lumOf(hex){const b=String(hex||'#000').replace('#','');return b.length>=6?(parseInt(b.slice(0,2),16)*299+parseInt(b.slice(2,4),16)*587+parseInt(b.slice(4,6),16)*114)/1000:0}
+
+/* --- dispositivos (câmera e microfone) --- */
+async function rtcSwitch(kind,deviceId){const c=kind==='video'?{video:{deviceId:{exact:deviceId},width:{ideal:640},height:{ideal:480}}}:{audio:{deviceId:{exact:deviceId},echoCancellation:true,noiseSuppression:true}};
+  let st;try{st=await navigator.mediaDevices.getUserMedia(c)}catch(e){toast('Não foi possível usar esse dispositivo.');return}const nt=st.getTracks()[0];
+  if(!RTC.local)RTC.local=new MediaStream();const old=RTC.local.getTracks().filter(t=>t.kind===nt.kind);old.forEach(t=>{RTC.local.removeTrack(t);t.stop()});RTC.local.addTrack(nt);nt.enabled=kind==='video'?RTC.cam:RTC.mic;
+  try{const pc=RTC.call&&RTC.call.peerConnection;const snd=pc&&pc.getSenders().find(x=>x.track&&x.track.kind===nt.kind);if(snd&&!(kind==='video'&&RTC.sharing))await snd.replaceTrack(nt)}catch(e){}
+  try{localStorage.setItem('emdrpro.dev.'+kind,deviceId)}catch(e){}PATIENT?(ptVideos(),ptPre()):meetMedia()}
+let devMeter=null;
+function meterStart(sel){meterStop();if(!RTC.local||!RTC.local.getAudioTracks().length)return;try{const ac=new(window.AudioContext||window.webkitAudioContext)();const an=ac.createAnalyser();an.fftSize=256;ac.createMediaStreamSource(new MediaStream(RTC.local.getAudioTracks())).connect(an);const d=new Uint8Array(an.fftSize);
+  const tick=()=>{if(!devMeter)return;an.getByteTimeDomainData(d);let m=0;for(const v of d)m=Math.max(m,Math.abs(v-128));const el=document.querySelector(sel);if(el)el.style.width=Math.min(100,m/90*100)+'%';devMeter.raf=requestAnimationFrame(tick)};devMeter={ac,raf:requestAnimationFrame(tick)}}catch(e){}}
+function meterStop(){if(devMeter){cancelAnimationFrame(devMeter.raf);try{devMeter.ac.close()}catch(e){}devMeter=null}}
+ACT.devices=async()=>{let list=[];try{list=await navigator.mediaDevices.enumerateDevices()}catch(e){}const cur=k=>{const t=RTC.local&&RTC.local.getTracks().find(x=>x.kind===k);return t&&t.getSettings?t.getSettings().deviceId:''};
+  const opt=(k)=>list.filter(d=>d.kind===k+'input').map((d,i)=>`<option value="${esc(d.deviceId)}" ${d.deviceId===cur(k)?'selected':''}>${esc(d.label||(k==='video'?'Câmera ':'Microfone ')+(i+1))}</option>`).join('');
+  modal('Dispositivos',`<div class="form"><div class="field"><label for="dv-cam">Câmera</label><select id="dv-cam">${opt('video')||'<option>Nenhuma câmera encontrada</option>'}</select></div>
+   <div class="field"><label for="dv-mic">Microfone</label><select id="dv-mic">${opt('audio')||'<option>Nenhum microfone encontrado</option>'}</select></div>
+   <div class="field"><span class="flabel">Nível do microfone (fale algo)</span><div class="dev-meter"><span id="dv-lvl"></span></div></div>
+   <p class="hint" style="margin:0">Fones de ouvido evitam eco. Se a câmera ou o microfone não aparecerem, clique no cadeado da barra de endereço e permita o acesso.</p>
+   <div class="form-actions"><span class="sp"></span><button class="btn primary" data-act="devClose">Pronto</button></div></div>`);
+  meterStart('#dv-lvl');const c=$('#dv-cam'),m=$('#dv-mic');if(c)c.onchange=()=>rtcSwitch('video',c.value);if(m)m.onchange=async()=>{await rtcSwitch('audio',m.value);meterStart('#dv-lvl')}};
+ACT.devClose=()=>{meterStop();closeModal()};
+
 /* --- tela do paciente (link da teleconsulta) --- */
 let ptJoined=false,ptAC=null,ptTR=null;
 function ptBeep(side){const c=PJ.cfg;if(!c||!c.audio||!ptAC||c.vol<=0)return;try{const t=ptAC.currentTime,o=ptAC.createOscillator(),g=ptAC.createGain();o.frequency.value=c.tone||440;const v=Math.max(.0002,c.vol/100*.5);
@@ -2376,20 +2621,27 @@ function renderPatient(){document.body.classList.add('pt-mode');document.title='
   <div class="pt-bar" id="pt-bar"></div><button class="pt-stop" data-act="ptStop">PARAR</button><button class="pt-pause" data-act="ptPause">Pedir pausa</button>`;
   current='estimulo';renderProj();PJ.cfg={...DEF_CFG};ptState(ptJoined?RTC.state:'idle')}
 function ptState(st,info){RTC.state=st;const m=$('#pt-msg');if(!m)return;
-  const html={idle:`<h1>Sua teleconsulta</h1><p>Toque em <b>Entrar na consulta</b>. O navegador vai pedir para usar a câmera e o microfone: toque em <b>Permitir</b>.</p><button class="btn primary huge" style="max-width:320px" data-act="ptJoin">Entrar na consulta</button><p style="font-size:.85rem">Use fones de ouvido, se tiver. Fique num lugar tranquilo e reservado.</p>`,
+  const html={idle:`<h1>Sua teleconsulta</h1><p>Toque em <b>Continuar</b>. O navegador vai pedir para usar a câmera e o microfone: toque em <b>Permitir</b>.</p><button class="btn primary huge" style="max-width:320px" data-act="ptPrep">Continuar</button><p style="font-size:.85rem">Use fones de ouvido, se tiver. Fique num lugar tranquilo e reservado.</p>`,
+    pre:`<div class="pre"><h1 style="font-size:1.5rem">Confira câmera e microfone</h1><div class="pre-vid"><video id="pre-v" autoplay playsinline muted></video>${RTC.local&&RTC.local.getVideoTracks().length&&RTC.cam?'':'<div class="off-msg">Câmera desligada</div>'}</div>
+      <div class="dev-meter"><span id="pre-lvl"></span></div><div class="pre-row"><button class="pt-ib ${RTC.cam?'':'off'}" data-act="rtcCam">${RTC.cam?IC.cam:IC.camoff}<span>Câmera</span></button><button class="pt-ib ${RTC.mic?'':'off'}" data-act="rtcMic">${RTC.mic?IC.mic:IC.micoff}<span>Microfone</span></button><button class="pt-ib" data-act="devices">${IC.gear}<span>Dispositivos</span></button></div>
+      ${RTC.local?'':'<p>Não conseguimos acessar a câmera e o microfone. Você pode entrar mesmo assim, ou tocar no cadeado da barra de endereço e permitir.</p>'}<button class="btn primary huge" style="max-width:320px" data-act="ptJoin">Entrar agora</button></div>`,
     wait:`<h1>Você está na sala</h1><p>Aguardando a psicóloga iniciar o atendimento. Mantenha esta tela aberta.</p>`,
     on:'',err:`<h1>Não conectou</h1><p>${esc(info||'Verifique a internet.')}</p><button class="btn primary huge" style="max-width:320px" data-act="ptJoin">Tentar de novo</button>`,
     bye:`<h1>Atendimento encerrado</h1><p>Obrigada pela sessão. Você já pode fechar esta página.</p>`}[st];
   m.innerHTML=html||'';m.hidden=st==='on'&&!!RTC.remote;ptVideos();ptBar()}
-function ptVideos(){const r=$('#pt-remote'),l=$('#pt-local');if(r&&r.srcObject!==RTC.remote)r.srcObject=RTC.remote||null;if(l){if(l.srcObject!==RTC.local)l.srcObject=RTC.local||null;l.hidden=!RTC.local||!RTC.local.getVideoTracks().length}
+function ptVideos(){const r=$('#pt-remote'),l=$('#pt-local');if(r&&r.srcObject!==RTC.remote)r.srcObject=RTC.remote||null;if(l){if(l.srcObject!==RTC.local)l.srcObject=RTC.local||null;l.hidden=!RTC.local||!RTC.local.getVideoTracks().length||RTC.state==='pre'||RTC.state==='idle'}
   const m=$('#pt-msg');if(m&&RTC.state==='on'){m.hidden=!!RTC.remote;if(!RTC.remote)m.innerHTML='<h1>Conectando o vídeo…</h1>'}}
-function ptBar(){const b=$('#pt-bar');if(!b)return;if(!ptJoined||RTC.state==='bye'){b.innerHTML='';return}
-  b.innerHTML=`<button class="btn dark" data-act="rtcMic">${RTC.mic?'Desligar microfone':'Ligar microfone'}</button><button class="btn dark" data-act="rtcCam">${RTC.cam?'Desligar câmera':'Ligar câmera'}</button>${document.fullscreenEnabled?'<button class="btn dark" data-act="ptFull">Tela cheia</button>':''}<button class="btn danger solid" data-act="ptLeave">Sair</button>`}
-ACT.ptJoin=async()=>{ptJoined=true;try{ptAC=ptAC||new(window.AudioContext||window.webkitAudioContext)();ptAC.resume&&ptAC.resume()}catch(e){}
-  try{if(navigator.wakeLock)await navigator.wakeLock.request('screen')}catch(e){}rtcStop();RTC.role=null;ptState('wait');rtcJoin(SALA)};
-ACT.ptLeave=()=>{if(PJ.running)pjFinish('interrompido pelo paciente');ptTrStop();rtcStop();ptJoined=false;ptState('bye')};
+function ptPre(){if(RTC.state!=='pre')return;ptState('pre');const v=$('#pre-v');if(v)v.srcObject=RTC.local||null;meterStart('#pre-lvl')}
+ACT.ptPrep=async()=>{try{ptAC=ptAC||new(window.AudioContext||window.webkitAudioContext)();ptAC.resume&&ptAC.resume()}catch(e){}await rtcMedia();RTC.state='pre';ptPre()};
+function ptBar(){const b=$('#pt-bar');if(!b)return;if(!ptJoined||RTC.state==='bye'||RTC.state==='pre'){b.innerHTML='';return}
+  b.innerHTML=`<button class="pt-ib ${RTC.cam?'':'off'}" data-act="rtcCam">${RTC.cam?IC.cam:IC.camoff}<span>Câmera</span></button><button class="pt-ib ${RTC.mic?'':'off'}" data-act="rtcMic">${RTC.mic?IC.mic:IC.micoff}<span>Microfone</span></button><button class="pt-ib" data-act="devices">${IC.gear}<span>Dispositivos</span></button>${document.fullscreenEnabled?`<button class="pt-ib" data-act="ptFull">${IC.full}<span>Tela cheia</span></button>`:''}<button class="pt-ib leave" data-act="ptLeave">${IC.leave}<span>Sair</span></button>`}
+ACT.ptJoin=async()=>{meterStop();ptJoined=true;try{ptAC=ptAC||new(window.AudioContext||window.webkitAudioContext)();ptAC.resume&&ptAC.resume()}catch(e){}
+  try{if(navigator.wakeLock)await navigator.wakeLock.request('screen')}catch(e){}
+  try{RTC.peer&&RTC.peer.destroy()}catch(e){}RTC.peer=null;RTC.conn=null;RTC.call=null;RTC.role=null;ptState('wait');rtcJoin(SALA)};
+window.addEventListener('resize',()=>{if(PATIENT&&RTC.conn&&RTC.conn.open){clearTimeout(window.__dimT);window.__dimT=setTimeout(()=>send({type:'dims',w:innerWidth,h:innerHeight}),300)}});
+ACT.ptLeave=()=>{if(PJ.running)pjFinish('interrompido pelo paciente');document.body.classList.remove('pj-present','pj-running');ptTrStop();rtcStop();ptJoined=false;ptState('bye')};
 ACT.ptStop=()=>{if(PJ.running){pjFinish('interrompido pelo paciente');toast('Estimulação interrompida')}};
-function ptBye(){ptTrStop();setTimeout(()=>{rtcStop();ptJoined=false;ptState('bye')},300)}
+function ptBye(){ptTrStop();document.body.classList.remove('pj-present','pj-running');setTimeout(()=>{rtcStop();ptJoined=false;ptState('bye')},300)}
 function ptTrStop(){if(ptTR){ptTR.on=false;try{ptTR.r.stop()}catch(e){}ptTR=null}}
 function ptMsg(m){
   if(m.type==='consent-req'){modal('Autorização',`<p style="margin-top:0">A psicóloga pede autorização para <b>gravar e transcrever</b> esta sessão, para o seu prontuário. A gravação fica guardada apenas com ela, em sigilo.</p><p class="hint">Você pode recusar sem nenhum prejuízo ao atendimento.</p><div class="form-actions"><button class="btn ghost" data-act="ptConsent" data-v="0">Não autorizo</button><span class="sp"></span><button class="btn primary" data-act="ptConsent" data-v="1">Autorizo</button></div>`)}
