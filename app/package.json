@@ -6,7 +6,7 @@
   "scripts": {
     "web": "node scripts/copy-web.js",
     "sync": "npm run web && npx cap sync",
-    "assets": "npx capacitor-assets generate --ios --android --iconBackgroundColor '#2F3B27' --iconBackgroundColorDark '#1E2717' --splashBackgroundColor '#F4F1E8' --splashBackgroundColorDark '#1E2717'"
+    "assets": "npx capacitor-assets generate --ios --android --iconBackgroundColor '#F6EEE3' --iconBackgroundColorDark '#F6EEE3' --splashBackgroundColor '#F6EEE3' --splashBackgroundColorDark '#F6EEE3'"
   },
   "dependencies": {
     "@capacitor/android": "7.6.9",

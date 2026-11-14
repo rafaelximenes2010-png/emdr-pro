@@ -2,21 +2,21 @@
   "appId": "com.karinaximenes.emdrpro",
   "appName": "EMDR PRO",
   "webDir": "www",
-  "backgroundColor": "#F4F1E8",
+  "backgroundColor": "#F6EEE3",
   "ios": {
     "contentInset": "never",
-    "backgroundColor": "#2F3B27",
+    "backgroundColor": "#F6EEE3",
     "preferredContentMode": "mobile"
   },
   "android": {
-    "backgroundColor": "#2F3B27",
+    "backgroundColor": "#F6EEE3",
     "allowMixedContent": false
   },
   "plugins": {
     "SplashScreen": {
       "launchShowDuration": 1200,
       "launchAutoHide": true,
-      "backgroundColor": "#2F3B27",
+      "backgroundColor": "#F6EEE3",
       "showSpinner": false
     },
     "StatusBar": {
