@@ -27,6 +27,7 @@ export default {
     const base = isApp ? ORIGIN : ORIGIN + "/site";
     let path = url.pathname;
     if (!isApp && (path === "/app" || path === "/app/")) return Response.redirect(`https://${APP}/`, 302);
+    if (/^\/(android|apk|baixar)\/?$/i.test(path)) return Response.redirect("https://github.com/rafaelximenes2010-png/emdr-pro/releases/download/android-latest/EMDR-PRO.apk", 302);
 
     const upstream = base + path + url.search;
     const r = await fetch(upstream, { method: request.method, redirect: "manual", cf: { cacheTtl: 60, cacheEverything: true } });
