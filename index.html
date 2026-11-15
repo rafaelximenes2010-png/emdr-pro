@@ -3455,7 +3455,7 @@ ROUTES.configuracoes=renderConfig;
 /* ---------- Menu da Karina (clique no logo) ---------- */
 const BM_I={home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>',
   id:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2.5"/><path d="M5.5 16.5c.8-1.7 2-2.5 3.5-2.5s2.7.8 3.5 2.5M15 10h3M15 13h3"/></svg>',
-  gear:GEAR,sliders:CFG_I.sliders,ethic:LG_IC.etica,shield:LG_IC.seguranca,mail:LG_IC.canal,check:LG_IC.consentimentos,bell:SVG_I.bell,lock:CFG_I.lock,play:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z"/></svg>'};
+  gear:GEAR,sliders:CFG_I.sliders,ethic:LG_IC.etica,shield:LG_IC.seguranca,mail:LG_IC.canal,check:LG_IC.consentimentos,bell:SVG_I.bell,lock:CFG_I.lock,play:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z"/></svg>',share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></svg>'};
 function bmItems(){const R=[],it=(ic,t,s,run,r)=>R.push({ic,t,s,run,r}),sep=t=>R.push({sep:t});
   it(BM_I.home,'Início','Painel do dia',()=>go('painel'),'painel');
   if(role()==='psi')it(BM_I.id,'Cadastro da psicóloga','Nome, CRP, especialidade, assinatura e slogan',()=>ACT.profile());
@@ -3470,6 +3470,7 @@ function bmItems(){const R=[],it=(ic,t,s,run,r)=>R.push({ic,t,s,run,r}),sep=t=>R
   it(BM_I.check,'Consentimentos','Aceites registrados e revogações',()=>{go('privacidade');setTimeout(()=>ACT.lgOpen({id:'consentimentos'}),60)});
   it(BM_I.mail,'Canal de Privacidade','Pedidos sobre dados, com protocolo',()=>{go('privacidade');setTimeout(()=>ACT.lgOpen({id:'canal'}),60)});
   sep('');
+  it(BM_I.share,'Compartilhar o app','Mensagem com ícone e links de instalação para o WhatsApp',()=>ACT.shareApp());
   it(BM_I.play,'Tutorial guiado','Conheça o sistema passo a passo',()=>ACT.tour());
   return R}
 let BM=null;
@@ -3506,6 +3507,23 @@ ACT.recAskVerbal=()=>{const L=S.teleLive;if(!L)return;L.consent=true;L.consentBy
 ACT.recGo=async()=>{closeModal();const L=S.teleLive;if(!L||!L.consent){ACT.recAsk();return}
   if(!(REC.mr&&REC.mr.state==='recording'))await ACT.recStart();if(!TR.on)ACT.trStart();renderTele()};
 ACT.recHalt=async()=>{if(REC.mr&&REC.mr.state!=='inactive')await recStop();if(TR.on)trStop();renderTele();if(REC.last){MEET.pane='gravar';renderTele()}toast(REC.last?'Gravação concluída. Baixe o arquivo em Gravar e transcrever.':'Transcrição pausada')};
+
+/* Compartilhar o app: mensagem + ícone (WhatsApp e outros) */
+const SHARE_TXT=`Oi! 🌿 Segue o link para instalar a *ZOEVITA*, a plataforma clínica da Dra. Karina Ximenes.
+
+📱 *iPhone ou iPad* (Safari): https://app.zoevita.net.br
+Toque em *Compartilhar* → *Adicionar à Tela de Início*.
+
+🤖 *Android*: https://zoevita.net.br/android
+
+💻 *Computador* (Chrome ou Edge): https://app.zoevita.net.br
+
+🌐 Site: https://zoevita.net.br`;
+ACT.shareApp=async()=>{let file=null;try{const b=await (await fetch('icons/icon-512.png')).blob();file=new File([b],'zoevita.png',{type:'image/png'})}catch(e){}
+  try{if(file&&navigator.canShare&&navigator.canShare({files:[file],text:SHARE_TXT})){await navigator.share({files:[file],text:SHARE_TXT,title:'ZOEVITA'});return}
+    if(navigator.share){await navigator.share({text:SHARE_TXT,title:'ZOEVITA'});return}}catch(e){if(e&&e.name==='AbortError')return}
+  modal('Compartilhar o app',`<p style="margin-top:0">Envie a mensagem pelo WhatsApp. O ícone aparece na prévia do link.</p><div style="display:flex;gap:12px;align-items:center;margin-bottom:10px"><img src="icons/icon-512.png" alt="Ícone da ZOEVITA" width="72" height="72" style="border-radius:16px"><a class="btn sm" href="icons/icon-512.png" download="zoevita.png">Baixar ícone</a></div><textarea readonly rows="10" style="width:100%">${esc(SHARE_TXT)}</textarea><div class="form-actions"><button class="btn" data-act="shareCopy">Copiar mensagem</button><span class="sp"></span><a class="btn wa" href="https://wa.me/?text=${encodeURIComponent(SHARE_TXT)}" target="_blank" rel="noopener" data-nav="1">Abrir no WhatsApp</a></div>`)};
+ACT.shareCopy=async()=>{try{await navigator.clipboard.writeText(SHARE_TXT);toast('Mensagem copiada')}catch(e){toast('Selecione o texto e copie')}};
 
 load();legalInit();route();ntfInit();if(secOn())lockNow();
 </script>
