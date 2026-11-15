@@ -954,6 +954,15 @@ body.zv-locked .app{visibility:hidden}
 .zv-move{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:300;width:min(760px,calc(100vw - 24px));display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:var(--surface);border:1px solid var(--gold);border-radius:14px;padding:12px 14px;box-shadow:0 14px 40px rgba(10,20,15,.22)}
 .zv-move>div:first-child{flex:1;min-width:240px}.zv-move b{display:block;font-size:.95rem}.zv-move span{display:block;color:var(--muted);font-size:.83rem;line-height:1.45;margin-top:2px}
 .zv-move-a{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.zv-move .x{border:0;background:transparent;font-size:1.4rem;line-height:1;color:var(--muted);cursor:pointer;width:34px;height:34px;border-radius:8px}
+
+.recbtn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:0 16px;height:40px;font:700 .88rem var(--f-body);cursor:pointer;white-space:nowrap;margin-right:8px;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.recbtn .dot{color:#C0392B;font-size:1rem}
+.recbtn.ask,.recbtn.go{background:#F4E2B8;color:#1D2318}.recbtn.go{background:#E2C27A}
+.recbtn.on{background:#D9534F;color:#fff}.recbtn.on .rec-live{color:#fff}
+.recbtn.pg{height:38px;margin-right:0;box-shadow:none;border:1px solid var(--line)}.recbtn.pg.on{border-color:#D9534F}
+.rec-strip{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--gold);border-radius:12px;padding:10px 14px;margin-bottom:14px;position:sticky;top:8px;z-index:20;box-shadow:0 6px 20px rgba(10,20,15,.12)}
+.recbtn .l-short{display:none}
+@media (max-width:560px){.recbtn:not(.pg){padding:0 14px;height:38px;font-size:.85rem}.recbtn:not(.pg) .l-long{display:none}.recbtn:not(.pg) .l-short{display:inline}}
 .brand-chev{width:12px;height:12px;vertical-align:middle;opacity:.7;margin-left:2px;transition:transform .2s}
 .brand-home[aria-expanded=true] .brand-chev{transform:rotate(180deg)}
 .brand-home[aria-expanded=true] .brand-logo{box-shadow:0 0 0 3px var(--nav-gold)}
@@ -1069,7 +1078,7 @@ const DOWN=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 function deepDef(t,d){for(const k in d){if(t[k]===undefined)t[k]=JSON.parse(JSON.stringify(d[k]));else if(d[k]&&typeof d[k]==='object'&&!Array.isArray(d[k])&&typeof t[k]==='object')deepDef(t[k],d[k])}return t}
 function profile(){return (typeof S!=='undefined'&&S&&S.profile)?S.profile:DEF_PROFILE}
 const USERS={get psi(){const p=profile();return{name:p.name,reg:p.crp||'CRP não informado'}},rec:{name:'Ana Souza',reg:'Recepção'},adm:{name:'Administração',reg:'Administrador'}};
-const APP_VERSION='5.3.1';
+const APP_VERSION='5.3.2';
 const BUILTIN=[
   {id:'b1',name:'Lento',ppm:40,amp:85,size:30,motion:'suave',mode:'passagens',limit:24,secs:30},
   {id:'b2',name:'Moderado',ppm:60,amp:85,size:28,motion:'suave',mode:'passagens',limit:30,secs:30},
@@ -1565,7 +1574,7 @@ function renderEmdr(){
   if(!canClinical()){$('#view').innerHTML=`<div class="view-in"><div class="locked"><span class="eyebrow">Acesso restrito</span><h2>Estimulação bilateral</h2><p class="muted" style="margin:0">Disponível apenas para o perfil de psicóloga. Troque o perfil no menu para demonstrar.</p></div></div>`;return}
   const c=S.cfg;
   const active=S.patients.filter(p=>p.sit!=='encerrado').sort((a,b)=>pname(a).localeCompare(pname(b)));
-  $('#view').innerHTML=`<div class="view-in">
+  $('#view').innerHTML=`<div class="view-in">${S.teleLive?`<div class="rec-strip" role="region" aria-label="Teleconsulta em andamento"><span class="live-dot"></span><b>Teleconsulta em andamento</b><span class="sp"></span>${recBtn('page')}<button class="btn sm" data-act="meetOpen">Voltar à reunião</button></div>`:''}
   <div class="page-head"><div><div class="eyebrow">Estimulação bilateral</div><h1>Sessão EMDR</h1><div class="sub">Atendimento presencial · a estimulação para paciente remoto entra na fase 2</div></div></div>
   ${howto('Como conduzir a estimulação',`<ul><li>Ajuste os controles à direita. A pré-visualização responde na hora, e os botões <b>?</b> explicam cada controle.</li><li><b>Iniciar set</b> começa a estimulação; o mesmo botão pausa e retoma. <b>Interromper</b> encerra o set imediatamente.</li><li>Em <b>tela cheia</b>, mexa o mouse ou toque na tela para ver os controles. O botão Interromper fica sempre no canto.</li><li>Cada set entra na lista abaixo. Ao final, selecione o paciente e anexe os sets e as anotações a um registro EMDR.</li><li>O módulo apoia a profissional e não toma decisões terapêuticas.</li></ul>`)}
   <div class="emdr">
@@ -1806,6 +1815,9 @@ function openNote(id,pre={}){
    ========================================================= */
 const TYPES={novo:'Novo',melhoria:'Melhoria',correcao:'Correção',seguranca:'Segurança'};
 const CHANGELOG=[
+ {v:'5.3.2',date:'15/11/2026',title:'Gravar e transcrever com um toque',items:[
+  ['melhoria','Botão grande no topo da reunião','Ao lado de Sair, o botão Gravar e transcrever pede a autorização, inicia e, durante a gravação, vira Parar com o tempo.'],
+  ['melhoria','Também na Estimulação EMDR e na Teleconsulta','Com a reunião em andamento, uma faixa no alto dessas telas traz o mesmo botão e o atalho Voltar à reunião.']]},
  {v:'5.3.1',date:'15/11/2026',title:'Gravar também com a reunião minimizada',items:[
   ['correcao','Botão de gravação na janelinha da reunião','Com a reunião minimizada (por exemplo, enquanto usa a tela de Estimulação EMDR), a janelinha mostra Autorizar gravação, Gravar e Parar.']]},
  {v:'5.3',date:'15/11/2026',title:'Endereço próprio: zoevita.net.br',items:[
@@ -2287,7 +2299,7 @@ function renderTele(){
   const rooms=S.appts.filter(a=>a.adhoc&&a.openRoom&&['agendado','confirmado'].includes(a.status)&&!(S.teleLive&&S.teleLive.apptId===a.id)).sort((x,y)=>(y.created||0)-(x.created||0));
   const hist=S.tele.slice().sort((a,b)=>b.start-a.start);
   let livePanel='';
-  if(live){livePanel=`<section class="panel tele-live"><div class="panel-head"><span class="pill st-confirmado"><span class="live-dot"></span>Em atendimento</span><h2>${esc(apptName(live))}</h2><span class="sp"></span><button class="btn primary" data-act="meetOpen">Voltar à reunião</button></div></section>`}
+  if(live){livePanel=`<section class="panel tele-live"><div class="panel-head"><span class="pill st-confirmado"><span class="live-dot"></span>Em atendimento</span><h2>${esc(apptName(live))}</h2><span class="sp"></span>${recBtn('page')}<button class="btn primary" data-act="meetOpen">Voltar à reunião</button></div></section>`}
   $('#view').innerHTML=`<div class="view-in">
   <div class="page-head"><div><div class="eyebrow">Atendimento on-line</div><h1>Teleconsulta</h1><div class="sub">${up.length} agendadas · ${hist.length} realizadas</div></div><span class="sp"></span>${on('agenda')?'<button class="btn primary" data-act="teleNew">Agendar teleconsulta</button>':''}</div>
   ${howto('Como funciona a teleconsulta',`<ul><li><b>Nova reunião</b>: comece agora mesmo, sem agendamento, ou crie um link para depois. Para entrar numa sala já criada, digite o código ou cole o link e toque em <b>Participar</b>.</li><li>Toda teleconsulta tem um <b>link próprio</b> para o paciente. Use <b>Enviar convite</b> para mandar por WhatsApp ou e-mail. O paciente toca no link e entra direto na sala, no celular ou no computador, sem instalar nada.</li><li><b>Iniciar atendimento</b> abre a sala aqui mesmo: vídeo, cronômetro, estimulação bilateral e transcrição no mesmo lugar.</li><li>Escreva as anotações durante a sessão. Ao <b>encerrar</b>, a consulta é marcada como realizada, entra no histórico e, se você quiser, as anotações viram uma evolução em rascunho no prontuário.</li><li><b>Estimulação bilateral</b>: com o paciente na sala, toque em <b>Compartilhar tela | EMDR</b> e depois em <b>Iniciar estimulação</b>. O ponto aparece na tela dele, desenhado no próprio aparelho, sem travar. Ele tem um botão <b>Parar</b> sempre visível. Ao encerrar, os sets viram um registro EMDR em rascunho.</li><li><b>Gravação e transcrição</b> só ficam disponíveis depois de marcar a autorização do paciente. Os arquivos são salvos no seu computador, nunca no sistema.</li></ul>`)}
@@ -2810,7 +2822,7 @@ function meetRender(){const a=meetLive();if(!a||!MEET.open){meetClose();return}
    ${tb('rtcCam',RTC.cam?IC.cam:IC.camoff,'Câmera',RTC.cam?'':'off')}${tb('rtcMic',RTC.mic?IC.mic:IC.micoff,'Microfone',RTC.mic?'':'off')}
    <button class="mt-btn share" data-act="trayToggle" id="mt-share" aria-pressed="${!!MEET.present}">${IC.share}<span class="t">${MEET.present?'Apresentando':'Compartilhar'}</span></button>
    ${tb('devices',IC.gear,'Dispositivos')}${tb('meetMin',IC.min,'Minimizar')}</nav>
-   <button class="mt-leave" data-act="meetLeave">${IC.leave}<span>Sair</span></button></header>
+   ${recBtn()}<button class="mt-leave" data-act="meetLeave">${IC.leave}<span>Sair</span></button></header>
   <div class="mt-body"><main class="mt-stage">${recChip()}${ready}${knock}${RTC.state==='err'?`<p class="form-err" style="margin:0">${esc(RTC.info)} <button class="btn sm" data-act="rtcReopen">Reabrir a sala</button></p>`:''}${stage}</main>
    <aside class="mt-pane" ${MEET.pane?'':'hidden'}><div class="mt-pane-h"><b>${paneTitle||''}</b><button class="icon-btn" data-act="meetPane" data-p="${MEET.pane||''}" aria-label="Fechar painel">×</button></div><div class="mt-pane-b">${paneBody}</div></aside></div>`;
   if(MEET.pane==='emdr')bindStimPanel();if(MEET.pane==='gravar')bindRecPanel();
@@ -3551,6 +3563,14 @@ function moveBanner(){if(PATIENT)return;const old=/github\.io$/.test(location.ho
    :`<div><b>Bem-vinda ao novo endereço da ZOEVITA</b><span>Usava o endereço antigo? Traga seus dados: lá, baixe a cópia de segurança protegida; aqui, restaure em Configurações › Restaurar cópia.</span></div><div class="zv-move-a">${canAdmin()?'<button class="btn sm primary" data-act="cfgBk">Restaurar cópia</button>':''}<button class="x" data-act="moveOff" aria-label="Fechar aviso">×</button></div>`;
   document.body.appendChild(b)}
 ACT.moveOff=()=>{try{localStorage.setItem('zv.move.off','1')}catch(e){}const b=$('#zv-move');if(b)b.remove()};
+
+/* Botão único e grande: Autorizar → Gravar e transcrever → Parar */
+function recBtn(where){const L=S.teleLive;if(!L||!canClinical())return'';const recOn=!!(REC.mr&&REC.mr.state==='recording'),trOn=TR.on,pg=where==='page';
+  if(recOn||trOn)return `<button class="recbtn on${pg?' pg':''}" data-act="recHalt" aria-label="Parar gravação e transcrição"><span class="rec-live">●</span><span>Parar${recOn?' <span class="mono rc-clock2"></span>':''}</span></button>`;
+  if(L.consent)return `<button class="recbtn go${pg?' pg':''}" data-act="recGo" aria-label="Gravar e transcrever a sessão"><span class="dot">●</span><span class="l-long">Gravar e transcrever</span><span class="l-short">Gravar</span></button>`;
+  return `<button class="recbtn ask${pg?' pg':''}" data-act="recAsk" aria-label="Pedir autorização para gravar e transcrever"><span class="dot">●</span><span class="l-long">Gravar e transcrever</span><span class="l-short">Gravar</span></button>`}
+setInterval(()=>{const t=REC.mr&&REC.start?Math.floor((Date.now()-REC.start)/1000):null;document.querySelectorAll('.rc-clock2').forEach(e=>{e.textContent=t==null?'':`${pad(Math.floor(t/60))}:${pad(t%60)}`})},1000);
+{const _rt=renderTele;renderTele=function(){const r=_rt.apply(this,arguments);if(current==='emdr'&&S.teleLive&&$('.rec-strip')){const st=$('.rec-strip');const nb=recBtn('page');const old=st.querySelector('.recbtn');if(old){const t=document.createElement('div');t.innerHTML=nb;old.replaceWith(t.firstChild)}}return r}}
 
 load();legalInit();route();ntfInit();moveBanner();if(secOn())lockNow();
 </script>
