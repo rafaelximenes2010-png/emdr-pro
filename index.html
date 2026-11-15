@@ -963,6 +963,12 @@ body.zv-locked .app{visibility:hidden}
 .rec-strip{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--gold);border-radius:12px;padding:10px 14px;margin-bottom:14px;position:sticky;top:8px;z-index:20;box-shadow:0 6px 20px rgba(10,20,15,.12)}
 .recbtn .l-short{display:none}
 @media (max-width:560px){.recbtn:not(.pg){padding:0 14px;height:38px;font-size:.85rem}.recbtn:not(.pg) .l-long{display:none}.recbtn:not(.pg) .l-short{display:inline}}
+
+.rec-strip .ps-txt{display:flex;flex-direction:column;min-width:0}.rec-strip .ps-txt small{color:var(--muted);font-size:.8rem}
+.rec-strip .ps-last{font-style:italic;max-width:52ch;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rec-strip.on{border-color:#D9534F}.rec-strip.on .rec-live{color:#D9534F;font-size:1.1rem}
+.rec-strip.done{flex-wrap:wrap}
+#pres-strip .rec-strip{position:static}#pres-strip .rec-strip.on{position:sticky}
 .brand-chev{width:12px;height:12px;vertical-align:middle;opacity:.7;margin-left:2px;transition:transform .2s}
 .brand-home[aria-expanded=true] .brand-chev{transform:rotate(180deg)}
 .brand-home[aria-expanded=true] .brand-logo{box-shadow:0 0 0 3px var(--nav-gold)}
@@ -1078,7 +1084,7 @@ const DOWN=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 function deepDef(t,d){for(const k in d){if(t[k]===undefined)t[k]=JSON.parse(JSON.stringify(d[k]));else if(d[k]&&typeof d[k]==='object'&&!Array.isArray(d[k])&&typeof t[k]==='object')deepDef(t[k],d[k])}return t}
 function profile(){return (typeof S!=='undefined'&&S&&S.profile)?S.profile:DEF_PROFILE}
 const USERS={get psi(){const p=profile();return{name:p.name,reg:p.crp||'CRP não informado'}},rec:{name:'Ana Souza',reg:'Recepção'},adm:{name:'Administração',reg:'Administrador'}};
-const APP_VERSION='5.3.2';
+const APP_VERSION='5.4';
 const BUILTIN=[
   {id:'b1',name:'Lento',ppm:40,amp:85,size:30,motion:'suave',mode:'passagens',limit:24,secs:30},
   {id:'b2',name:'Moderado',ppm:60,amp:85,size:28,motion:'suave',mode:'passagens',limit:30,secs:30},
@@ -1574,7 +1580,7 @@ function renderEmdr(){
   if(!canClinical()){$('#view').innerHTML=`<div class="view-in"><div class="locked"><span class="eyebrow">Acesso restrito</span><h2>Estimulação bilateral</h2><p class="muted" style="margin:0">Disponível apenas para o perfil de psicóloga. Troque o perfil no menu para demonstrar.</p></div></div>`;return}
   const c=S.cfg;
   const active=S.patients.filter(p=>p.sit!=='encerrado').sort((a,b)=>pname(a).localeCompare(pname(b)));
-  $('#view').innerHTML=`<div class="view-in">${S.teleLive?`<div class="rec-strip" role="region" aria-label="Teleconsulta em andamento"><span class="live-dot"></span><b>Teleconsulta em andamento</b><span class="sp"></span>${recBtn('page')}<button class="btn sm" data-act="meetOpen">Voltar à reunião</button></div>`:''}
+  $('#view').innerHTML=`<div class="view-in">${S.teleLive?`<div class="rec-strip" role="region" aria-label="Teleconsulta em andamento"><span class="live-dot"></span><b>Teleconsulta em andamento</b><span class="sp"></span>${recBtn('page')}<button class="btn sm" data-act="meetOpen">Voltar à reunião</button></div>`:`<div id="pres-strip">${presStrip()}</div>`}
   <div class="page-head"><div><div class="eyebrow">Estimulação bilateral</div><h1>Sessão EMDR</h1><div class="sub">Atendimento presencial · a estimulação para paciente remoto entra na fase 2</div></div></div>
   ${howto('Como conduzir a estimulação',`<ul><li>Ajuste os controles à direita. A pré-visualização responde na hora, e os botões <b>?</b> explicam cada controle.</li><li><b>Iniciar set</b> começa a estimulação; o mesmo botão pausa e retoma. <b>Interromper</b> encerra o set imediatamente.</li><li>Em <b>tela cheia</b>, mexa o mouse ou toque na tela para ver os controles. O botão Interromper fica sempre no canto.</li><li>Cada set entra na lista abaixo. Ao final, selecione o paciente e anexe os sets e as anotações a um registro EMDR.</li><li>O módulo apoia a profissional e não toma decisões terapêuticas.</li></ul>`)}
   <div class="emdr">
@@ -1815,6 +1821,9 @@ function openNote(id,pre={}){
    ========================================================= */
 const TYPES={novo:'Novo',melhoria:'Melhoria',correcao:'Correção',seguranca:'Segurança'};
 const CHANGELOG=[
+ {v:'5.4',date:'15/11/2026',title:'Gravar e transcrever a sessão presencial',items:[
+  ['novo','Na tela de Estimulação EMDR','O botão Gravar e transcrever também funciona no atendimento presencial: escolha o paciente, registre a autorização e grave o áudio e a transcrição pelo microfone do aparelho.'],
+  ['novo','Revisar e salvar','Ao parar, ouça ou baixe o áudio, revise a transcrição e salve como rascunho na evolução do paciente.']]},
  {v:'5.3.2',date:'15/11/2026',title:'Gravar e transcrever com um toque',items:[
   ['melhoria','Botão grande no topo da reunião','Ao lado de Sair, o botão Gravar e transcrever pede a autorização, inicia e, durante a gravação, vira Parar com o tempo.'],
   ['melhoria','Também na Estimulação EMDR e na Teleconsulta','Com a reunião em andamento, uma faixa no alto dessas telas traz o mesmo botão e o atalho Voltar à reunião.']]},
@@ -3302,7 +3311,7 @@ async function kdf(secret,salt,iter){const k=await crypto.subtle.importKey('raw'
 async function pinHash(pin,salt,iter){const k=await kdf(pin,salt,iter);return b64e(await crypto.subtle.deriveBits({name:'PBKDF2',salt,iterations:iter,hash:'SHA-256'},k,256))}
 const LOCK={on:false,last:Date.now(),fails:0,until:0};
 const secOn=()=>!!(S&&S.sec&&S.sec.enabled&&S.sec.pin);
-function lockBusy(){return !!(S.teleLive||(typeof E!=='undefined'&&E.running))}
+function lockBusy(){return !!(S.teleLive||(typeof E!=='undefined'&&E.running)||(typeof PR!=='undefined'&&(PR.mr||PR.tr)))}
 function lockNow(reason){if(PATIENT||!secOn()||LOCK.on)return;LOCK.on=true;closeMenus();if(typeof srchClose==='function')srchClose();if(typeof ntfClose==='function')ntfClose();
   let o=$('#zv-lock');if(!o){o=document.createElement('div');o.id='zv-lock';o.className='zv-lock';o.setAttribute('role','dialog');o.setAttribute('aria-modal','true');o.setAttribute('aria-label','Aplicativo bloqueado');document.body.appendChild(o)}
   document.body.classList.add('zv-locked');lockDraw('pin');if(reason)audit(`Aplicativo bloqueado (${reason})`)}
@@ -3572,7 +3581,49 @@ function recBtn(where){const L=S.teleLive;if(!L||!canClinical())return'';const r
 setInterval(()=>{const t=REC.mr&&REC.start?Math.floor((Date.now()-REC.start)/1000):null;document.querySelectorAll('.rc-clock2').forEach(e=>{e.textContent=t==null?'':`${pad(Math.floor(t/60))}:${pad(t%60)}`})},1000);
 {const _rt=renderTele;renderTele=function(){const r=_rt.apply(this,arguments);if(current==='emdr'&&S.teleLive&&$('.rec-strip')){const st=$('.rec-strip');const nb=recBtn('page');const old=st.querySelector('.recbtn');if(old){const t=document.createElement('div');t.innerHTML=nb;old.replaceWith(t.firstChild)}}return r}}
 
-load();legalInit();route();ntfInit();moveBanner();if(secOn())lockNow();
+/* ---------- Gravação e transcrição da sessão PRESENCIAL (tela de Estimulação EMDR) ---------- */
+const PR={mr:null,chunks:[],stream:null,start:0,stopP:null,last:null,sr:null,tr:false,interim:''};
+function presStrip(){if(!canClinical())return'';const L=S.presLive;const recOn=!!(PR.mr&&PR.mr.state==='recording');
+  if(L&&(recOn||PR.tr)){const last=(L.transcript||'').trim().split('\n').slice(-1)[0]||'';
+    return `<div class="rec-strip on" role="region" aria-label="Gravação da sessão presencial"><span class="rec-live">●</span><div class="ps-txt"><b>${recOn?'Gravando <span class="mono rc-clock3">00:00</span>':''}${recOn&&PR.tr?' · ':''}${PR.tr?'Transcrevendo':''}</b><small>${esc(pname(getP(L.pid)))} · autorização registrada</small>${PR.tr?`<small class="ps-last" id="ps-last">${esc(PR.interim||last)}</small>`:''}</div><span class="sp"></span><button class="recbtn on pg" data-act="presStop"><span class="rec-live">●</span><span>Parar</span></button></div>`}
+  if(L&&L.done)return `<div class="rec-strip done" role="region" aria-label="Sessão gravada"><div class="ps-txt" style="flex:1 1 100%"><b>Sessão presencial gravada · ${esc(pname(getP(L.pid)))}</b><small>Revise a transcrição antes de salvar no prontuário.</small></div>
+    ${PR.last?`<audio controls src="${PR.last.url}" style="width:100%;max-width:420px"></audio><a class="btn sm" href="${PR.last.url}" download="${esc(PR.last.name)}" data-nav="1">Baixar áudio</a>`:''}
+    ${L.transcript!==undefined?`<textarea id="ps-tr" rows="6" style="width:100%" aria-label="Transcrição da sessão">${esc(L.transcript||'')}</textarea><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn sm primary" data-act="presToEvol">Salvar na evolução (rascunho)</button><button class="btn sm" data-act="presTxt">Baixar transcrição</button></div>`:''}
+    <span class="sp"></span><button class="btn sm ghost" data-act="presClose">Concluir</button></div>`;
+  return `<div class="rec-strip" role="region" aria-label="Gravação da sessão presencial"><div class="ps-txt"><b>Sessão presencial</b><small>Gravar e transcrever, só com autorização do paciente</small></div><span class="sp"></span><button class="recbtn ask pg" data-act="presAsk"><span class="dot">●</span><span>Gravar e transcrever</span></button></div>`}
+function presDraw(){const e=$('#pres-strip');if(e)e.innerHTML=presStrip();const ta=$('#ps-tr');if(ta)ta.addEventListener('input',()=>{if(S.presLive){S.presLive.transcript=ta.value;clearTimeout(PR.t);PR.t=setTimeout(save,500)}})}
+setInterval(()=>{if(PR.mr&&PR.start){const t=Math.floor((Date.now()-PR.start)/1000);document.querySelectorAll('.rc-clock3').forEach(e=>e.textContent=`${pad(Math.floor(t/60))}:${pad(t%60)}`)}},1000);
+ACT.presAsk=()=>{const act=S.patients.filter(p=>p.sit!=='encerrado').sort((a,b)=>pname(a).localeCompare(pname(b)));const sel=(document.querySelector('#view select[id*="pat"]')||{}).value||'';
+  const SRok=!!(window.SpeechRecognition||window.webkitSpeechRecognition),MRok=!!(window.MediaRecorder&&navigator.mediaDevices&&navigator.mediaDevices.getUserMedia);
+  modal('Gravar e transcrever a sessão',`<form id="f-pres" class="form"><div class="field"><label for="ps-pid">Paciente</label><select id="ps-pid" required><option value="">Escolha o paciente</option>${act.map(p=>`<option value="${p.id}" ${p.id===sel?'selected':''}>${esc(pname(p))}</option>`).join('')}</select></div>
+   <label class="zv-chk"><input type="checkbox" id="ps-ok"><span>O paciente <b>autorizou presencialmente</b> a gravação e a transcrição desta sessão.</span></label>
+   <div class="row2"><label class="zv-chk"><input type="checkbox" id="ps-rec" ${MRok?'checked':'disabled'}><span>Gravar áudio${MRok?'':' (indisponível neste navegador)'}</span></label><label class="zv-chk"><input type="checkbox" id="ps-trc" ${SRok?'checked':'disabled'}><span>Transcrever${SRok?'':' (use Chrome, Edge ou Safari)'}</span></label></div>
+   <p class="hint" style="margin:0">O áudio fica só neste aparelho até você baixar. A transcrição pode ser revisada e salva como rascunho na evolução. A autorização fica registrada com data e hora.</p>
+   <div class="form-actions"><span class="sp"></span><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary">● Iniciar</button></div></form>`);
+  $('#f-pres').addEventListener('submit',e=>{e.preventDefault();const pid=$('#ps-pid').value;if(!pid){toast('Escolha o paciente');return}if(!$('#ps-ok').checked){toast('Registre a autorização do paciente');return}
+    const doRec=$('#ps-rec').checked,doTr=$('#ps-trc').checked;if(!doRec&&!doTr){toast('Escolha gravar, transcrever ou os dois');return}closeModal();presStart(pid,doRec,doTr)})};
+async function presStart(pid,doRec,doTr){const n=Date.now();S.presLive={pid,start:n,consentTs:n,transcript:doTr?'':undefined};audit('Autorização presencial para gravação/transcrição registrada pela psicóloga',pid);
+  if(doRec){let st;try{st=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}})}catch(e){toast('Permita o microfone para gravar');}
+    if(st){const types=['audio/webm;codecs=opus','audio/webm','audio/mp4'];const mime=types.find(t=>{try{return MediaRecorder.isTypeSupported(t)}catch(e){return false}})||'';
+      let mr;try{mr=new MediaRecorder(st,mime?{mimeType:mime}:undefined)}catch(e){st.getTracks().forEach(t=>t.stop());toast('Não foi possível gravar neste navegador')}
+      if(mr){const d=new Date(n);PR.name=`sessao-presencial_${slug(pname(getP(pid)))}_${dkey(d)}_${pad(d.getHours())}h${pad(d.getMinutes())}.${(mr.mimeType||mime).includes('mp4')?'m4a':'webm'}`;
+        PR.chunks=[];PR.stream=st;PR.mr=mr;PR.start=Date.now();PR.last=null;PR.stopP=new Promise(res=>{mr.onstop=()=>{const blob=new Blob(PR.chunks,{type:mr.mimeType||'audio/webm'});PR.last={url:URL.createObjectURL(blob),size:blob.size,name:PR.name};res()}});
+        mr.ondataavailable=e=>{if(e.data&&e.data.size)PR.chunks.push(e.data)};mr.start(1000);audit('Gravação de sessão presencial iniciada',pid)}}}
+  if(doTr){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(SR){const r=new SR();r.lang='pt-BR';r.continuous=true;r.interimResults=true;
+    r.onresult=e=>{let interim='';for(let i=e.resultIndex;i<e.results.length;i++){const x=e.results[i];if(x.isFinal){const t=x[0].transcript.trim();if(t&&S.presLive){S.presLive.transcript=(S.presLive.transcript?S.presLive.transcript+'\n':'')+`[${fmtDur(Date.now()-S.presLive.start)}] ${t}`;clearTimeout(PR.t);PR.t=setTimeout(save,500)}}else interim+=x[0].transcript}PR.interim=interim;const el=$('#ps-last');if(el)el.textContent=interim||((S.presLive&&S.presLive.transcript||'').split('\n').slice(-1)[0]||'')};
+    r.onerror=e=>{if(['not-allowed','service-not-allowed','audio-capture'].includes(e.error)){PR.tr=false;toast('Não foi possível usar o microfone para transcrever');presDraw()}};
+    r.onend=()=>{if(PR.tr){try{r.start()}catch(e){}}};PR.sr=r;PR.tr=true;try{r.start()}catch(e){}audit('Transcrição de sessão presencial iniciada',pid)}}
+  save();presDraw();if(!PR.mr&&!PR.tr){S.presLive=null;save();presDraw()}}
+ACT.presStop=async()=>{const L=S.presLive;if(!L)return;PR.tr=false;try{PR.sr&&PR.sr.stop()}catch(e){}PR.sr=null;PR.interim='';
+  if(PR.mr){if(PR.mr.state!=='inactive')PR.mr.stop();await PR.stopP;try{PR.stream.getTracks().forEach(t=>t.stop())}catch(e){}PR.mr=null;PR.stream=null}
+  L.done=true;L.end=Date.now();audit(`Gravação/transcrição de sessão presencial encerrada (${fmtDur(L.end-L.start)})`,L.pid);save();presDraw();toast('Sessão gravada. Revise e salve.')};
+ACT.presToEvol=()=>{const L=S.presLive;if(!L)return;const t=(($('#ps-tr')||{}).value||L.transcript||'').trim();if(!t){toast('A transcrição está vazia');return}
+  S.evol.push({id:uid(),pid:L.pid,date:dkey(new Date(L.start)),text:`Sessão presencial · transcrição (${fmtDur((L.end||Date.now())-L.start)}), com autorização do paciente\n\n${t}`,status:'rascunho',author:me().name,crp:profile().crp,created:Date.now()});
+  audit('Transcrição de sessão presencial salva como rascunho de evolução',L.pid);save();toast('Salvo como rascunho na evolução do paciente')};
+ACT.presTxt=()=>{const L=S.presLive;if(!L)return;const t=(($('#ps-tr')||{}).value||L.transcript||'');const d=new Date(L.start);const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:'text/plain;charset=utf-8'}));a.download=`transcricao_${slug(pname(getP(L.pid)))}_${dkey(d)}.txt`;document.body.appendChild(a);a.click();a.remove();audit('Transcrição de sessão presencial baixada',L.pid);save()};
+ACT.presClose=()=>{if(PR.last){try{URL.revokeObjectURL(PR.last.url)}catch(e){}}PR.last=null;S.presLive=null;save();presDraw()};
+
+load();legalInit();if(S.presLive&&!S.presLive.done){S.presLive.done=true;S.presLive.end=S.presLive.end||Date.now();save()}route();ntfInit();moveBanner();if(secOn())lockNow();
 </script>
 
 </body>
