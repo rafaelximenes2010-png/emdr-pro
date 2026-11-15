@@ -4,7 +4,7 @@ import fs from "node:fs"; import path from "node:path"; import { fileURLToPath }
 const here = path.dirname(fileURLToPath(import.meta.url)), root = path.join(here, "..");
 globalThis.window = globalThis; await import(path.join(root, "legal", "conteudo.js"));
 const L = globalThis.ZV_LEGAL;
-const APP_URL = "https://rafaelximenes2010-png.github.io/emdr-pro/";   // trocar por https://app.zoevita.net.br quando o domínio estiver ligado
+const APP_URL = "https://app.zoevita.net.br/";
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const mark = s => esc(s).replace(/\[(A PREENCHER|REVISÃO JURÍDICA)([^\]]*)\]/g, (m, k, r) => `<mark class="todo">[${k}${r}]</mark>`);
 const doc = id => L.docs.find(d => d.id === id);

@@ -948,6 +948,10 @@ body.zv-locked .app{visibility:hidden}
 .rec-ask .btn{flex-direction:column;align-items:flex-start;text-align:left;gap:2px;padding:12px 14px;height:auto;white-space:normal}
 .rec-ask .btn small{font-weight:400;opacity:.85;font-size:.8rem}
 @media (max-width:640px){.mt-rec{font-size:.8rem}.mt-rec .hint3{display:none}}
+
+.zv-move{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:300;width:min(760px,calc(100vw - 24px));display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:var(--surface);border:1px solid var(--gold);border-radius:14px;padding:12px 14px;box-shadow:0 14px 40px rgba(10,20,15,.22)}
+.zv-move>div:first-child{flex:1;min-width:240px}.zv-move b{display:block;font-size:.95rem}.zv-move span{display:block;color:var(--muted);font-size:.83rem;line-height:1.45;margin-top:2px}
+.zv-move-a{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.zv-move .x{border:0;background:transparent;font-size:1.4rem;line-height:1;color:var(--muted);cursor:pointer;width:34px;height:34px;border-radius:8px}
 .brand-chev{width:12px;height:12px;vertical-align:middle;opacity:.7;margin-left:2px;transition:transform .2s}
 .brand-home[aria-expanded=true] .brand-chev{transform:rotate(180deg)}
 .brand-home[aria-expanded=true] .brand-logo{box-shadow:0 0 0 3px var(--nav-gold)}
@@ -1063,7 +1067,7 @@ const DOWN=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 function deepDef(t,d){for(const k in d){if(t[k]===undefined)t[k]=JSON.parse(JSON.stringify(d[k]));else if(d[k]&&typeof d[k]==='object'&&!Array.isArray(d[k])&&typeof t[k]==='object')deepDef(t[k],d[k])}return t}
 function profile(){return (typeof S!=='undefined'&&S&&S.profile)?S.profile:DEF_PROFILE}
 const USERS={get psi(){const p=profile();return{name:p.name,reg:p.crp||'CRP não informado'}},rec:{name:'Ana Souza',reg:'Recepção'},adm:{name:'Administração',reg:'Administrador'}};
-const APP_VERSION='5.2';
+const APP_VERSION='5.3';
 const BUILTIN=[
   {id:'b1',name:'Lento',ppm:40,amp:85,size:30,motion:'suave',mode:'passagens',limit:24,secs:30},
   {id:'b2',name:'Moderado',ppm:60,amp:85,size:28,motion:'suave',mode:'passagens',limit:30,secs:30},
@@ -1800,6 +1804,10 @@ function openNote(id,pre={}){
    ========================================================= */
 const TYPES={novo:'Novo',melhoria:'Melhoria',correcao:'Correção',seguranca:'Segurança'};
 const CHANGELOG=[
+ {v:'5.3',date:'15/11/2026',title:'Endereço próprio: zoevita.net.br',items:[
+  ['novo','Novo endereço','O aplicativo agora fica em app.zoevita.net.br e o site em zoevita.net.br. Os convites de teleconsulta já saem com o novo endereço.'],
+  ['novo','Levar os dados','No endereço antigo, um aviso mostra como baixar a cópia protegida e restaurar no novo endereço.'],
+  ['novo','Compartilhar o app','No menu da Karina: mensagem pronta com o ícone e os links de instalação para o WhatsApp.']]},
  {v:'5.2',date:'15/11/2026',title:'Gravação e transcrição à vista na reunião',items:[
   ['melhoria','Botão na hora do atendimento','Na teleconsulta, inclusive durante a estimulação bilateral, um controle no alto da tela mostra Pedir autorização, Gravar e transcrever e Parar.'],
   ['novo','Autorização pela sala ou de viva voz','Peça a autorização pela tela do paciente ou registre a autorização verbal com data e hora. Depois de autorizar, um toque inicia gravação e transcrição juntas.'],
@@ -2249,8 +2257,8 @@ function roomId(){const c='abcdefghjkmnpqrstuvwxyz23456789';const a=new Uint8Arr
 function teleLinkOld(a){if(!a.room){a.room=roomId();save()}return `${(S.prefs.tele.base||'https://meet.jit.si').replace(/\/+$/,'')}/KX-${a.room}`}
 const hostOf=u=>{try{return new URL(u).host}catch(e){return u}};
 
-const PUBLIC_URL='https://rafaelximenes2010-png.github.io/emdr-pro/';
-function appBase(){const u=(S.prefs.tele&&S.prefs.tele.url)||'';if(/^https:\/\/\S+$/.test(u))return u.replace(/[?#].*$/,'').replace(/\/?$/,'/');if(location.protocol==='https:'&&/github\.io$/.test(location.hostname))return location.origin+location.pathname.replace(/[^/]*$/,'');return PUBLIC_URL}
+const PUBLIC_URL='https://app.zoevita.net.br/';
+function appBase(){const u=(S.prefs.tele&&S.prefs.tele.url)||'';if(/^https:\/\/\S+$/.test(u))return u.replace(/[?#].*$/,'').replace(/\/?$/,'/');if(location.protocol==='https:'&&/(^|\.)zoevita\.net\.br$/.test(location.hostname))return location.origin+'/';return PUBLIC_URL}
 function teleLink(a){if(!a.room){a.room=roomId();save()}return `${appBase()}?sala=${a.room}`}
 const onlyDigits=t=>String(t||'').replace(/\D/g,'');
 function waPhone(t){let d=onlyDigits(t);if(!d)return'';if(d.length<=11)d='55'+d.replace(/^0+/,'');return d}
@@ -3525,7 +3533,17 @@ ACT.shareApp=async()=>{let file=null;try{const b=await (await fetch('icons/icon-
   modal('Compartilhar o app',`<p style="margin-top:0">Envie a mensagem pelo WhatsApp. O ícone aparece na prévia do link.</p><div style="display:flex;gap:12px;align-items:center;margin-bottom:10px"><img src="icons/icon-512.png" alt="Ícone da ZOEVITA" width="72" height="72" style="border-radius:16px"><a class="btn sm" href="icons/icon-512.png" download="zoevita.png">Baixar ícone</a></div><textarea readonly rows="10" style="width:100%">${esc(SHARE_TXT)}</textarea><div class="form-actions"><button class="btn" data-act="shareCopy">Copiar mensagem</button><span class="sp"></span><a class="btn wa" href="https://wa.me/?text=${encodeURIComponent(SHARE_TXT)}" target="_blank" rel="noopener" data-nav="1">Abrir no WhatsApp</a></div>`)};
 ACT.shareCopy=async()=>{try{await navigator.clipboard.writeText(SHARE_TXT);toast('Mensagem copiada')}catch(e){toast('Selecione o texto e copie')}};
 
-load();legalInit();route();ntfInit();if(secOn())lockNow();
+/* Mudança de endereço: github.io → app.zoevita.net.br */
+function moveBanner(){if(PATIENT)return;const old=/github\.io$/.test(location.hostname),neu=/(^|\.)zoevita\.net\.br$/.test(location.hostname);
+  let off=false;try{off=localStorage.getItem('zv.move.off')==='1'}catch(e){}if((!old&&!neu)||off||$('#zv-move'))return;
+  if(neu&&(S.patients||[]).some(p=>!p.demo))return;
+  const b=document.createElement('div');b.id='zv-move';b.className='zv-move';b.setAttribute('role','region');b.setAttribute('aria-label','Novo endereço da ZOEVITA');
+  b.innerHTML=old?`<div><b>A ZOEVITA mudou de endereço: <a href="https://app.zoevita.net.br/" target="_blank" rel="noopener" data-nav="1">app.zoevita.net.br</a></b><span>Para levar seus dados: 1) baixe aqui a cópia de segurança protegida; 2) abra o novo endereço e restaure a cópia em Configurações › Restaurar cópia. Este endereço continua funcionando.</span></div><div class="zv-move-a">${canClinical()?'<button class="btn sm" data-act="bkSave">Baixar cópia protegida</button>':''}<a class="btn sm primary" href="https://app.zoevita.net.br/" target="_blank" rel="noopener" data-nav="1">Abrir o novo endereço</a><button class="x" data-act="moveOff" aria-label="Fechar aviso">×</button></div>`
+   :`<div><b>Bem-vinda ao novo endereço da ZOEVITA</b><span>Usava o endereço antigo? Traga seus dados: lá, baixe a cópia de segurança protegida; aqui, restaure em Configurações › Restaurar cópia.</span></div><div class="zv-move-a">${canAdmin()?'<button class="btn sm primary" data-act="cfgBk">Restaurar cópia</button>':''}<button class="x" data-act="moveOff" aria-label="Fechar aviso">×</button></div>`;
+  document.body.appendChild(b)}
+ACT.moveOff=()=>{try{localStorage.setItem('zv.move.off','1')}catch(e){}const b=$('#zv-move');if(b)b.remove()};
+
+load();legalInit();route();ntfInit();moveBanner();if(secOn())lockNow();
 </script>
 
 </body>
