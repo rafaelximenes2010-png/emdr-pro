@@ -785,6 +785,96 @@ button.stat[aria-expanded="true"]{background:var(--sage-soft)}
   .tele-row .tele-acts{grid-column:1/-1;justify-content:flex-start;padding-left:62px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* v4.3 — pesquisa e central de notificações */
+.nav-tools{display:flex;gap:8px;align-items:center}
+.nav-search{flex:1;display:flex;align-items:center;gap:9px;min-width:0;background:rgba(255,255,255,.07);color:var(--nav-ink);border:1px solid rgba(214,190,130,.35);border-radius:10px;padding:9px 11px;font:inherit;font-size:.88rem;cursor:pointer;text-align:left}
+.nav-search:hover{background:rgba(255,255,255,.12)}
+.nav-search svg,.nav-bell svg{width:17px;height:17px;flex:none}
+.nav-search span{flex:1;color:var(--nav-muted)}
+.nav-search kbd{white-space:nowrap;font:600 .66rem var(--f-mono);color:var(--nav-muted);border:1px solid rgba(174,183,156,.4);border-radius:5px;padding:1px 5px}
+.nav-bell{position:relative;display:grid;place-items:center;width:40px;height:40px;flex:none;border-radius:10px;border:1px solid rgba(214,190,130,.35);background:rgba(255,255,255,.07);color:var(--nav-ink);cursor:pointer}
+.nav-bell:hover{background:rgba(255,255,255,.12)}
+.bell-n{position:absolute;top:-6px;right:-6px;min-width:19px;height:19px;padding:0 5px;border-radius:99px;background:#C2453B;color:#fff;font:700 .68rem/19px var(--f-body);text-align:center;box-shadow:0 0 0 2px var(--nav-bg)}
+.nav-bell.ring svg{animation:bellRing .9s ease}
+@keyframes bellRing{0%,100%{transform:rotate(0)}20%{transform:rotate(16deg)}40%{transform:rotate(-14deg)}60%{transform:rotate(9deg)}80%{transform:rotate(-5deg)}}
+@media (max-width:900px){.nav-tools{order:2}.nav-search{flex:none;width:40px;height:40px;padding:0;justify-content:center}.nav-search span,.nav-search kbd{display:none}}
+
+/* Pesquisa */
+.srch{position:fixed;inset:0;z-index:420;background:rgba(10,20,15,.45);display:flex;justify-content:center;align-items:flex-start;padding:max(9vh,calc(env(safe-area-inset-top,0px) + 12px)) 16px 16px}
+.srch-box{width:100%;max-width:640px;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 20px 60px rgba(10,20,15,.3);display:flex;flex-direction:column;max-height:min(76vh,680px);overflow:hidden;animation:srchIn .16s ease}
+@keyframes srchIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.srch-in{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.srch-in svg{width:20px;height:20px;color:var(--muted);flex:none}
+.srch-in input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:500 1.05rem var(--f-body);color:var(--ink);padding:6px 0}
+.srch-in button{border:0;background:var(--surface-2);color:var(--muted);border-radius:8px;padding:6px 10px;font:600 .8rem var(--f-body);cursor:pointer}
+.srch-res{overflow-y:auto;padding:6px 0 10px;overscroll-behavior:contain}
+.srch-g{font:700 .68rem var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:12px 18px 5px}
+.srch-it{display:flex;gap:12px;align-items:center;width:100%;border:0;background:transparent;text-align:left;padding:9px 18px;cursor:pointer;color:var(--ink);font:inherit}
+.srch-it i{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--sage-soft);color:var(--deep);flex:none;font-style:normal}
+.srch-it i svg{width:17px;height:17px}
+.srch-it b{display:block;font-weight:600;font-size:.94rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.srch-it small{display:block;color:var(--muted);font-size:.8rem;line-height:1.35;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.srch-it span{min-width:0;flex:1}
+.srch-it mark{background:var(--gold-soft);color:inherit;border-radius:3px;padding:0 1px}
+.srch-it.sel,.srch-it:hover{background:var(--surface-2)}
+.srch-it.sel{box-shadow:inset 3px 0 0 var(--accent)}
+.srch-empty{padding:26px 22px;color:var(--muted);text-align:center;font-size:.92rem}
+.srch-foot{display:flex;gap:14px;justify-content:center;padding:8px 12px;border-top:1px solid var(--line);color:var(--muted);font-size:.72rem}
+.srch-foot kbd{font:600 .66rem var(--f-mono);border:1px solid var(--line);border-radius:4px;padding:0 4px;background:var(--surface-2)}
+@media (max-width:640px){.srch{padding:0}.srch-box{max-width:none;max-height:none;height:100%;border-radius:0;border:0;padding-top:env(safe-area-inset-top,0px)}.srch-foot{display:none}}
+
+/* Central de notificações */
+.ntf{position:fixed;inset:0;z-index:415;background:rgba(10,20,15,.35);display:flex;justify-content:flex-end}
+.ntf-p{width:100%;max-width:420px;height:100%;background:var(--surface);border-left:1px solid var(--line);box-shadow:-12px 0 40px rgba(10,20,15,.18);display:flex;flex-direction:column;animation:ntfIn .2s ease;padding-top:env(safe-area-inset-top,0px)}
+@keyframes ntfIn{from{transform:translateX(24px);opacity:0}to{transform:none;opacity:1}}
+.ntf-h{display:flex;align-items:center;gap:10px;padding:16px 16px 10px}
+.ntf-h h2{margin:0;font:600 1.45rem var(--f-display);flex:1}
+.ntf-tabs{display:flex;gap:6px;padding:0 16px 10px;border-bottom:1px solid var(--line)}
+.ntf-tabs button{border:0;background:transparent;border-radius:99px;padding:7px 14px;font:600 .85rem var(--f-body);color:var(--muted);cursor:pointer}
+.ntf-tabs button[aria-selected=true]{background:var(--sage-soft);color:var(--deep)}
+.ntf-b{flex:1;overflow-y:auto;padding:8px 0 calc(20px + env(safe-area-inset-bottom,0px));overscroll-behavior:contain}
+.ntf-sec{font:700 .68rem var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:12px 18px 4px}
+.ntf-it{display:flex;gap:12px;width:100%;border:0;background:transparent;text-align:left;padding:11px 18px;cursor:pointer;color:var(--ink);font:inherit;position:relative}
+.ntf-it:hover{background:var(--surface-2)}
+.ntf-it i{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;flex:none;font-style:normal;background:var(--sage-soft);color:var(--deep)}
+.ntf-it i svg{width:18px;height:18px}
+.ntf-it i.k-sala{background:var(--gold-soft);color:var(--gold)}.ntf-it i.k-versao{background:var(--ok-soft);color:var(--ok)}
+.ntf-it span{flex:1;min-width:0}
+.ntf-it b{display:block;font-size:.93rem;font-weight:600}
+.ntf-it small{display:block;color:var(--muted);font-size:.83rem;line-height:1.4}
+.ntf-it em{font-style:normal;color:var(--muted);font-size:.72rem;white-space:nowrap}
+.ntf-it.unread::before{content:"";position:absolute;left:7px;top:50%;width:7px;height:7px;margin-top:-3px;border-radius:50%;background:#C2453B}
+.ntf-it.unread b{font-weight:700}
+.ntf-acts{display:flex;gap:8px;justify-content:flex-end;padding:6px 16px}
+.ntf-acts button{border:0;background:transparent;color:var(--accent);font:600 .8rem var(--f-body);cursor:pointer;padding:4px 6px}
+.ntf-empty{text-align:center;color:var(--muted);padding:48px 28px;font-size:.92rem}
+.ntf-empty svg{width:44px;height:44px;color:var(--sage);display:block;margin:0 auto 10px}
+.ntf-card{margin:12px 16px;border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:var(--surface-2)}
+.ntf-card h3{margin:0 0 4px;font-size:1rem}
+.ntf-card p{margin:4px 0;font-size:.86rem;color:var(--muted);line-height:1.45}
+.ntf-card .btn{margin-top:10px}
+.ntf-st{display:flex;gap:10px;align-items:center;font-weight:600;font-size:.9rem}
+.ntf-st i{width:10px;height:10px;border-radius:50%;background:var(--line);flex:none}
+.ntf-st.ok i{background:var(--ok);box-shadow:0 0 0 4px var(--ok-soft)}.ntf-st.wait i{background:var(--warn);box-shadow:0 0 0 4px var(--warn-soft)}
+.ntf-row{display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--line)}
+.ntf-row span{flex:1;min-width:0}.ntf-row b{display:block;font-size:.92rem}.ntf-row small{display:block;color:var(--muted);font-size:.8rem;line-height:1.4}
+.ntf-row select,.ntf-row input[type=time]{font:inherit;font-size:.85rem;padding:5px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)}
+.ntf-row.off select,.ntf-row.off input[type=time]{opacity:.45;pointer-events:none}
+.ntf-steps{margin:8px 0 0;padding-left:20px;font-size:.86rem;color:var(--ink);line-height:1.55}
+@media (max-width:560px){.ntf-p{max-width:none;border-left:0}}
+
+/* Aviso no topo da tela (estilo celular) */
+#nb-stack{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);width:min(420px,calc(100vw - 20px));z-index:430;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.nb{pointer-events:auto;display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:20px;background:rgba(250,248,242,.88);-webkit-backdrop-filter:blur(18px) saturate(1.6);backdrop-filter:blur(18px) saturate(1.6);box-shadow:0 10px 34px rgba(10,20,15,.24),0 0 0 1px rgba(0,0,0,.05);color:#1F241B;cursor:pointer;opacity:0;transform:translateY(-18px) scale(.97);transition:opacity .28s ease,transform .32s cubic-bezier(.2,.9,.3,1.2)}
+.nb.in{opacity:1;transform:none}.nb.out{opacity:0;transform:translateY(-14px)}
+.nb img{width:38px;height:38px;border-radius:10px;flex:none;background:#F6EEE3}
+.nb div{flex:1;min-width:0}
+.nb .nbh{display:flex;justify-content:space-between;gap:8px;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:#6B6F62;font-weight:700}
+.nb b{display:block;font-size:.92rem;margin-top:2px}
+.nb p{margin:1px 0 0;font-size:.85rem;line-height:1.35;color:#3A3F34}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .nb{background:rgba(38,42,34,.9);color:#F0EDE2}:root:not([data-theme="light"]) .nb p{color:#D3D0C3}:root:not([data-theme="light"]) .nb .nbh{color:#A9AE9C}}
+@media (prefers-reduced-motion:reduce){.nb,.srch-box,.ntf-p,.nav-bell.ring svg{animation:none;transition:none}}
 </style>
 
 <style>[hidden]{display:none!important}img{max-width:100%}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
@@ -874,7 +964,7 @@ const DOWN=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 function deepDef(t,d){for(const k in d){if(t[k]===undefined)t[k]=JSON.parse(JSON.stringify(d[k]));else if(d[k]&&typeof d[k]==='object'&&!Array.isArray(d[k])&&typeof t[k]==='object')deepDef(t[k],d[k])}return t}
 function profile(){return (typeof S!=='undefined'&&S&&S.profile)?S.profile:DEF_PROFILE}
 const USERS={get psi(){const p=profile();return{name:p.name,reg:p.crp||'CRP não informado'}},rec:{name:'Ana Souza',reg:'Recepção'},adm:{name:'Administração',reg:'Administrador'}};
-const APP_VERSION='4.2';
+const APP_VERSION='4.3';
 const BUILTIN=[
   {id:'b1',name:'Lento',ppm:40,amp:85,size:30,motion:'suave',mode:'passagens',limit:24,secs:30},
   {id:'b2',name:'Moderado',ppm:60,amp:85,size:28,motion:'suave',mode:'passagens',limit:30,secs:30},
@@ -892,7 +982,7 @@ const BGS=[['Preto','#000000'],['Cinza','#3A3D3C'],['Branco','#FFFFFF']];
 const KEY='emdrpro.v2',OLDKEY='emdrpro.demo.v1';
 let S;
 let ui={pid:null,ptab:'cadastro',agView:'semana',agDate:new Date(),q:'',sitF:'todos',emdrPid:''};
-function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}if(window.ntfDirty)window.ntfDirty()}
 function load(){try{const r=localStorage.getItem(KEY);if(r){S=JSON.parse(r);S.cfg={...DEF_CFG,...S.cfg};migrate();return}}catch(e){}
   let old=null;try{old=JSON.parse(localStorage.getItem(OLDKEY)||'null')}catch(e){}
   S=seed();if(old){['profile','prefs','presets','cfg','feedback','role'].forEach(k=>{if(old[k]!==undefined)S[k]=old[k]})}migrate()}
@@ -1611,6 +1701,10 @@ function openNote(id,pre={}){
    ========================================================= */
 const TYPES={novo:'Novo',melhoria:'Melhoria',correcao:'Correção',seguranca:'Segurança'};
 const CHANGELOG=[
+ {v:'4.3',date:'15/11/2026',title:'Pesquisa geral e notificações na tela bloqueada',items:[
+  ['novo','Pesquisar em tudo','Botão Pesquisar no menu (ou Ctrl+K e a tecla /): encontra pacientes, consultas, prontuários, anotações, cobranças e telas do sistema, com o termo destacado.'],
+  ['novo','Central de notificações','O sino no menu mostra lembretes de sessão, resumo da agenda do dia, paciente na sala de espera e novidades do app, com o número de avisos não lidos.'],
+  ['novo','Avisos na tela bloqueada','Ative em Notificações › Configurar. Por privacidade, o nome do paciente fica oculto na tela bloqueada, a não ser que você escolha mostrar.']]},
  {v:'4.2',date:'14/11/2026',title:'Marca da Karina e compartilhamento sem tela preta',items:[
   ['novo','Logo da Karina','O ícone do app (iPhone, Android e computador) e o logo dentro do sistema agora usam a marca com o rosto, as folhas e o coração.'],
   ['correcao','Compartilhar sem perder a psicóloga','Ao compartilhar a janela da estimulação ou outra tela, o paciente vê o conteúdo em tela cheia e continua vendo você numa janela pequena, como no Teams.'],
@@ -2503,7 +2597,7 @@ ACT.shareToggle=()=>{RTC.sharing?shareStop():shareStart()};
 
 function hostHello(m){const a=meetLive();if(!a)return;RTC.peerName=(m.name||'').slice(0,60)||RTC.peerName;
   const auto=(a.pid&&S.prefs.tele.autoAdmit!==false)||(MEET.admitted&&MEET.admitted===(m.name||''));
-  if(auto){RTC.admitted=true;send({type:'admit'});MEET.knock=null}else{RTC.admitted=false;MEET.knock={name:m.name||''};try{navigator.vibrate&&navigator.vibrate(120)}catch(e){}toast(`${m.name||'Alguém'} pediu para participar`)}
+  if(auto){RTC.admitted=true;send({type:'admit'});MEET.knock=null}else{RTC.admitted=false;MEET.knock={name:m.name||''};try{navigator.vibrate&&navigator.vibrate(120)}catch(e){}toast(`${m.name||'Alguém'} pediu para participar`);ntfLocal({id:'sala-'+Date.now(),kind:'sala',title:'Pedido para entrar na reunião',body:`${m.name||'Alguém'} está na sala de espera. Toque para abrir.`,bodyAnon:'Há alguém na sala de espera. Toque para abrir.',url:'./#teleconsulta'})}
   if(MEET.open)meetRender()}
 ACT.knockAdmit=()=>{const k=MEET.knock;MEET.knock=null;RTC.admitted=true;MEET.admitted=(k&&k.name)||'';MEET.ready=false;send({type:'admit'});const a=meetLive();if(a&&!a.pid&&k&&k.name&&!a.guest){a.guest=k.name;save()}audit(`Participante admitido na reunião${k&&k.name?': '+k.name:''}`,a&&a.pid);meetRender()};
 ACT.knockDeny=()=>{MEET.knock=null;send({type:'deny'});setTimeout(()=>{try{RTC.conn&&RTC.conn.close()}catch(e){}},300);const a=meetLive();audit('Pedido para participar negado',a&&a.pid);meetRender()};
@@ -2718,7 +2812,7 @@ function ptBar(){const b=$('#pt-bar');if(!b)return;if(!ptJoined||RTC.state==='by
 function ptName(){try{return localStorage.getItem('emdrpro.ptname')||''}catch(e){return''}}
 ACT.ptJoin=async()=>{const ni=$('#pt-name');if(ni){try{localStorage.setItem('emdrpro.ptname',ni.value.trim().slice(0,60))}catch(e){}}meterStop();ptJoined=true;try{ptAC=ptAC||new(window.AudioContext||window.webkitAudioContext)();ptAC.resume&&ptAC.resume()}catch(e){}
   try{if(navigator.wakeLock)await navigator.wakeLock.request('screen')}catch(e){}
-  try{RTC.peer&&RTC.peer.destroy()}catch(e){}RTC.peer=null;RTC.conn=null;RTC.call=null;RTC.role=null;ptState('wait');rtcJoin(SALA)};
+  try{RTC.peer&&RTC.peer.destroy()}catch(e){}RTC.peer=null;RTC.conn=null;RTC.call=null;RTC.role=null;ptState('wait');rtcJoin(SALA);setTimeout(()=>{if(RTC.state==='wait')ntfKnock()},5000);setTimeout(()=>{if(RTC.state==='wait')ntfKnock()},150000)};
 window.addEventListener('resize',()=>{if(PATIENT&&RTC.conn&&RTC.conn.open){clearTimeout(window.__dimT);window.__dimT=setTimeout(()=>send({type:'dims',w:innerWidth,h:innerHeight}),300)}});
 ACT.ptLeave=()=>{if(PJ.running)pjFinish('interrompido pelo paciente');document.body.classList.remove('pj-present','pj-running');ptTrStop();rtcStop();ptJoined=false;ptState('bye')};
 ACT.ptStop=()=>{if(PJ.running){pjFinish('interrompido pelo paciente');toast('Estimulação interrompida')}};
@@ -2812,7 +2906,238 @@ document.addEventListener('change',e=>{if(e.target.id!=='bk-file')return;const f
 ACT.bkRestoreOk=()=>{const d=window.__bk;if(!d)return;emdrTeardown();S=d;S.cfg={...DEF_CFG,...S.cfg};migrate();window.__bk=null;ui.pid=null;audit('Cópia de segurança restaurada');save();closeModal();go('painel');route();toast('Cópia restaurada')};
 
 /* ---------- início ---------- */
-load();route();
+
+/* =====================================================================
+   v4.3 — PESQUISA GERAL (Ctrl+K ou /) e CENTRAL DE NOTIFICAÇÕES
+   ===================================================================== */
+const SVG_I={
+  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>',
+  bell:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/></svg>',
+  person:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>',
+  cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
+  doc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h5"/></svg>',
+  note:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 7l3 3"/></svg>',
+  money:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h4"/></svg>',
+  go:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+  star:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></svg>',
+  video:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3"/></svg>',
+  clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+  door:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 21V4h10v17"/><path d="M15 6h4v15M3 21h18"/><circle cx="12" cy="13" r=".8" fill="currentColor"/></svg>'
+};
+const norm=s=>String(s??'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+function srchHi(text,terms){const t=String(text??'');const n=norm(t);if(n.length!==t.length||!terms.length)return esc(t);
+  const f=new Uint8Array(t.length);terms.forEach(w=>{let i=n.indexOf(w);while(w&&i>=0){f.fill(1,i,i+w.length);i=n.indexOf(w,i+w.length)}});
+  let o='',on=false;for(let i=0;i<t.length;i++){if(f[i]&&!on){o+='<mark>';on=true}else if(!f[i]&&on){o+='</mark>';on=false}o+=esc(t[i])}return o+(on?'</mark>':'')}
+function srchSnip(text,terms){const t=String(text??'').replace(/\s+/g,' ').trim();const i=norm(t).indexOf(terms[0]||'');const s=i>45?i-40:0;
+  const piece=(s?'…':'')+t.slice(s,s+130)+(s+130<t.length?'…':'');return srchHi(piece,terms)}
+const dBR=s=>{try{return fmtD(P(String(s).slice(0,10)+'T00:00'))}catch(e){return s}};
+function srchScreens(){const L=[
+  ['painel','Painel','início resumo hoje',null],['emdr','Estimulação EMDR','bilateral movimento ponto olhos sets','emdr'],['agenda','Agenda','consultas horários semana dia','agenda'],
+  ['teleconsulta','Teleconsulta','vídeo online reunião sala link','teleconsulta'],['pacientes','Pacientes e prontuários','cadastro prontuário evolução',null],
+  ['financeiro','Financeiro','cobranças pagamentos recibos despesas','financeiro'],['relatorios','Relatórios','documentos pdf excel','relatorios'],
+  ['anotacoes','Anotações','notas lembretes','anotacoes'],['atualizacoes','Atualizações','novidades versão','atualizacoes']];
+  const out=L.filter(x=>!x[3]||on(x[3])).map(([r,t,k])=>({ic:SVG_I.go,t,s:'Abrir a tela',k:t+' '+k,run:()=>go(r)}));
+  if(canAdmin())out.push({ic:SVG_I.go,t:'Personalizar',s:'Módulos, painel, agenda e cópia de segurança',k:'personalizar configurações módulos ocultar mostrar',run:()=>go('personalizar')},
+    {ic:SVG_I.doc,t:'Cópia de segurança',s:'Baixar ou restaurar os dados deste aparelho',k:'backup copia seguranca restaurar exportar dados',run:()=>{go('personalizar');setTimeout(()=>{const e=$('#pz-backup');e&&e.scrollIntoView({behavior:'smooth',block:'start'})},120)}});
+  if(on('agenda'))out.push({ic:SVG_I.cal,t:'Nova consulta',s:'Agendar um horário',k:'nova consulta agendar marcar sessao horario',run:()=>{go('agenda');setTimeout(()=>openAppt(null,{}),80)}});
+  if(on('teleconsulta')&&canClinical())out.push({ic:SVG_I.video,t:'Nova reunião agora',s:'Teleconsulta sem agendamento, com link para enviar',k:'nova reuniao agora sala link teleconsulta sem agendamento meet',run:()=>{go('teleconsulta');setTimeout(()=>ACT.roomNow(),80)}});
+  out.push({ic:SVG_I.person,t:'Novo paciente',s:'Cadastrar paciente',k:'novo paciente cadastrar cadastro',run:()=>{go('pacientes');setTimeout(()=>openPatientForm(),80)}},
+    {ic:SVG_I.bell,t:'Notificações',s:'Avisos recentes e configurações',k:'notificacoes avisos lembretes alertas sino tela bloqueada',run:()=>ntfOpen()},
+    {ic:SVG_I.bell,t:'Ativar notificações neste aparelho',s:'Lembretes de sessão na tela bloqueada',k:'ativar notificacoes lembrete tela bloqueada push',run:()=>ntfOpen('cfg')},
+    {ic:SVG_I.go,t:'Tutorial guiado',s:'Conheça o sistema passo a passo',k:'tutorial ajuda guia como usar',run:()=>ACT.tour()});
+  if(!isStandalone())out.push({ic:SVG_I.go,t:'Baixar o app',s:'Instalar no celular ou no computador',k:'baixar instalar app tela de inicio',run:()=>ACT.install()});
+  if(role()==='psi')out.push({ic:SVG_I.person,t:'Editar perfil e CRP',s:'Nome, CRP, assinatura e slogan',k:'perfil crp assinatura nome slogan',run:()=>ACT.profile()});
+  return out}
+function srchRun(q){const terms=norm(q).split(/\s+/).filter(Boolean);const G=[];if(!terms.length)return G;
+  const hit=h=>{const n=norm(h);return terms.every(t=>n.includes(t))};const add=(g,items,max=6)=>{if(items.length)G.push({g,items:items.slice(0,max),more:Math.max(0,items.length-max)})};
+  add('Telas e atalhos',srchScreens().filter(x=>hit(x.k)).map(x=>({...x,t:srchHi(x.t,terms)})),5);
+  add('Pacientes',S.patients.filter(p=>hit([p.nome,p.social,p.tel,p.email].join(' '))).sort((a,b)=>(a.sit==='encerrado')-(b.sit==='encerrado')||pname(a).localeCompare(pname(b)))
+    .map(p=>({ic:SVG_I.person,t:srchHi(pname(p),terms),s:esc([p.sit==='ativo'?'Ativo':p.sit==='encerrado'?'Encerrado':p.sit,p.tel,p.email].filter(Boolean).join(' · ')),run:()=>ACT.openPatient({pid:p.id})})));
+  if(on('agenda')){const now=Date.now();
+    add('Agenda',S.appts.filter(a=>hit([a.pid?pname(getP(a.pid)):a.guest||'Reunião',fmtD(P(a.start)),fmtT(P(a.start)),a.mod==='online'?'teleconsulta online video':'presencial',a.status,a.note].join(' ')))
+      .sort((a,b)=>{const x=P(a.start)-now,y=P(b.start)-now;return (x<0)-(y<0)||Math.abs(x)-Math.abs(y)})
+      .map(a=>{const d=P(a.start),who=a.pid?pname(getP(a.pid)):(a.guest||'Reunião sem paciente');return {ic:a.mod==='online'?SVG_I.video:SVG_I.cal,t:srchHi(who,terms),s:`${DOW[(d.getDay()+6)%7]} ${fmtD(d)} às ${fmtT(d)} · ${a.mod==='online'?'Teleconsulta':'Presencial'}${a.status==='cancelado'?' · cancelada':''}`,
+        run:()=>{ui.agDate=d;go('agenda');setTimeout(()=>openAppt(a.id),80)}}}))}
+  if(canClinical()){const R=[];const open=(pid,t)=>()=>{ACT.openPatient({pid});ACT.ptab({t})};
+    S.evol.forEach(e=>{if(hit(e.text))R.push({ic:SVG_I.doc,t:`Evolução · ${srchHi(pname(getP(e.pid)),terms)}`,s:`${dBR(e.date)} · ${srchSnip(e.text,terms)}`,run:open(e.pid,'evol'),d:e.date})});
+    S.emdr.forEach(e=>{const tx=[e.alvo,e.cn,e.cp,e.emo,e.sens,e.obs,e.int,e.plano].filter(Boolean).join(' · ');if(hit(tx))R.push({ic:SVG_I.doc,t:`Registro EMDR · ${srchHi(pname(getP(e.pid)),terms)}`,s:`${dBR(e.date)} · ${srchSnip(tx,terms)}`,run:open(e.pid,'emdr'),d:e.date})});
+    Object.entries(S.clinical||{}).forEach(([pid,c])=>{const tx=Object.values((c&&c.fields)||{}).filter(Boolean).join(' · ');if(tx&&hit(tx)&&getP(pid))R.push({ic:SVG_I.doc,t:`Registro clínico · ${srchHi(pname(getP(pid)),terms)}`,s:srchSnip(tx,terms),run:open(pid,'clinico'),d:''})});
+    (S.reports||[]).forEach(r=>{const tx=(r.title||'')+' · '+(r.text||'');if(hit(tx))R.push({ic:SVG_I.doc,t:`${esc(r.title||'Relatório')} · ${srchHi(pname(getP(r.pid)),terms)}`,s:`${dBR(r.date)} · ${srchSnip(r.text||'',terms)}`,run:open(r.pid,'rel'),d:r.date||''})});
+    add('Prontuários',R.sort((a,b)=>String(b.d).localeCompare(String(a.d))))}
+  if(on('anotacoes'))add('Anotações',visibleNotes().filter(n=>hit([n.title,n.text,n.cat].join(' '))).sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0)||b.created-a.created)
+    .map(n=>({ic:SVG_I.note,t:srchHi(n.title||'Anotação',terms),s:`${esc(n.cat||'')}${n.pid&&getP(n.pid)?' · '+esc(pname(getP(n.pid))):''} · ${srchSnip(n.text,terms)}`,run:()=>{go('anotacoes');setTimeout(()=>openNote(n.id),80)}})));
+  if(on('financeiro')&&S.fin)add('Financeiro',S.fin.charges.filter(c=>hit([pname(getP(c.pid)),c.desc,c.method,c.status==='pago'?'pago paga recebido':'pendente aberto',c.receipt?'recibo '+c.receipt:'',brl(c.amount),dBR(c.date)].join(' ')))
+    .sort((a,b)=>b.date.localeCompare(a.date)).map(c=>({ic:SVG_I.money,t:`${srchHi(pname(getP(c.pid)),terms)} · ${brl(c.amount)}`,s:`${dBR(c.date)} · ${esc(c.desc||'')} · ${c.status==='pago'?'Pago':isLate(c)?'Em atraso':'Pendente'}`,
+      run:()=>{ftab='cobrancas';fm=c.date.slice(0,7);go('financeiro');if(current==='financeiro')renderFinanceiro()}})));
+  if(terms.join('').length>=3)add('Novidades do app',CHANGELOG.slice(0,3).flatMap(v=>v.items.filter(it=>hit(it[1]+' '+it[2])).map(it=>({ic:SVG_I.star,t:srchHi(it[1],terms),s:`Versão ${v.v} · ${srchSnip(it[2],terms)}`,run:()=>go('atualizacoes')}))),3);
+  return G}
+let SR=null;
+function srchOpen(){if(PATIENT)return;closeMenus();if($('#srch')){$('#srch-q').focus();return}
+  const o=document.createElement('div');o.id='srch';o.className='srch';o.setAttribute('role','dialog');o.setAttribute('aria-modal','true');o.setAttribute('aria-label','Pesquisar');
+  o.innerHTML=`<div class="srch-box"><div class="srch-in">${SVG_I.search}<input id="srch-q" type="search" placeholder="Pesquisar pacientes, agenda, prontuários…" autocomplete="off" spellcheck="false" enterkeyhint="search" aria-controls="srch-res"><button data-act="srchClose">Fechar</button></div><div class="srch-res" id="srch-res" role="listbox"></div><div class="srch-foot"><span><kbd>↑</kbd><kbd>↓</kbd> navegar</span><span><kbd>Enter</kbd> abrir</span><span><kbd>Esc</kbd> fechar</span></div></div>`;
+  o.addEventListener('mousedown',e=>{if(e.target===o)srchClose()});document.body.appendChild(o);SR={items:[],sel:0};
+  const q=$('#srch-q');q.addEventListener('input',()=>srchDraw(q.value));q.addEventListener('keydown',srchKey);srchDraw('');setTimeout(()=>q.focus(),20)}
+function srchClose(){const o=$('#srch');if(o)o.remove();SR=null}
+function srchDraw(q){const box=$('#srch-res');if(!box||!SR)return;
+  if(!q.trim()){const sc=srchScreens().slice(0,0);const sug=[['Nova consulta'],['Nova reunião agora'],['Novo paciente'],['Notificações']].map(([t])=>srchScreens().find(x=>x.t===t)).filter(Boolean);
+    SR.items=sug;SR.sel=0;box.innerHTML=`<div class="srch-g">Atalhos</div>${sug.map((x,i)=>srchItem(x,i)).join('')}<div class="srch-empty">Digite um nome, uma data (ex.: 18/11), um telefone ou uma palavra das anotações e dos prontuários.${canClinical()?'':'<br>Prontuários clínicos aparecem só no perfil da psicóloga.'}</div>`;return}
+  const G=srchRun(q);SR.items=[];SR.sel=0;let h='';
+  G.forEach(g=>{h+=`<div class="srch-g">${g.g}${g.more?` · mais ${g.more}`:''}</div>`;g.items.forEach(x=>{h+=srchItem(x,SR.items.length);SR.items.push(x)})});
+  box.innerHTML=h||`<div class="srch-empty">Nada encontrado para “${esc(q)}”.<br>Confira a grafia ou tente uma parte do nome.</div>`;srchMark()}
+const srchItem=(x,i)=>`<button class="srch-it${i===0?' sel':''}" role="option" data-i="${i}"><i>${x.ic}</i><span><b>${x.t}</b>${x.s?`<small>${x.s}</small>`:''}</span></button>`;
+function srchMark(){$$('#srch-res .srch-it').forEach(b=>b.classList.toggle('sel',+b.dataset.i===SR.sel));const s=$(`#srch-res .srch-it[data-i="${SR.sel}"]`);if(s)s.scrollIntoView({block:'nearest'})}
+function srchKey(e){if(!SR)return;if(e.key==='ArrowDown'){e.preventDefault();SR.sel=Math.min(SR.items.length-1,SR.sel+1);srchMark()}else if(e.key==='ArrowUp'){e.preventDefault();SR.sel=Math.max(0,SR.sel-1);srchMark()}
+  else if(e.key==='Enter'){e.preventDefault();srchGo(SR.sel)}else if(e.key==='Escape'){e.preventDefault();srchClose()}}
+function srchGo(i){const x=SR&&SR.items[i];if(!x)return;srchClose();closeModal();try{x.run()}catch(err){console.warn(err)}}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('#srch-res .srch-it');if(b)srchGo(+b.dataset.i)});
+ACT.srchOpen=()=>srchOpen();ACT.srchClose=()=>srchClose();
+document.addEventListener('keydown',e=>{if(PATIENT||tour)return;const typing=/^(INPUT|TEXTAREA|SELECT)$/.test((e.target&&e.target.tagName)||'')||(e.target&&e.target.isContentEditable);
+  if((e.ctrlKey||e.metaKey)&&!e.altKey&&(e.key==='k'||e.key==='K')){e.preventDefault();if($('#srch'))srchClose();else srchOpen();return}
+  if(e.key==='/'&&!typing&&!$('#srch')&&$('#modal').hidden&&!(typeof MEET!=='undefined'&&MEET.open&&!MEET.min)){e.preventDefault();srchOpen()}
+  if(e.key==='Escape'&&$('#ntf')){ntfClose()}});
+
+/* ---------- Notificações ---------- */
+const NTF_URL='https://emdr-push.rafael-ximenes-2010.workers.dev/push';
+const NTF_DEF={on:false,lembrete:true,antes:15,resumo:true,resumoHora:'07:00',sala:true,versao:true,nomes:false,server:'',syncedAt:0};
+const NTF={get(){let x={};try{x=JSON.parse(localStorage.getItem('emdrpro.ntf')||'{}')}catch(e){}return {...NTF_DEF,...x}},set(x){try{localStorage.setItem('emdrpro.ntf',JSON.stringify(x))}catch(e){}}};
+const INBOX={get(){try{return JSON.parse(localStorage.getItem('emdrpro.inbox')||'[]')}catch(e){return[]}},set(l){try{localStorage.setItem('emdrpro.inbox',JSON.stringify(l.slice(0,60)))}catch(e){}}};
+const ntfSeen={get(){try{return JSON.parse(localStorage.getItem('emdrpro.ntf.vistos')||'[]')}catch(e){return[]}},has(id){return this.get().includes(id)},add(id){const l=this.get();if(l.includes(id))return;l.push(id);try{localStorage.setItem('emdrpro.ntf.vistos',JSON.stringify(l.slice(-300)))}catch(e){}}};
+const NTF_ICON='icons/apple-touch-icon-180-v3.png',NTF_BADGE='icons/favicon-64.png';
+const ntfWebOk=()=>!isNative()&&'serviceWorker' in navigator&&'PushManager' in window&&'Notification' in window&&window.isSecureContext;
+const ntfLN=()=>{try{return isNative()&&window.Capacitor.Plugins.LocalNotifications}catch(e){return null}};
+const ntfPerm=()=>('Notification' in window)?Notification.permission:'unsupported';
+const KIND_IC={lembrete:SVG_I.clock,resumo:SVG_I.cal,sala:SVG_I.door,versao:SVG_I.star,teste:SVG_I.bell,aviso:SVG_I.bell};
+
+/* O que vai acontecer nos próximos 14 dias (sem nomes para o servidor) */
+function ntfPlan(withNames){const x=NTF.get(),now=Date.now(),lim=now+14*86400e3,rem=[],rooms=[];
+  const list=(S&&S.appts||[]).filter(a=>a.status!=='cancelado');
+  list.forEach(a=>{const d=P(a.start),st=d.getTime();
+    if(a.mod==='online'&&a.room&&st+a.dur*60e3+3*3600e3>now&&st<now+30*86400e3)rooms.push({r:String(a.room).toLowerCase().replace(/[^a-z0-9]/g,''),exp:st+a.dur*60e3+3*3600e3,t:fmtT(d)});
+    if(!x.lembrete||st<=now||st>lim)return;const at=st-x.antes*60e3;if(at<now-20*60e3)return;
+    const who=withNames&&(a.pid?pname(getP(a.pid)):a.guest);
+    rem.push({id:`l-${a.id}-${a.start}-${x.antes}`,at,kind:'lembrete',title:`Sessão às ${fmtT(d)} · em ${x.antes} min`,
+      body:(who?who+' · ':'')+(a.mod==='online'?'Teleconsulta. Toque para abrir a sala.':'Atendimento presencial.'),url:a.mod==='online'?'./#teleconsulta':'./#agenda'})});
+  if(x.resumo){const[hh,mm]=(x.resumoHora||'07:00').split(':').map(Number);const days={};
+    list.forEach(a=>{const d=P(a.start);if(d.getTime()<now||d.getTime()>lim)return;(days[dkey(d)]=days[dkey(d)]||[]).push(a)});
+    Object.entries(days).forEach(([k,arr])=>{const d=P(k+'T00:00');d.setHours(hh||0,mm||0,0,0);arr.sort(byStart);
+      if(d.getTime()<now-20*60e3)return;const on2=arr.filter(a=>a.mod==='online').length;rem.push({id:`r-${k}-${x.resumoHora}-${arr.length}`,at:d.getTime(),kind:'resumo',title:'Sua agenda de hoje',
+        body:`${arr.length} ${arr.length===1?'sessão':'sessões'}, a primeira às ${fmtT(P(arr[0].start))}${on2?` · ${on2} ${on2===1?'teleconsulta':'teleconsultas'}`:''}.`,url:'./#agenda'})})}
+  rem.sort((a,b)=>a.at-b.at);return {rem:rem.slice(0,90),rooms:rooms.slice(0,80)}}
+
+/* Inscrição no servidor (Web Push) */
+async function ntfSub(create){const reg=await navigator.serviceWorker.ready;let sub=await reg.pushManager.getSubscription();
+  if(!sub&&create){const r=await fetch(NTF_URL+'/key');if(!r.ok)throw new Error('servidor');const key=(await r.json()).key;if(!key)throw new Error('servidor');
+    const raw=atob(key.replace(/-/g,'+').replace(/_/g,'/')+'==='.slice((key.length+3)%4));sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:Uint8Array.from(raw,c=>c.charCodeAt(0))})}
+  return sub}
+async function ntfSync(create){const x=NTF.get();if(!x.on||!ntfWebOk()||ntfPerm()!=='granted')return false;
+  try{const sub=await ntfSub(create);if(!sub)return false;const pl=ntfPlan(false);
+    const r=await fetch(NTF_URL+'/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sub:sub.toJSON(),topics:{lembrete:x.lembrete,resumo:x.resumo,sala:x.sala,versao:x.versao},rem:pl.rem,rooms:pl.rooms})});
+    if(!r.ok)throw new Error('servidor');const y=NTF.get();y.server='ok';y.syncedAt=Date.now();NTF.set(y);return true}
+  catch(e){const y=NTF.get();y.server='off';NTF.set(y);return false}}
+/* App nativo: agenda no próprio aparelho (aparece na tela bloqueada mesmo sem internet) */
+const ntfNum=s=>{let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))|0;return Math.abs(h)%2000000000+1};
+async function ntfNative(){const LN=ntfLN();if(!LN)return;const x=NTF.get();
+  try{const p=await LN.getPending();if(p&&p.notifications&&p.notifications.length)await LN.cancel({notifications:p.notifications.map(n=>({id:n.id}))})}catch(e){}
+  if(!x.on)return;const pl=ntfPlan(x.nomes).rem.filter(r=>r.at>Date.now()+5e3).slice(0,60);
+  try{await LN.schedule({notifications:pl.map(r=>({id:ntfNum(r.id),title:r.title,body:r.body,schedule:{at:new Date(r.at),allowWhileIdle:true},extra:{url:r.url,id:r.id,kind:r.kind}}))})}catch(e){console.warn(e)}}
+let ntfT=0,ntfKey='';window.ntfDirty=()=>{if(PATIENT||!S)return;clearTimeout(ntfT);ntfT=setTimeout(()=>{const x=NTF.get();if(!x.on)return;const k=JSON.stringify([ntfPlan(x.nomes),x]);if(k===ntfKey)return;ntfKey=k;if(ntfLN())ntfNative();else ntfSync(false)},2500)};
+
+/* Caixa de entrada + aviso no topo da tela */
+function inboxAdd(it,withBanner){const l=INBOX.get();if(l.some(x=>x.id===it.id)||ntfSeen.has('in:'+it.id))return false;ntfSeen.add('in:'+it.id);
+  l.unshift({id:it.id,kind:it.kind||'aviso',title:it.title,body:it.body||'',url:it.url||'./#painel',date:it.date||new Date().toISOString(),read:false});INBOX.set(l);ntfBadge(true);
+  if(withBanner!==false&&document.visibilityState==='visible')nbShow(l[0]);if($('#ntf'))ntfDraw();return true}
+function ntfBadge(ring){const n=INBOX.get().filter(x=>!x.read).length;const b=$('#bell-n');if(b){b.textContent=n>9?'9+':n;b.hidden=!n}
+  const bell=$('#nav-bell');if(bell){bell.setAttribute('aria-label',n?`Notificações: ${n} não lidas`:'Notificações');if(ring){bell.classList.remove('ring');void bell.offsetWidth;bell.classList.add('ring')}}
+  try{if(navigator.setAppBadge){n?navigator.setAppBadge(n):navigator.clearAppBadge()}}catch(e){}}
+function nbShow(it){if(PATIENT)return;let st=$('#nb-stack');if(!st){st=document.createElement('div');st.id='nb-stack';st.setAttribute('aria-live','polite');document.body.appendChild(st)}
+  const b=document.createElement('div');b.className='nb';b.setAttribute('role','status');
+  b.innerHTML=`<img src="icons/logo-app-v3.png" alt=""><div><div class="nbh"><span>EMDR PRO</span><span>agora</span></div><b>${esc(it.title)}</b>${it.body?`<p>${esc(it.body)}</p>`:''}</div>`;
+  st.prepend(b);requestAnimationFrame(()=>b.classList.add('in'));try{navigator.vibrate&&navigator.vibrate([16,40,16])}catch(e){}
+  const out=()=>{b.classList.remove('in');b.classList.add('out');setTimeout(()=>b.remove(),340)};let y0=null;
+  b.addEventListener('pointerdown',e=>{y0=e.clientY});b.addEventListener('pointerup',e=>{const sw=y0!=null&&y0-e.clientY>25;y0=null;out();if(!sw)ntfGo(it.id)});setTimeout(out,8000)}
+function ntfGo(id){const l=INBOX.get();const it=l.find(x=>x.id===id);if(!it)return;it.read=true;INBOX.set(l);ntfBadge();ntfClose();const h=(it.url||'').split('#')[1];if(h)go(h)}
+async function ntfShowSystem(it){if(ntfPerm()!=='granted')return;const x=NTF.get();const body=it.body||'';
+  try{const reg=await navigator.serviceWorker.getRegistration();const o={body,icon:NTF_ICON,badge:NTF_BADGE,tag:it.id,data:{url:it.url}};if(reg)await reg.showNotification(it.title,o);else new Notification(it.title,o)}catch(e){}}
+/* Aviso gerado no próprio app (lembrete chegando, paciente batendo na porta…) */
+function ntfLocal(it){if(PATIENT)return;const x=NTF.get();if(it.kind&&x[it.kind]===false)return;const isNew=inboxAdd(it);
+  if(isNew&&document.visibilityState!=='visible'&&!ntfLN()&&!(x.on&&x.server==='ok'&&it.kind!=='sala'))ntfShowSystem(x.nomes?it:{...it,body:it.bodyAnon||it.body})}
+function ntfTick(){if(PATIENT||!S)return;const now=Date.now();const x=NTF.get();
+  ntfPlan(true).rem.forEach(r=>{if(r.at<=now&&r.at>now-20*60e3&&!ntfSeen.has('f:'+r.id)){ntfSeen.add('f:'+r.id);
+    const anon=ntfPlan(false).rem.find(z=>z.id===r.id);const it={...r,bodyAnon:anon&&anon.body};if(r.kind==='lembrete'){const mins=Math.max(1,Math.round((r.at+x.antes*60e3-now)/60e3));it.title=it.title.replace(/em \d+ min$/,`em ${mins} min`)}ntfLocal(it)}});
+  if(x.versao&&S.seenUpd!==APP_VERSION&&!ntfSeen.has('v:'+APP_VERSION)){ntfSeen.add('v:'+APP_VERSION);const c=CHANGELOG[0];if(S.seenUpd)inboxAdd({id:'versao-'+APP_VERSION,kind:'versao',title:`EMDR PRO ${APP_VERSION} chegou`,body:c?c.title:'Melhorias e correções',url:'./#atualizacoes'},false)}}
+async function ntfMergeSW(){try{if(!('caches' in window))return;const c=await caches.open('emdr-inbox');const r=await c.match('inbox');if(!r)return;const l=await r.json();await c.delete('inbox');
+  l.reverse().forEach(it=>inboxAdd(it,false))}catch(e){}}
+if('serviceWorker' in navigator&&!PATIENT)navigator.serviceWorker.addEventListener('message',e=>{const m=e.data||{};if(m.type==='push'&&m.item){inboxAdd(m.item);ntfMergeSW()}else if(m.type==='open'&&m.url){const h=String(m.url).split('#')[1];if(h)go(h)}});
+
+/* Painel lateral */
+let ntfTab='lista';
+function ntfOpen(tab){if(PATIENT)return;closeMenus();ntfTab=tab==='cfg'?'cfg':'lista';ntfMergeSW();let o=$('#ntf');
+  if(!o){o=document.createElement('div');o.id='ntf';o.className='ntf';o.setAttribute('role','dialog');o.setAttribute('aria-modal','true');o.setAttribute('aria-label','Notificações');
+    o.addEventListener('mousedown',e=>{if(e.target===o)ntfClose()});document.body.appendChild(o)}
+  ntfDraw()}
+function ntfClose(){const o=$('#ntf');if(o)o.remove()}
+function ago(iso){const s=(Date.now()-new Date(iso).getTime())/1000;if(s<60)return'agora';if(s<3600)return`${Math.floor(s/60)} min`;const d=new Date(iso);if(dkey(d)===todayKey())return fmtT(d);return`${pad(d.getDate())}/${pad(d.getMonth()+1)}`}
+function ntfDraw(){const o=$('#ntf');if(!o)return;const l=INBOX.get(),x=NTF.get();let body='';
+  if(ntfTab==='lista'){
+    if(!l.length)body=`<div class="ntf-empty">${SVG_I.bell}Nenhuma notificação por enquanto.<br>Aqui aparecem os lembretes de sessão, o resumo do dia, pacientes na sala de espera e as novidades do app.${x.on?'':`<br><br><button class="btn primary" data-act="ntfTab" data-t="cfg">Ativar na tela bloqueada</button>`}</div>`;
+    else{const td=todayKey();const hoje=l.filter(i=>dkey(new Date(i.date))===td),ant=l.filter(i=>dkey(new Date(i.date))!==td);
+      const row=i=>`<button class="ntf-it${i.read?'':' unread'}" data-act="ntfItem" data-id="${esc(i.id)}"><i class="k-${esc(i.kind)}">${KIND_IC[i.kind]||SVG_I.bell}</i><span><b>${esc(i.title)}</b>${i.body?`<small>${esc(i.body)}</small>`:''}</span><em>${ago(i.date)}</em></button>`;
+      body=`<div class="ntf-acts">${l.some(i=>!i.read)?'<button data-act="ntfReadAll">Marcar todas como lidas</button>':''}<button data-act="ntfClear">Limpar</button></div>${hoje.length?`<div class="ntf-sec">Hoje</div>${hoje.map(row).join('')}`:''}${ant.length?`<div class="ntf-sec">Anteriores</div>${ant.map(row).join('')}`:''}`;
+      if(!x.on)body=`<div class="ntf-card"><p style="margin:0">Quer receber estes avisos também com o app fechado, na tela bloqueada?</p><button class="btn primary" data-act="ntfTab" data-t="cfg">Ativar neste aparelho</button></div>`+body}}
+  else body=ntfCfgHtml(x);
+  o.innerHTML=`<div class="ntf-p"><div class="ntf-h"><h2>Notificações</h2><button class="icon-btn" data-act="ntfClose" aria-label="Fechar">×</button></div>
+    <div class="ntf-tabs" role="tablist"><button role="tab" aria-selected="${ntfTab==='lista'}" data-act="ntfTab" data-t="lista">Recentes</button><button role="tab" aria-selected="${ntfTab==='cfg'}" data-act="ntfTab" data-t="cfg">Configurar</button></div>
+    <div class="ntf-b">${body}</div></div>`}
+function ntfCfgHtml(x){const perm=ntfPerm(),native=!!ntfLN(),iosWeb=!native&&isIOS()&&!isStandalone();let st;
+  if(x.on&&(native||perm==='granted')){const srv=native?'<p>Os lembretes ficam agendados no próprio aparelho e aparecem mesmo sem internet.</p>':x.server==='ok'?'<p>Chegam mesmo com o app fechado.</p>':'<p>Chegam com o app aberto ou em segundo plano. Para chegarem também com o app fechado, falta ligar o servidor de notificações (uma vez só).</p>';
+    st=`<div class="ntf-card"><div class="ntf-st ${native||x.server==='ok'?'ok':'wait'}"><i></i>Ativas neste aparelho</div>${srv}<div class="form-actions" style="margin:6px 0 0;justify-content:flex-start;flex-wrap:wrap;gap:8px"><button class="btn" data-act="ntfTest">Enviar notificação de teste</button><button class="btn ghost" data-act="ntfOff">Desativar</button></div></div>`}
+  else if(iosWeb)st=`<div class="ntf-card"><div class="ntf-st"><i></i>Desligadas</div><p>No iPhone, as notificações só funcionam com o EMDR PRO instalado na tela de início:</p><ol class="ntf-steps"><li>Toque em <b>Compartilhar</b> no Safari</li><li>Toque em <b>Adicionar à Tela de Início</b></li><li>Abra o app pelo ícone e volte aqui</li></ol></div>`;
+  else if(perm==='denied')st=`<div class="ntf-card"><div class="ntf-st"><i></i>Bloqueadas pelo aparelho</div><p>As notificações foram recusadas antes. Para liberar:</p><ol class="ntf-steps">${isIOS()?'<li>Ajustes › Notificações › <b>EMDR PRO</b></li><li>Ligue <b>Permitir Notificações</b> e <b>Tela Bloqueada</b></li>':isAndroid()?'<li>Toque e segure o ícone do app › <b>Informações do app</b></li><li><b>Notificações</b> › ligar</li>':'<li>Clique no cadeado ao lado do endereço</li><li>Em <b>Notificações</b>, escolha <b>Permitir</b></li>'}</ol></div>`;
+  else if(!native&&!('Notification' in window))st=`<div class="ntf-card"><div class="ntf-st"><i></i>Indisponíveis neste navegador</div><p>Use o app instalado no celular ou o Chrome/Edge no computador.</p></div>`;
+  else st=`<div class="ntf-card"><h3>Avisos na tela bloqueada</h3><p>Lembretes de sessão, resumo da agenda, paciente na sala de espera e novidades do app, como nas notificações do celular.</p><button class="btn primary" data-act="ntfEnable">Ativar notificações neste aparelho</button></div>`;
+  const tg=(k,t,s,extra='')=>`<div class="ntf-row${x[k]?'':' off'}"><span><b>${t}</b><small>${s}</small></span>${extra}<input type="checkbox" class="switch" data-ntf="${k}" ${x[k]?'checked':''} aria-label="${esc(t)}"></div>`;
+  return st+`<div class="ntf-sec">O que avisar</div>
+    ${tg('lembrete','Lembrete de sessão','Antes de cada atendimento',`<select data-ntfv="antes" aria-label="Quanto tempo antes">${[5,10,15,30,60].map(m=>`<option value="${m}" ${+x.antes===m?'selected':''}>${m<60?m+' min':'1 hora'}</option>`).join('')}</select>`)}
+    ${tg('resumo','Resumo da agenda do dia','Quantas sessões e o primeiro horário',`<input type="time" data-ntfv="resumoHora" value="${esc(x.resumoHora)}" aria-label="Horário do resumo">`)}
+    ${tg('sala','Paciente na sala de espera','Quando o paciente abre o link da teleconsulta')}
+    ${tg('versao','Novidades do app','Quando sair uma versão nova do EMDR PRO')}
+    <div class="ntf-sec">Privacidade</div>
+    ${tg('nomes','Mostrar o nome do paciente','Na tela bloqueada qualquer pessoa pode ler. Desligado, o aviso mostra só o horário. O nome nunca sai deste aparelho.')}`}
+document.addEventListener('change',e=>{const t=e.target;if(!t.closest||!t.closest('#ntf'))return;const x=NTF.get();
+  if(t.dataset.ntf){x[t.dataset.ntf]=t.checked;NTF.set(x);ntfDraw();window.ntfDirty()}
+  else if(t.dataset.ntfv){x[t.dataset.ntfv]=t.dataset.ntfv==='antes'?+t.value:t.value;NTF.set(x);window.ntfDirty()}});
+ACT.ntfOpen=()=>ntfOpen();ACT.ntfClose=()=>ntfClose();ACT.ntfTab=d=>{ntfTab=d.t;ntfDraw()};
+ACT.ntfItem=d=>ntfGo(d.id);
+ACT.ntfReadAll=()=>{const l=INBOX.get();l.forEach(i=>i.read=true);INBOX.set(l);ntfBadge();ntfDraw()};
+ACT.ntfClear=()=>{INBOX.set([]);ntfBadge();ntfDraw()};
+ACT.ntfEnable=async()=>{const LN=ntfLN();const x=NTF.get();
+  if(LN){try{const p=await LN.requestPermissions();if(p.display!=='granted'){toast('Notificações não autorizadas no aparelho');ntfDraw();return}}catch(e){toast('Não foi possível ativar');return}
+    x.on=true;NTF.set(x);await ntfNative();ntfDraw();ntfTestLocal();return}
+  if(!('Notification' in window)){toast('Este navegador não mostra notificações');return}
+  const perm=Notification.permission==='granted'?'granted':await Notification.requestPermission();
+  if(perm!=='granted'){toast('Notificações não autorizadas');ntfDraw();return}
+  x.on=true;NTF.set(x);ntfDraw();const ok=await ntfSync(true);ntfDraw();
+  if(ok){toast('Notificações ativadas neste aparelho');ACT.ntfTest()}else ntfTestLocal()};
+ACT.ntfOff=async()=>{const x=NTF.get();x.on=false;x.server='';NTF.set(x);
+  if(ntfLN())await ntfNative();else try{const sub=await (await navigator.serviceWorker.ready).pushManager.getSubscription();if(sub){fetch(NTF_URL+'/unsubscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({endpoint:sub.endpoint})}).catch(()=>{});await sub.unsubscribe()}}catch(e){}
+  ntfDraw();toast('Notificações desativadas neste aparelho')};
+function ntfTestLocal(){const it={id:'teste-'+Date.now(),kind:'teste',title:'Notificações ativadas',body:'Assim os avisos do EMDR PRO aparecem neste aparelho.',url:'./#painel'};inboxAdd(it);
+  const LN=ntfLN();if(LN){LN.schedule({notifications:[{id:ntfNum(it.id),title:it.title,body:it.body,schedule:{at:new Date(Date.now()+3000)}}]}).catch(()=>{});return}
+  setTimeout(()=>ntfShowSystem(it),1200)}
+ACT.ntfTest=async()=>{const x=NTF.get();if(!ntfLN()&&x.server==='ok'){try{const sub=await (await navigator.serviceWorker.ready).pushManager.getSubscription();
+    const r=await fetch(NTF_URL+'/test',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({endpoint:sub&&sub.endpoint})});if(r.ok){toast('Teste enviado. Bloqueie a tela para ver.');return}}catch(e){}}
+  ntfTestLocal();toast('Teste enviado')};
+/* Paciente na página da teleconsulta: avisa a psicóloga se ela ainda não abriu a sala */
+async function ntfKnock(){if(!PATIENT||!SALA)return;try{await fetch(NTF_URL+'/knock',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({room:SALA.toLowerCase()})})}catch(e){}}
+
+function ntfInit(){if(PATIENT)return;const nav=$('.brand');if(nav&&!$('#nav-tools'))nav.insertAdjacentHTML('afterend',`<div class="nav-tools" id="nav-tools"><button class="nav-search" data-act="srchOpen" aria-label="Pesquisar">${SVG_I.search}<span>Pesquisar</span><kbd>${/Mac|iPhone|iPad/.test(navigator.platform)?'⌘':'Ctrl'} K</kbd></button><button class="nav-bell" id="nav-bell" data-act="ntfOpen" aria-label="Notificações">${SVG_I.bell}<span class="bell-n" id="bell-n" hidden>0</span></button></div>`);
+  ntfBadge();ntfMergeSW();ntfTick();setInterval(ntfTick,30000);
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){ntfMergeSW();ntfTick();ntfBadge()}});
+  const x=NTF.get();if(x.on){if(ntfLN())ntfNative();else if(Date.now()-x.syncedAt>6*3600e3)setTimeout(()=>ntfSync(true),2500)}
+  const LN=ntfLN();if(LN){try{LN.addListener('localNotificationActionPerformed',ev=>{const ex=ev&&ev.notification&&ev.notification.extra;if(ex&&ex.url){const h=String(ex.url).split('#')[1];if(h)go(h)}});
+    LN.addListener('localNotificationReceived',ev=>{const n=ev||{};const ex=n.extra||{};inboxAdd({id:ex.id||('n'+n.id),kind:ex.kind||'aviso',title:n.title,body:n.body,url:ex.url})})}catch(e){}}}
+
+load();route();ntfInit();
 </script>
 
 </body>

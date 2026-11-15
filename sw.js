@@ -1,7 +1,8 @@
 /* Service worker do EMDR PRO: guarda o app para funcionar offline.
    Ao publicar uma nova versão, altere CACHE (ex.: emdrpro-v2) para forçar a atualização. */
-const CACHE = "emdrpro-v10";
-const RUNTIME = "emdrpro-externos-v1"; // fontes e bibliotecas de PDF/Excel
+const CACHE = "emdrpro-v11";
+const RUNTIME = "emdrpro-externos-v1";
+const INBOX = "emdr-inbox"; // fontes e bibliotecas de PDF/Excel
 const FILES = ["./", "./index.html", "./manifest.webmanifest",
   "./icons/favicon-64.png", "./icons/favicon-32.png", "./icons/icon-180.png",
   "./icons/icon-192.png", "./icons/icon-512.png", "./icons/icon-maskable-512.png",
@@ -12,7 +13,7 @@ const EXTERNOS = ["fonts.googleapis.com", "fonts.gstatic.com", "cdnjs.cloudflare
 
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES))); self.skipWaiting(); });
 self.addEventListener("activate", e => {
-  e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE && k !== RUNTIME).map(k => caches.delete(k)))));
+  e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE && k !== RUNTIME && k !== INBOX).map(k => caches.delete(k)))));
   self.clients.claim();
 });
 self.addEventListener("fetch", e => {
@@ -34,4 +35,29 @@ self.addEventListener("fetch", e => {
     return;
   }
   e.respondWith(caches.match(e.request, { ignoreSearch: true }).then(r => r || fetch(e.request)));
+});
+
+/* Notificações (tela bloqueada): chegam pelo servidor do EMDR PRO, mesmo com o app fechado.
+   O servidor nunca recebe nomes de pacientes; os textos já chegam genéricos. */
+self.addEventListener("push", e => {
+  let m = {}; try { m = e.data ? e.data.json() : {}; } catch (err) { m = { body: e.data ? e.data.text() : "" }; }
+  const title = m.title || "EMDR PRO";
+  const item = { id: m.tag || ("p" + Date.now()), kind: m.kind || "aviso", title, body: m.body || "", url: m.url || "./#painel", date: new Date().toISOString() };
+  e.waitUntil((async () => {
+    await self.registration.showNotification(title, { body: item.body, icon: "icons/apple-touch-icon-180-v3.png", badge: "icons/favicon-64.png",
+      tag: item.id, renotify: item.kind === "sala", requireInteraction: item.kind === "sala", data: { url: item.url } });
+    const c = await caches.open(INBOX); const r = await c.match("inbox"); const list = r ? await r.json() : [];
+    if (!list.some(x => x.id === item.id)) list.unshift(item);
+    await c.put("inbox", new Response(JSON.stringify(list.slice(0, 40))));
+    try { if (self.navigator.setAppBadge) await self.navigator.setAppBadge(Math.min(list.length, 9)); } catch (err) {}
+    (await self.clients.matchAll({ type: "window" })).forEach(w => w.postMessage({ type: "push", item }));
+  })());
+});
+self.addEventListener("notificationclick", e => {
+  e.notification.close();
+  const url = new URL((e.notification.data && e.notification.data.url) || "./#painel", self.registration.scope).href;
+  e.waitUntil(self.clients.matchAll({ type: "window", includeUncontrolled: true }).then(list => {
+    for (const c of list) { if ("focus" in c) { c.postMessage({ type: "open", url }); return c.focus(); } }
+    return self.clients.openWindow(url);
+  }));
 });
