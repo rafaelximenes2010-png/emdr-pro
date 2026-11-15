@@ -1,6 +1,6 @@
 /* Service worker do EMDR PRO: guarda o app para funcionar offline.
    Ao publicar uma nova versão, altere CACHE (ex.: emdrpro-v2) para forçar a atualização. */
-const CACHE = "emdrpro-v22";
+const CACHE = "emdrpro-v23";
 const RUNTIME = "emdrpro-externos-v1";
 const INBOX = "emdr-inbox"; // fontes e bibliotecas de PDF/Excel
 const FILES = ["./", "./index.html",
