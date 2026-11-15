@@ -3475,7 +3475,7 @@ function bmItems(){const R=[],it=(ic,t,s,run,r)=>R.push({ic,t,s,run,r}),sep=t=>R
   return R}
 let BM=null;
 function bmOpen(){if(PATIENT)return;if($('#brand-menu')){bmClose();return}closeMenus();if(typeof srchClose==='function')srchClose();if(typeof ntfClose==='function')ntfClose();
-  const a=$('.brand-home'),r=a.getBoundingClientRect(),p=profile(),items=bmItems();BM=items.filter(x=>!x.sep);
+  const a=$('.brand-home'),r=a.getBoundingClientRect(),p=profile(),items=bmItems();BM=items.filter(x=>x.sep===undefined);
   const m=document.createElement('div');m.id='brand-menu';m.className='bm';m.setAttribute('role','menu');m.setAttribute('aria-label','Menu da psicóloga');
   let i=0;m.innerHTML=`<div class="bm-head"><img src="icons/logo-app-v3.png" alt=""><div><b>${esc(p.name||'Karina Ximenes')}</b><small>${esc(({psi:'Psicóloga',rec:'Recepção',adm:'Administrador'})[role()])}${p.crp?' · '+esc(p.crp):''}</small></div></div>`+
     items.map(x=>x.sep!==undefined?(x.sep?`<div class="bm-sep" role="presentation">${esc(x.sep)}</div>`:'<div class="bm-sep bm-line" role="separator"></div>'):`<button role="menuitem" class="bm-it${x.r&&x.r===current?' on':''}" data-bm="${i++}"><i>${x.ic}</i><span><b>${esc(x.t)}</b><small>${esc(x.s)}</small></span></button>`).join('');
