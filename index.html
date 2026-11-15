@@ -439,6 +439,8 @@ input[type="range"]{width:100%;accent-color:var(--accent)}
 .mini .mt-tile{height:170px;border-radius:0;border:0}
 .mini-bar{display:flex;gap:6px;padding:8px;align-items:center;background:var(--mt-top)}
 .mini-bar .btn{border-radius:999px}
+.mini-bar .rec-mini{background:#E2C27A;color:#1D2318;border:0;font-weight:600;white-space:nowrap}
+.mini-bar .rec-mini.on{background:#D9534F;color:#fff}.mini-bar .rec-mini.on .rec-live{color:#fff}
 .win-steps{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
 .win-steps li{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--surface-2)}
 .win-steps li.done{border-color:var(--ok);background:var(--ok-soft)}
@@ -1067,7 +1069,7 @@ const DOWN=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 function deepDef(t,d){for(const k in d){if(t[k]===undefined)t[k]=JSON.parse(JSON.stringify(d[k]));else if(d[k]&&typeof d[k]==='object'&&!Array.isArray(d[k])&&typeof t[k]==='object')deepDef(t[k],d[k])}return t}
 function profile(){return (typeof S!=='undefined'&&S&&S.profile)?S.profile:DEF_PROFILE}
 const USERS={get psi(){const p=profile();return{name:p.name,reg:p.crp||'CRP não informado'}},rec:{name:'Ana Souza',reg:'Recepção'},adm:{name:'Administração',reg:'Administrador'}};
-const APP_VERSION='5.3';
+const APP_VERSION='5.3.1';
 const BUILTIN=[
   {id:'b1',name:'Lento',ppm:40,amp:85,size:30,motion:'suave',mode:'passagens',limit:24,secs:30},
   {id:'b2',name:'Moderado',ppm:60,amp:85,size:28,motion:'suave',mode:'passagens',limit:30,secs:30},
@@ -1804,6 +1806,8 @@ function openNote(id,pre={}){
    ========================================================= */
 const TYPES={novo:'Novo',melhoria:'Melhoria',correcao:'Correção',seguranca:'Segurança'};
 const CHANGELOG=[
+ {v:'5.3.1',date:'15/11/2026',title:'Gravar também com a reunião minimizada',items:[
+  ['correcao','Botão de gravação na janelinha da reunião','Com a reunião minimizada (por exemplo, enquanto usa a tela de Estimulação EMDR), a janelinha mostra Autorizar gravação, Gravar e Parar.']]},
  {v:'5.3',date:'15/11/2026',title:'Endereço próprio: zoevita.net.br',items:[
   ['novo','Novo endereço','O aplicativo agora fica em app.zoevita.net.br e o site em zoevita.net.br. Os convites de teleconsulta já saem com o novo endereço.'],
   ['novo','Levar os dados','No endereço antigo, um aviso mostra como baixar a cópia protegida e restaurar no novo endereço.'],
@@ -2784,7 +2788,7 @@ function meetRender(){const a=meetLive();if(!a||!MEET.open){meetClose();return}
   const el=meetEl();const p={nome:apptName(a)};const pname=x=>x.nome;const logo=($('.brand-logo')||{}).src||'';const recOn=!!(REC.mr&&REC.mr.state==='recording');const con=!!(RTC.conn&&RTC.conn.open);
   el.className='meet'+(MEET.min?' min':'')+(MEET.present?' presenting':'');
   if(MEET.min){el.innerHTML=`<div class="mini"><div class="mt-tile"><video id="rtc-remote" autoplay playsinline></video>${RTC.remote?'':`<div class="mt-wait" style="font-size:.85rem">${esc(meetStatusTxt())}</div>`}<span class="lbl">${esc(pname(p))}${MEET.present?' · apresentando':''}</span></div>
-    <div class="mini-bar"><span class="mono" id="tl-clock" style="color:var(--mt-mut);font-size:.85rem">00:00</span><span class="sp"></span><button class="btn sm dark" data-act="rtcMic" aria-label="Microfone">${RTC.mic?IC.mic:IC.micoff}</button><button class="btn sm primary" data-act="meetMax">Voltar</button></div></div>`;meetMedia();meetTick();return}
+    <div class="mini-bar"><span class="mono" id="tl-clock" style="color:var(--mt-mut);font-size:.85rem">00:00</span><span class="sp"></span>${recMini()}<button class="btn sm dark" data-act="rtcMic" aria-label="Microfone">${RTC.mic?IC.mic:IC.micoff}</button><button class="btn sm primary" data-act="meetMax">Voltar</button></div></div>`;meetMedia();meetTick();return}
   const tb=(act,icon,label,extra='')=>`<button class="mt-btn ${extra}" data-act="${act}" ${extra.includes('pressed')?'aria-pressed="true"':''}>${icon}<span class="t">${label}</span></button>`;
   const paneBtn=(id,icon,label)=>`<button class="mt-btn" data-act="meetPane" data-p="${id}" aria-pressed="${MEET.pane===id}">${icon}<span class="t">${label}</span>${id==='gravar'&&recOn?'<i class="rec-badge"></i>':''}</button>`;
   const presentTxt=MEET.present==='paciente'?'Estimulação na tela do paciente':MEET.present==='janela'?'Janela da estimulação':MEET.present==='tela'?'Sua tela':'';
@@ -3500,6 +3504,11 @@ document.addEventListener('pointerdown',e=>{const m=$('#brand-menu');if(m&&!m.co
 addEventListener('hashchange',()=>bmClose(true));addEventListener('resize',()=>bmClose(true));
 
 /* Gravação e transcrição sempre à vista na reunião (com autorização do paciente) */
+/* Também na janelinha da reunião minimizada (ex.: enquanto usa a tela de Estimulação EMDR) */
+function recMini(){const L=S.teleLive;if(!L||!canClinical())return'';const recOn=!!(REC.mr&&REC.mr.state==='recording'),trOn=TR.on;
+  if(recOn||trOn)return `<button class="btn sm rec-mini on" data-act="recHalt" title="Parar gravação e transcrição"><span class="rec-live">●</span> Parar</button>`;
+  if(L.consent)return `<button class="btn sm rec-mini" data-act="recGo" title="Gravar e transcrever (autorização registrada)">● Gravar</button>`;
+  return `<button class="btn sm rec-mini" data-act="recAsk" title="Gravação e transcrição só com autorização do paciente">Autorizar gravação</button>`}
 function recChip(){const L=S.teleLive;if(!L||!canClinical())return'';const recOn=!!(REC.mr&&REC.mr.state==='recording'),trOn=TR.on;
   if(recOn||trOn)return `<div class="mt-rec on" role="status"><span class="rec-live">●</span><b>${recOn?'Gravando <span class="mono" id="rc-clock">00:00</span>':''}${recOn&&trOn?' · ':''}${trOn?'Transcrevendo':''}</b><button data-act="recHalt">■ Parar</button><button class="ghost" data-act="meetPane" data-p="gravar">Ver transcrição</button></div>`;
   if(L.consent)return `<div class="mt-rec ok"><span class="ok-dot">✓</span><b>Autorizado ${esc(L.consentBy||'')}</b><button data-act="recGo">● Gravar e transcrever</button><button class="ghost" data-act="meetPane" data-p="gravar">Opções</button></div>`;
