@@ -28,8 +28,9 @@ const SITE = "https://rafaelximenes2010-png.github.io/emdr-pro/";
 const DEFAULT_ALLOWED = [
   "https://rafaelximenes2010-png.github.io",
   "https://karinaximenespsi.github.io",
-  "https://emdrpro.github.io",
-  "https://emdrpro.com.br",
+  "https://zoevita.net.br",
+  "https://www.zoevita.net.br",
+  "https://app.zoevita.net.br",
   "capacitor://localhost",
   "https://localhost",
   "http://localhost:8772"
@@ -160,7 +161,7 @@ async function checkVersion(env, subs){
   const esc = ver.replace(/\./g, "\\.");
   const title = (html.match(new RegExp(`\\{v:'${esc}',date:'[^']*',title:'((?:[^'\\\\]|\\\\.)*)'`)) || [])[1] || "Melhorias e correções";
   const ids = Object.keys(subs).filter(id => !subs[id].t || subs[id].t.versao !== false);
-  const r = await deliver(env, subs, ids, { kind: "versao", title: `EMDR PRO ${ver} chegou`, body: clip(title, 170), url: "./#atualizacoes", tag: "versao", ttl: 7 * 86400, urgency: "normal" });
+  const r = await deliver(env, subs, ids, { kind: "versao", title: `ZOEVITA ${ver} chegou`, body: clip(title, 170), url: "./#atualizacoes", tag: "versao", ttl: 7 * 86400, urgency: "normal" });
   return r.gone;
 }
 
@@ -205,7 +206,7 @@ async function route(request, env, h){
   if (path === "/push/test") {
     const subs = await loadSubs(env), id = await idOf(String(b.endpoint || ""));
     if (!subs[id]) return json({ error: "nao-inscrito" }, 404, h);
-    const r = await deliver(env, subs, [id], { kind: "teste", title: "EMDR PRO", body: "Pronto! As notificações estão chegando neste aparelho, mesmo com o app fechado.", url: "./#painel", tag: "teste" });
+    const r = await deliver(env, subs, [id], { kind: "teste", title: "ZOEVITA", body: "Pronto! As notificações estão chegando neste aparelho, mesmo com o app fechado.", url: "./#painel", tag: "teste" });
     if (r.gone) await saveSubs(env, subs);
     return json({ ok: r.sent > 0 }, 200, h);
   }

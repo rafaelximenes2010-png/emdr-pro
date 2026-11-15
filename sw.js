@@ -1,9 +1,10 @@
 /* Service worker do EMDR PRO: guarda o app para funcionar offline.
    Ao publicar uma nova versão, altere CACHE (ex.: emdrpro-v2) para forçar a atualização. */
-const CACHE = "emdrpro-v11";
+const CACHE = "emdrpro-v12";
 const RUNTIME = "emdrpro-externos-v1";
 const INBOX = "emdr-inbox"; // fontes e bibliotecas de PDF/Excel
-const FILES = ["./", "./index.html", "./manifest.webmanifest",
+const FILES = ["./", "./index.html",
+  "./legal/conteudo.js", "./manifest.webmanifest",
   "./icons/favicon-64.png", "./icons/favicon-32.png", "./icons/icon-180.png",
   "./icons/icon-192.png", "./icons/icon-512.png", "./icons/icon-maskable-512.png",
   "./icons/apple-touch-icon-180-v3.png", "./icons/apple-touch-icon-167-v3.png", "./icons/apple-touch-icon-152-v3.png", "./icons/apple-touch-icon-120-v3.png", "./icons/logo-app-v3.png",

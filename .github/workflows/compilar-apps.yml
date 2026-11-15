@@ -5,7 +5,7 @@ name: Compilar apps (Android e iOS)
 on:
   push:
     branches: [main]
-    paths: ["index.html", "icons/**", "fonts/**", "lib/**", "app/**", ".github/workflows/compilar-apps.yml"]
+    paths: ["index.html", "legal/**", "icons/**", "fonts/**", "lib/**", "app/**", ".github/workflows/compilar-apps.yml"]
   workflow_dispatch:
 permissions:
   contents: write

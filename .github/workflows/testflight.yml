@@ -6,7 +6,7 @@ name: Enviar para o TestFlight
 on:
   push:
     branches: [main]
-    paths: ["index.html", "icons/**", "fonts/**", "lib/**", "app/**", ".github/workflows/testflight.yml"]
+    paths: ["index.html", "legal/**", "icons/**", "fonts/**", "lib/**", "app/**", ".github/workflows/testflight.yml"]
   workflow_dispatch:
 concurrency:
   group: testflight
