@@ -1,6 +1,6 @@
 /* Service worker do EMDR PRO: guarda o app para funcionar offline.
    Ao publicar uma nova versão, altere CACHE (ex.: emdrpro-v2) para forçar a atualização. */
-const CACHE = "emdrpro-v12";
+const CACHE = "emdrpro-v13";
 const RUNTIME = "emdrpro-externos-v1";
 const INBOX = "emdr-inbox"; // fontes e bibliotecas de PDF/Excel
 const FILES = ["./", "./index.html",
@@ -29,9 +29,11 @@ self.addEventListener("fetch", e => {
     return;
   }
   if (url.origin !== location.origin) return; // sala de vídeo e links externos passam direto
+  if (url.pathname.includes("/site/")) return; // site público: fica fora do cache do aplicativo
   // Páginas: tenta a rede primeiro (pega a versão nova) e cai para a cópia offline
   if (e.request.mode === "navigate") {
-    e.respondWith(fetch(e.request).then(res => { const cp = res.clone(); caches.open(CACHE).then(c => c.put("./index.html", cp)); return res; })
+    const isApp = /\/(index\.html)?$/.test(url.pathname);
+    e.respondWith(fetch(e.request).then(res => { if (isApp && res.ok) { const cp = res.clone(); caches.open(CACHE).then(c => c.put("./index.html", cp)); } return res; })
       .catch(() => caches.match("./index.html")));
     return;
   }
@@ -42,7 +44,7 @@ self.addEventListener("fetch", e => {
    O servidor nunca recebe nomes de pacientes; os textos já chegam genéricos. */
 self.addEventListener("push", e => {
   let m = {}; try { m = e.data ? e.data.json() : {}; } catch (err) { m = { body: e.data ? e.data.text() : "" }; }
-  const title = m.title || "EMDR PRO";
+  const title = m.title || "ZOEVITA";
   const item = { id: m.tag || ("p" + Date.now()), kind: m.kind || "aviso", title, body: m.body || "", url: m.url || "./#painel", date: new Date().toISOString() };
   e.waitUntil((async () => {
     await self.registration.showNotification(title, { body: item.body, icon: "icons/apple-touch-icon-180-v3.png", badge: "icons/favicon-64.png",
