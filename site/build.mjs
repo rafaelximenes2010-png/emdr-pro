@@ -23,6 +23,7 @@ function page({ slug, title, desc, body }) {
   return `<!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${esc(title)} · ZOEVITA</title><meta name="description" content="${esc(desc)}">
+<meta property="og:type" content="website"><meta property="og:site_name" content="ZOEVITA"><meta property="og:title" content="${esc(title)} · ZOEVITA"><meta property="og:description" content="${esc(desc)}"><meta property="og:image" content="https://zoevita.net.br/assets/logo.png"><meta property="og:url" content="https://zoevita.net.br/${slug}"><meta name="twitter:card" content="summary">
 <link rel="icon" href="${up}assets/favicon.png"><link rel="stylesheet" href="${up}assets/site.css">
 <script>try{var u=JSON.parse(localStorage.getItem('zv.site')||'{}');if(u.theme&&u.theme!=='auto')document.documentElement.setAttribute('data-theme',u.theme);if(u.text)document.documentElement.style.fontSize=(u.text/100*16)+'px';if(u.motion)document.documentElement.classList.add('calm')}catch(e){}</script>
 </head><body>
