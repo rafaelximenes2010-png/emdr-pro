@@ -1090,7 +1090,7 @@ const DOWN=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 function deepDef(t,d){for(const k in d){if(t[k]===undefined)t[k]=JSON.parse(JSON.stringify(d[k]));else if(d[k]&&typeof d[k]==='object'&&!Array.isArray(d[k])&&typeof t[k]==='object')deepDef(t[k],d[k])}return t}
 function profile(){return (typeof S!=='undefined'&&S&&S.profile)?S.profile:DEF_PROFILE}
 const USERS={get psi(){const p=profile();return{name:p.name,reg:p.crp||'CRP não informado'}},rec:{name:'Ana Souza',reg:'Recepção'},adm:{name:'Administração',reg:'Administrador'}};
-const APP_VERSION='5.5';
+const APP_VERSION='5.5.1';
 const BUILTIN=[
   {id:'b1',name:'Lento',ppm:40,amp:85,size:30,motion:'suave',mode:'passagens',limit:24,secs:30},
   {id:'b2',name:'Moderado',ppm:60,amp:85,size:28,motion:'suave',mode:'passagens',limit:30,secs:30},
@@ -1827,6 +1827,8 @@ function openNote(id,pre={}){
    ========================================================= */
 const TYPES={novo:'Novo',melhoria:'Melhoria',correcao:'Correção',seguranca:'Segurança'};
 const CHANGELOG=[
+ {v:'5.5.1',date:'15/11/2026',title:'Menu mais limpo',items:[
+  ['melhoria','Sem engrenagem repetida','A engrenagem saiu do topo: configurações, personalização e ética ficam no menu do logo da Karina.']]},
  {v:'5.5',date:'15/11/2026',title:'Gravar e transcrever antes de abrir a reunião',items:[
   ['novo','Na tela de Teleconsulta','Ligue Gravar e transcrever para todas as sessões ou em cada consulta, antes de iniciar. Quando o paciente entra, a autorização é pedida na tela dele e, se ele autorizar, a gravação e a transcrição começam sozinhas.']]},
  {v:'5.4',date:'15/11/2026',title:'Gravar e transcrever a sessão presencial',items:[
@@ -3279,7 +3281,7 @@ ACT.ntfTest=async()=>{const x=NTF.get();if(!ntfLN()&&x.server==='ok'){try{const 
 /* Paciente na página da teleconsulta: avisa a psicóloga se ela ainda não abriu a sala */
 async function ntfKnock(){if(!PATIENT||!SALA)return;try{await fetch(NTF_URL+'/knock',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({room:SALA.toLowerCase()})})}catch(e){}}
 
-function ntfInit(){if(PATIENT)return;const nav=$('.brand');if(nav&&!$('#nav-tools'))nav.insertAdjacentHTML('afterend',`<div class="nav-tools" id="nav-tools"><button class="nav-search" data-act="srchOpen" aria-label="Pesquisar" title="Pesquisar (Ctrl+K)">${SVG_I.search}<span>Pesquisar</span><kbd>${/Mac|iPhone|iPad/.test(navigator.platform)?'⌘':'Ctrl'} K</kbd></button><button class="nav-bell" id="nav-bell" data-act="ntfOpen" aria-label="Notificações">${SVG_I.bell}<span class="bell-n" id="bell-n" hidden>0</span></button><button class="nav-bell" data-act="brandMenu" aria-label="Menu: configurações e ética">${GEAR}</button></div>`);
+function ntfInit(){if(PATIENT)return;const nav=$('.brand');if(nav&&!$('#nav-tools'))nav.insertAdjacentHTML('afterend',`<div class="nav-tools" id="nav-tools"><button class="nav-search" data-act="srchOpen" aria-label="Pesquisar" title="Pesquisar (Ctrl+K)">${SVG_I.search}<span>Pesquisar</span><kbd>${/Mac|iPhone|iPad/.test(navigator.platform)?'⌘':'Ctrl'} K</kbd></button><button class="nav-bell" id="nav-bell" data-act="ntfOpen" aria-label="Notificações">${SVG_I.bell}<span class="bell-n" id="bell-n" hidden>0</span></button></div>`);
   ntfBadge();ntfMergeSW();ntfTick();setInterval(ntfTick,30000);
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){ntfMergeSW();ntfTick();ntfBadge()}});
   const x=NTF.get();if(x.on){if(ntfLN())ntfNative();else if(Date.now()-x.syncedAt>6*3600e3)setTimeout(()=>ntfSync(true),2500)}
