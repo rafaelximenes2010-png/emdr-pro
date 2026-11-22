@@ -953,6 +953,9 @@ body.zv-locked .app{visibility:hidden}
 
 .zv-move{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:300;width:min(760px,calc(100vw - 24px));display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:var(--surface);border:1px solid var(--gold);border-radius:14px;padding:12px 14px;box-shadow:0 14px 40px rgba(10,20,15,.22)}
 .zv-move>div:first-child{flex:1;min-width:240px}.zv-move b{display:block;font-size:.95rem}.zv-move span{display:block;color:var(--muted);font-size:.83rem;line-height:1.45;margin-top:2px}
+.zv-warn{border-color:#c0392b;bottom:auto;top:calc(12px + env(safe-area-inset-top,0px))}.zv-warn b{color:#c0392b}
+.zv-st{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:6px}.zv-st li{display:flex;justify-content:space-between;gap:12px;font-size:.88rem;border-bottom:1px dashed var(--line,#ddd);padding:5px 0}.zv-st b.good{color:#2e7d4f}.zv-st b.bad{color:#c0392b}
+.zv-snaps{display:grid;gap:6px}.zv-snaps>div{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:.86rem;padding:6px 0;border-bottom:1px solid var(--line,#eee)}
 .zv-move-a{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.zv-move .x{border:0;background:transparent;font-size:1.4rem;line-height:1;color:var(--muted);cursor:pointer;width:34px;height:34px;border-radius:8px}
 
 .recbtn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:0 16px;height:40px;font:700 .88rem var(--f-body);cursor:pointer;white-space:nowrap;margin-right:8px;box-shadow:0 2px 10px rgba(0,0,0,.25)}
@@ -1090,7 +1093,7 @@ const DOWN=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 function deepDef(t,d){for(const k in d){if(t[k]===undefined)t[k]=JSON.parse(JSON.stringify(d[k]));else if(d[k]&&typeof d[k]==='object'&&!Array.isArray(d[k])&&typeof t[k]==='object')deepDef(t[k],d[k])}return t}
 function profile(){return (typeof S!=='undefined'&&S&&S.profile)?S.profile:DEF_PROFILE}
 const USERS={get psi(){const p=profile();return{name:p.name,reg:p.crp||'CRP não informado'}},rec:{name:'Ana Souza',reg:'Recepção'},adm:{name:'Administração',reg:'Administrador'}};
-const APP_VERSION='5.5.1';
+const APP_VERSION='5.6';
 const BUILTIN=[
   {id:'b1',name:'Lento',ppm:40,amp:85,size:30,motion:'suave',mode:'passagens',limit:24,secs:30},
   {id:'b2',name:'Moderado',ppm:60,amp:85,size:28,motion:'suave',mode:'passagens',limit:30,secs:30},
@@ -1108,11 +1111,91 @@ const BGS=[['Preto','#000000'],['Cinza','#3A3D3C'],['Branco','#FFFFFF']];
 const KEY='emdrpro.v2',OLDKEY='emdrpro.demo.v1';
 let S;
 let ui={pid:null,ptab:'cadastro',agView:'semana',agDate:new Date(),q:'',sitF:'todos',emdrPid:''};
-function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}if(window.ntfDirty)window.ntfDirty()}
+function save(){if(!ZDB.booted||!S)return;S._ts=Date.now();
+  if(!ZDB.ok||!ZDB.enc){try{localStorage.setItem(KEY,JSON.stringify(S));ZDB.lsFull=false}catch(e){ZDB.lsFull=true;if(!ZDB.ok)zWarn('Atenção: o aparelho não conseguiu salvar as últimas alterações (memória cheia ou bloqueada). Baixe agora a cópia de segurança.')}}
+  if(ZDB.ok)zQueue();if(window.ntfDirty)window.ntfDirty()}
 function load(){try{const r=localStorage.getItem(KEY);if(r){S=JSON.parse(r);S.cfg={...DEF_CFG,...S.cfg};migrate();return}}catch(e){}
   let old=null;try{old=JSON.parse(localStorage.getItem(OLDKEY)||'null')}catch(e){}
   S=seed();if(old){['profile','prefs','presets','cfg','feedback','role'].forEach(k=>{if(old[k]!==undefined)S[k]=old[k]})}migrate()}
 function migrate(){S.profile=deepDef(S.profile||{},DEF_PROFILE);S.prefs=deepDef(S.prefs||{},DEF_PREFS);S.notes=S.notes||[];S.reports=S.reports||[];S.tele=S.tele||[];if(S.teleLive===undefined)S.teleLive=null;S.feedback=S.feedback||[];if(S.seenUpd===undefined)S.seenUpd='';if(!S.fin)seedFin();save()}
+
+/* ---------- v5.6 — armazenamento protegido: banco do aparelho criptografado + cópias automáticas ----------
+   Os dados ficam no IndexedDB do aparelho, criptografados (AES-256-GCM) com uma chave gerada no próprio
+   aparelho e que não pode ser exportada. Uma cópia automática por dia (últimos 14 dias) fica guardada no
+   mesmo banco, também criptografada. O localStorage passa a guardar só um marcador, sem dados clínicos. */
+const ZDB={db:null,key:null,ok:false,enc:false,booted:false,lsFull:false,lastErr:'',timer:0,chain:Promise.resolve(),marked:false,lastOk:0};
+const SNAP_KEEP=14;
+function zdbOpen(){return new Promise((ok,no)=>{if(!('indexedDB' in window))return no(new Error('sem IndexedDB'));let r;try{r=indexedDB.open('zoevita',1)}catch(e){return no(e)}
+  r.onupgradeneeded=()=>{const d=r.result;['kv','snaps'].forEach(n=>{if(!d.objectStoreNames.contains(n))d.createObjectStore(n)})};
+  r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error||new Error('erro ao abrir'));r.onblocked=()=>no(new Error('banco bloqueado'))})}
+function zdbReq(store,mode,fn){return new Promise((ok,no)=>{let t;try{t=ZDB.db.transaction(store,mode)}catch(e){return no(e)}const q=fn(t.objectStore(store));let out;if(q)q.onsuccess=()=>{out=q.result};
+  t.oncomplete=()=>ok(out);t.onerror=()=>no(t.error);t.onabort=()=>no(t.error||new Error('gravação cancelada'))})}
+const zGet=(st,k)=>zdbReq(st,'readonly',s=>s.get(k)),zPut=(st,k,v)=>zdbReq(st,'readwrite',s=>s.put(v,k)),zDel=(st,k)=>zdbReq(st,'readwrite',s=>s.delete(k)),zKeys=st=>zdbReq(st,'readonly',s=>s.getAllKeys());
+async function zKeyInit(){let k=await zGet('kv','devkey');if(k&&k.type==='secret')return k;
+  k=await crypto.subtle.generateKey({name:'AES-GCM',length:256},false,['encrypt','decrypt']);await zPut('kv','devkey',k);
+  const back=await zGet('kv','devkey');if(!back||back.type!=='secret')throw new Error('chave não guardada');return back}
+async function zSeal(json,ts){const raw=new TextEncoder().encode(json);if(!ZDB.enc)return{v:1,enc:0,ts,data:raw};
+  const iv=crypto.getRandomValues(new Uint8Array(12));return{v:1,enc:1,ts,iv,data:new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},ZDB.key,raw))}}
+async function zUnseal(rec){if(!rec||!rec.data)return null;const buf=rec.enc?await crypto.subtle.decrypt({name:'AES-GCM',iv:rec.iv},ZDB.key,rec.data):rec.data;return JSON.parse(new TextDecoder().decode(buf))}
+const zToday=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+function zQueue(){clearTimeout(ZDB.timer);ZDB.timer=setTimeout(zFlush,350)}
+function zFlush(){clearTimeout(ZDB.timer);if(!ZDB.ok||!S)return ZDB.chain;const json=JSON.stringify(S),ts=S._ts||Date.now();
+  ZDB.chain=ZDB.chain.then(async()=>{const rec=await zSeal(json,ts);await zPut('kv','main',rec);
+    const day=zToday(),keys=(await zKeys('snaps')).map(String);
+    if(!keys.includes(day)){await zPut('snaps',day,rec);const days=keys.filter(k=>/^\d{4}-\d\d-\d\d$/.test(k)).sort();while(days.length>=SNAP_KEEP){await zDel('snaps',days.shift())}}
+    if(ZDB.enc&&!ZDB.marked){const chk=await zUnseal(await zGet('kv','main'));if(chk&&chk._ts===ts){try{localStorage.setItem(KEY,JSON.stringify({_marker:1,_ts:ts,app:'ZOEVITA',nota:'Dados guardados no banco criptografado do aparelho.'}))}catch(e){}ZDB.marked=true}}
+    ZDB.lastOk=Date.now();ZDB.lastErr='';zWarnOff()})
+  .catch(e=>{ZDB.lastErr=String(e&&e.message||e);try{localStorage.setItem(KEY,json);ZDB.lsFull=false}catch(x){ZDB.lsFull=true;zWarn('Atenção: não foi possível salvar as últimas alterações neste aparelho ('+esc(ZDB.lastErr)+'). Baixe agora a cópia de segurança e fale com o suporte.')}});
+  return ZDB.chain}
+window.addEventListener('pagehide',()=>{if(ZDB.booted)zFlush()});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&ZDB.booted)zFlush()});
+function zWarn(msg){let b=$('#zv-savewarn');if(!b){b=document.createElement('div');b.id='zv-savewarn';b.className='zv-move zv-warn';b.setAttribute('role','alert');document.body.appendChild(b)}
+  b.innerHTML=`<div><b>Dados não salvos</b><span>${msg}</span></div><div class="zv-move-a">${canClinical()?'<button class="btn primary sm" data-act="bkSave">Baixar cópia agora</button>':''}</div>`}
+function zWarnOff(){const b=$('#zv-savewarn');if(b)b.remove()}
+async function bootStore(){let lsRaw=null,ls=null,idb=null;try{lsRaw=localStorage.getItem(KEY)}catch(e){}
+  if(lsRaw){try{ls=JSON.parse(lsRaw)}catch(e){ls=null}}
+  try{ZDB.db=await zdbOpen();ZDB.ok=true;try{ZDB.key=await zKeyInit();ZDB.enc=true}catch(e){ZDB.enc=false}
+    try{idb=await zUnseal(await zGet('kv','main'))}catch(e){idb=null;ZDB.lastErr='cópia principal ilegível'}
+    if(!idb){try{const ks=(await zKeys('snaps')).map(String).filter(k=>/^\d{4}-/.test(k)).sort();if(ks.length&&!(ls&&!ls._marker))idb=await zUnseal(await zGet('snaps',ks[ks.length-1]))}catch(e){}}
+    if(lsRaw&&!ls){try{await zPut('kv','ilegivel-'+Date.now(),lsRaw)}catch(e){}}}
+  catch(e){ZDB.ok=false;ZDB.lastErr=String(e&&e.message||e)}
+  const lsData=ls&&!ls._marker&&Array.isArray(ls.patients)?ls:null;
+  const pick=idb&&(!lsData||(idb._ts||0)>=(lsData._ts||0))?idb:lsData;
+  ZDB.booted=true;
+  if(pick){S=pick;S.cfg={...DEF_CFG,...S.cfg};migrate();zFlush();return}
+  if(lsRaw&&!ls&&!ZDB.ok){try{localStorage.setItem('emdrpro.ilegivel',lsRaw)}catch(e){}}
+  load();zFlush()}
+async function zSnaps(){if(!ZDB.ok)return[];const ks=(await zKeys('snaps')).map(String).sort().reverse(),out=[];
+  for(const k of ks){try{const rec=await zGet('snaps',k),d=await zUnseal(rec);out.push({id:k,ts:rec.ts||d._ts||0,pts:(d.patients||[]).filter(p=>!p.demo).length,ap:(d.appts||[]).length})}catch(e){out.push({id:k,ts:0,bad:true})}}return out}
+async function zSnapBefore(label){if(!ZDB.ok||!S)return;try{const rec=await zSeal(JSON.stringify(S),Date.now());await zPut('snaps','antes-'+label+'-'+Date.now(),rec);
+  const extra=(await zKeys('snaps')).map(String).filter(k=>k.startsWith('antes-')).sort();while(extra.length>5)await zDel('snaps',extra.shift())}catch(e){}}
+const bkDays=()=>S&&S.bkLast?Math.floor((Date.now()-S.bkLast)/864e5):null;
+async function zStatusFill(){const el=$('#zv-st');if(!el)return;let est=null,pers=null;
+  try{est=navigator.storage&&navigator.storage.estimate?await navigator.storage.estimate():null}catch(e){}
+  try{pers=navigator.storage&&navigator.storage.persisted?await navigator.storage.persisted():null}catch(e){}
+  const mb=n=>(n/1048576).toLocaleString('pt-BR',{maximumFractionDigits:1})+' MB',d=bkDays();
+  const snaps=await zSnaps();
+  const row=(k,v,ok)=>`<li><span>${k}</span><b class="${ok===false?'bad':ok?'good':''}">${v}</b></li>`;
+  el.innerHTML=`<ul class="zv-st">${row('Proteção neste aparelho',ZDB.ok&&ZDB.enc?'Criptografado (AES-256, chave do aparelho)':ZDB.ok?'Banco do aparelho, sem criptografia':'Armazenamento simples do navegador',ZDB.ok&&ZDB.enc)}
+   ${row('Último salvamento',ZDB.lastErr?'Falhou: '+esc(ZDB.lastErr):ZDB.lastOk?fmtDT(ZDB.lastOk):'—',ZDB.lastErr?false:!!ZDB.lastOk)}
+   ${row('Espaço usado',est?mb(est.usage||0)+' de '+mb(est.quota||0):'—')}
+   ${row('Guarda permanente',pers===null?'—':pers?'Ativada':'Não garantida (instale o app na tela inicial)',pers===null?undefined:pers)}
+   ${row('Última cópia baixada',d===null?'Nunca':d===0?'Hoje':`Há ${d} dia${d>1?'s':''}`,d!==null&&d<=7)}</ul>
+   <h3 style="margin:14px 0 6px;font-size:1rem">Cópias automáticas neste aparelho</h3>
+   <p class="hint" style="margin:0 0 8px">Uma por dia, dos últimos ${SNAP_KEEP} dias, mais uma antes de cada restauração. Servem para desfazer um erro ou recuperar dados apagados. Elas <b>não</b> protegem contra perda do aparelho: para isso, baixe a cópia protegida e guarde fora dele (iCloud, Google Drive, pen drive).</p>
+   ${snaps.length?`<div class="zv-snaps">${snaps.map(x=>`<div><span>${x.bad?'Cópia ilegível':x.id.startsWith('antes-')?'Antes de restaurar · '+fmtDT(x.ts):fmtD(new Date(x.ts||x.id+'T12:00'))}${x.bad?'':` · ${x.pts} pacientes · ${x.ap} agendamentos`}</span>${x.bad||!canAdmin()?'':`<button class="btn sm" data-act="zSnapAsk" data-id="${esc(x.id)}">Voltar a esta</button>`}</div>`).join('')}</div>`:'<p class="hint">Nenhuma cópia automática ainda.</p>'}`}
+function bkNag(){if(PATIENT||!canClinical()||$('#zv-bknag'))return;const real=(S.patients||[]).some(p=>!p.demo);if(!real)return;const d=bkDays();if(d!==null&&d<7)return;
+  let snz=0;try{snz=+localStorage.getItem('zv.bk.snooze')||0}catch(e){}if(Date.now()<snz)return;
+  const b=document.createElement('div');b.id='zv-bknag';b.className='zv-move';b.setAttribute('role','region');b.setAttribute('aria-label','Lembrete de cópia de segurança');
+  b.innerHTML=`<div><b>${d===null?'Você ainda não baixou nenhuma cópia de segurança':'Sua última cópia de segurança foi há '+d+' dias'}</b><span>Os prontuários ficam só neste aparelho. Se ele for perdido, trocado ou o navegador for limpo, a cópia é o que garante que nada se perde. Guarde-a fora do aparelho (iCloud, Google Drive).</span></div><div class="zv-move-a"><button class="btn primary sm" data-act="bkSave">Fazer cópia agora</button><button class="btn ghost sm" data-act="bkNagLater">Amanhã</button></div>`;
+  document.body.appendChild(b)}
+function zActs(){
+ACT.zSnapAsk=d=>{modal('Voltar a uma cópia automática',`<p style="margin-top:0">Os dados atuais serão substituídos pela cópia escolhida. Antes disso, guardo automaticamente uma cópia do estado atual, para você poder desfazer.</p><div class="form-actions"><span class="sp"></span><button class="btn ghost" data-close>Cancelar</button><button class="btn danger solid" data-act="zSnapGo" data-id="${esc(d.id)}">Substituir</button></div>`)};
+ACT.zSnapGo=async d=>{try{const data=await zUnseal(await zGet('snaps',d.id));if(!data||!Array.isArray(data.patients))throw new Error('cópia inválida');
+  await zSnapBefore('voltar');emdrTeardown();const prevAudit=(S.audit||[]).slice();S=data;S.audit=[...prevAudit,...(S.audit||[])].filter((a,i,arr)=>arr.findIndex(b=>b.ts===a.ts&&b.action===a.action)===i).sort((a,b)=>b.ts-a.ts).slice(0,3000);
+  S.cfg={...DEF_CFG,...S.cfg};migrate();ui.pid=null;audit('Dados restaurados de cópia automática ('+d.id+')');save();await zFlush();closeModal();go('painel');route();toast('Cópia automática restaurada')}catch(e){toast('Não foi possível abrir essa cópia.')}};
+ACT.bkNagLater=()=>{try{localStorage.setItem('zv.bk.snooze',String(Date.now()+864e5))}catch(e){}const b=$('#zv-bknag');if(b)b.remove()};
+}
 function seedNotes(){const t=Date.now(),D=86400000,a=profile().name;return[
   {id:uid(),title:'Supervisão de quinta',text:'Levar o caso da paciente M. (dessensibilização com canais associativos longos).\nRevisar critérios para entrelaçamento cognitivo.',cat:'Supervisão',pid:'p1',pinned:true,author:a,role:'psi',created:t-3*D,updated:t-3*D},
   {id:uid(),title:'Leitura: fase de preparação',text:'Retomar o capítulo sobre recursos de estabilização e técnica do recipiente.',cat:'Estudo',pid:'',pinned:false,author:a,role:'psi',created:t-6*D,updated:t-6*D},
@@ -1827,6 +1910,11 @@ function openNote(id,pre={}){
    ========================================================= */
 const TYPES={novo:'Novo',melhoria:'Melhoria',correcao:'Correção',seguranca:'Segurança'};
 const CHANGELOG=[
+ {v:'5.6',date:'22/11/2026',title:'Prontuários mais protegidos e cópias automáticas',items:[
+  ['seguranca','Dados criptografados no aparelho','Pacientes, prontuários e agenda passam a ficar num banco do aparelho criptografado (AES-256), com chave gerada no próprio aparelho. Nenhum dado clínico fica mais em texto aberto no navegador.'],
+  ['novo','Cópias automáticas diárias','O app guarda sozinho uma cópia por dia dos últimos 14 dias, e outra antes de cada restauração. Em Configurações › Cópia de segurança é possível voltar a qualquer uma delas.'],
+  ['novo','Lembrete de cópia de segurança','Se a última cópia baixada tiver mais de 7 dias, o app avisa e oferece fazer a cópia na hora, para guardar fora do aparelho.'],
+  ['correcao','Nada se perde sem aviso','Se o aparelho não conseguir salvar (memória cheia, por exemplo), aparece um alerta na hora, em vez de falhar em silêncio. Um registro ilegível nunca é sobrescrito.']]},
  {v:'5.5.1',date:'15/11/2026',title:'Menu mais limpo',items:[
   ['melhoria','Sem engrenagem repetida','A engrenagem saiu do topo: configurações, personalização e ética ficam no menu do logo da Karina.']]},
  {v:'5.5',date:'15/11/2026',title:'Gravar e transcrever antes de abrir a reunião',items:[
@@ -3050,8 +3138,8 @@ installUi();
 function backupHtml(){return `<section class="panel" id="pz-backup"><h2>Cópia de segurança</h2>
   <p class="hint" style="margin:0">Os dados ficam guardados neste aparelho. Baixe uma cópia com regularidade e use <b>Restaurar</b> para levar tudo a outro aparelho, por exemplo do computador para o celular.</p>
   <div class="form-actions"><button class="btn primary" data-act="bkSave">Baixar cópia protegida</button><label class="btn" for="bk-file">Restaurar cópia</label><input type="file" id="bk-file" accept="application/json,.json,.zoevita" hidden></div>
-  <p class="hint" style="margin:0">A cópia é protegida por senha (AES-256), mas contém prontuários: guarde o arquivo e a senha em locais diferentes e não envie por e-mail ou mensagem.</p></section>`}
-ACT.bkRestoreOk=()=>{const d=window.__bk;if(!d)return;emdrTeardown();const prevAudit=(S.audit||[]).slice();S=d;S.audit=[...prevAudit,...(S.audit||[])].filter((a,i,arr)=>arr.findIndex(b=>b.ts===a.ts&&b.action===a.action)===i).sort((a,b)=>b.ts-a.ts).slice(0,3000);S.cfg={...DEF_CFG,...S.cfg};migrate();window.__bk=null;ui.pid=null;audit('Cópia de segurança restaurada');save();closeModal();go('painel');route();toast('Cópia restaurada')};
+  <p class="hint" style="margin:0">A cópia é protegida por senha (AES-256), mas contém prontuários: guarde o arquivo e a senha em locais diferentes e não envie por e-mail ou mensagem.</p><div id="zv-st"><p class="hint">Verificando a proteção dos dados…</p></div></section>${(setTimeout(zStatusFill,0),'')}`}
+ACT.bkRestoreOk=async()=>{const d=window.__bk;if(!d)return;await zSnapBefore('restaurar');emdrTeardown();const prevAudit=(S.audit||[]).slice();S=d;S.audit=[...prevAudit,...(S.audit||[])].filter((a,i,arr)=>arr.findIndex(b=>b.ts===a.ts&&b.action===a.action)===i).sort((a,b)=>b.ts-a.ts).slice(0,3000);S.cfg={...DEF_CFG,...S.cfg};migrate();window.__bk=null;ui.pid=null;audit('Cópia de segurança restaurada');save();closeModal();go('painel');route();toast('Cópia restaurada')};
 
 /* ---------- início ---------- */
 
@@ -3379,7 +3467,7 @@ ACT.bkSave=()=>{if(!canClinical()){toast('Somente a psicóloga pode baixar a có
     const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},await bkKey(a,salt,iter),new TextEncoder().encode(JSON.stringify({app:'ZOEVITA',version:APP_VERSION,exported:n.toISOString(),data:S})));
     const env={app:'ZOEVITA',format:'zoevita-backup',v:1,enc:'AES-256-GCM',kdf:'PBKDF2-SHA256',iter,salt:b64e(salt),iv:b64e(iv),exported:n.toISOString(),data:b64e(ct)};
     const name=`zoevita-copia_${dkey(n)}_${pad(n.getHours())}h${pad(n.getMinutes())}.zoevita`;
-    try{const l=document.createElement('a');l.href=URL.createObjectURL(new Blob([JSON.stringify(env)],{type:'application/octet-stream'}));l.download=name;document.body.appendChild(l);l.click();l.remove();audit('Cópia de segurança protegida por senha baixada');save();closeModal();toast(`Cópia protegida gerada: ${name}`)}catch(x){toast('O navegador bloqueou o download.')}})};
+    try{const l=document.createElement('a');l.href=URL.createObjectURL(new Blob([JSON.stringify(env)],{type:'application/octet-stream'}));l.download=name;document.body.appendChild(l);l.click();l.remove();audit('Cópia de segurança protegida por senha baixada');S.bkLast=Date.now();save();closeModal();const nb=$('#zv-bknag');if(nb)nb.remove();toast(`Cópia protegida gerada: ${name}`)}catch(x){toast('O navegador bloqueou o download.')}})};
 function bkAccept(j){const d=j&&(j.app==='EMDR PRO'||j.app==='ZOEVITA')&&j.data;if(!d||!Array.isArray(d.patients)||!Array.isArray(d.appts)){toast('Arquivo inválido: não é uma cópia da ZOEVITA.');return}
   window.__bk=d;modal('Restaurar cópia',`<p style="margin-top:0">Restaurar a cópia de <b>${esc(fmtDT(j.exported))}</b>, com ${d.patients.length} pacientes e ${d.appts.length} agendamentos?</p><p class="hint">Todos os dados atuais deste aparelho serão substituídos pela cópia. Se tiver dúvida, baixe antes uma cópia dos dados atuais.</p><div class="form-actions"><span class="sp"></span><button class="btn ghost" data-close>Cancelar</button><button class="btn danger solid" data-act="bkRestoreOk">Substituir e restaurar</button></div>`)}
 document.addEventListener('change',e=>{if(e.target.id!=='bk-file')return;const f=e.target.files&&e.target.files[0];e.target.value='';if(!f)return;
@@ -3642,7 +3730,7 @@ ACT.recPlan=d=>{const a=S.appts.find(x=>x.id===d.id);if(!a)return;a.rec=!a.rec;a
 ACT.recPlanAll=()=>{S.prefs.tele=S.prefs.tele||{};S.prefs.tele.autoRec=!S.prefs.tele.autoRec;audit(S.prefs.tele.autoRec?'Gravação e transcrição ligadas para todas as teleconsultas (com autorização)':'Gravação automática desligada');save();renderTele()};
 function recAutoAsk(){const L=S.teleLive;if(!L||!L.autoRec||L.consent||L.autoAsked)return;L.autoAsked=true;setTimeout(()=>{if(RTC.conn&&RTC.conn.open&&!S.teleLive.consent){send({type:'consent-req'});toast('Pedido de autorização para gravar e transcrever enviado ao paciente')}},1800)}
 
-load();legalInit();if(S.presLive&&!S.presLive.done){S.presLive.done=true;S.presLive.end=S.presLive.end||Date.now();save()}route();ntfInit();moveBanner();if(secOn())lockNow();
+zActs();bootStore().catch(()=>{ZDB.booted=true;load()}).then(()=>{legalInit();if(S.presLive&&!S.presLive.done){S.presLive.done=true;S.presLive.end=S.presLive.end||Date.now();save()}route();ntfInit();moveBanner();if(secOn())lockNow();setTimeout(bkNag,1500)});
 </script>
 
 </body>
